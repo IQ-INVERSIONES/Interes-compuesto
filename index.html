@@ -1,31 +1,47 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IQ Soluciones Financieras — DCA S&P 500 — El efecto dilución</title>
+<title data-i18n="pageTitle">IQ Soluciones Financieras — El poder del interés compuesto</title>
 <link rel="icon" type="image/svg+xml" href="assets/logo-iq.svg">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  /* Paleta IQ */
+  /* Paleta IQ (constantes) */
   --iq-blue: #0043aa;
   --iq-teal: #61b0bc;
   --iq-olive: #b4bd00;
 
-  /* Esquema claro alineado al manual */
+  /* Tema claro (default) */
   --bg: #f5f7fa;
   --surface: #ffffff;
   --border: #e2e8f0;
   --text: #1e293b;
   --muted: #64748b;
+  --grid: #e2e8f0;
+  --grid-label: #94a3b8;
+  --shadow: 0 1px 2px rgba(15,23,42,0.04);
 
-  /* Roles semánticos (mapeados a la paleta IQ) */
-  --primary: var(--iq-blue);
-  --contrib: var(--iq-teal);
-  --accent: var(--iq-olive);
+  --bg-glow-1: rgba(97,176,188,0.10);
+  --bg-glow-2: rgba(0,67,170,0.05);
 }
+
+[data-theme="dark"] {
+  --bg: #0a1322;
+  --surface: #131c30;
+  --border: #243245;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --grid: #243245;
+  --grid-label: #6b7d99;
+  --shadow: 0 1px 3px rgba(0,0,0,0.5);
+
+  --bg-glow-1: rgba(97,176,188,0.08);
+  --bg-glow-2: rgba(0,67,170,0.10);
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   background: var(--bg);
@@ -36,79 +52,140 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 30px 20px 60px;
+  padding: 24px 20px 60px;
+  transition: background-color .25s ease, color .25s ease;
 }
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(ellipse 800px 400px at 100% 0%, rgba(97,176,188,0.10), transparent 70%),
-    radial-gradient(ellipse 700px 500px at 0% 100%, rgba(0,67,170,0.05), transparent 70%);
+    radial-gradient(ellipse 800px 400px at 100% 0%, var(--bg-glow-1), transparent 70%),
+    radial-gradient(ellipse 700px 500px at 0% 100%, var(--bg-glow-2), transparent 70%);
   pointer-events: none;
   z-index: 0;
+  transition: background .25s ease;
 }
 .wrapper { position: relative; z-index: 1; width: 100%; max-width: 960px; }
 
-/* Top bar con logo */
+/* Topbar con controles + logo */
 .topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
   margin-bottom: 28px;
   padding-bottom: 18px;
   border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  transition: border-color .25s ease;
 }
-.brand-mark {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  font-size: 12px;
-  letter-spacing: .22em;
-  color: var(--iq-blue);
-  text-transform: uppercase;
-}
-.brand-mark span { color: var(--iq-teal); font-weight: 400; }
-.logo-iq {
-  height: 52px;
-  width: auto;
-  display: block;
-}
+.tb-left { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.logo-iq { height: 52px; width: auto; display: block; }
 
+/* Chips */
+.chip-group { display: inline-flex; gap: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 3px; box-shadow: var(--shadow); }
+.chip {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all .2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.chip:hover { color: var(--iq-blue); }
+.chip.active { background: var(--iq-blue); color: #fff; box-shadow: 0 1px 3px rgba(0,67,170,0.3); }
+.chip.active:hover { color: #fff; }
+[data-theme="dark"] .chip.active { background: var(--iq-teal); color: #0a1322; box-shadow: 0 1px 4px rgba(97,176,188,0.4); }
+
+.chip-theme {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 7px 14px 7px 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  transition: all .2s ease;
+  box-shadow: var(--shadow);
+}
+.chip-theme:hover { border-color: var(--iq-blue); color: var(--iq-blue); }
+[data-theme="dark"] .chip-theme:hover { border-color: var(--iq-teal); color: var(--iq-teal); }
+.theme-icon {
+  width: 18px; height: 18px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--iq-olive); color: #fff; font-size: 11px;
+  transition: background .2s ease;
+}
+[data-theme="dark"] .theme-icon { background: var(--iq-teal); color: var(--iq-blue); }
+
+/* Header */
 header { margin-bottom: 32px; border-left: 4px solid var(--iq-blue); padding-left: 22px; }
 .eyebrow { font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.2em; color:var(--iq-teal); text-transform:uppercase; margin-bottom:10px; font-weight: 500; }
-h1 { font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(34px,6.2vw,58px); line-height:1; color:var(--iq-blue); letter-spacing:-0.01em; }
+h1 { font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(32px,5.8vw,54px); line-height:1.02; color:var(--iq-blue); letter-spacing:-0.01em; }
+[data-theme="dark"] h1 { color: var(--iq-teal); }
 h1 span { color:var(--iq-teal); }
-.subtitle { margin-top:14px; font-size:14px; color:var(--muted); font-weight:400; max-width:560px; line-height:1.65; }
+[data-theme="dark"] h1 span { color: var(--iq-olive); }
+.subtitle { margin-top:14px; font-size:14px; color:var(--muted); font-weight:400; max-width:580px; line-height:1.65; }
 
+/* Cards */
 .insights { display:grid; grid-template-columns:repeat(auto-fit,minmax(195px,1fr)); gap:14px; margin-bottom:26px; }
-.card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:18px 20px; position:relative; overflow:hidden; box-shadow: 0 1px 2px rgba(15,23,42,0.04); }
+.card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:18px 20px; position:relative; overflow:hidden; box-shadow: var(--shadow); transition: background-color .25s ease, border-color .25s ease; }
 .card::after { content:''; position:absolute; top:0; left:0; width:100%; height:3px; }
 .card.bl::after{background:var(--iq-blue);} .card.tl::after{background:var(--iq-teal);} .card.ol::after{background:var(--iq-olive);}
 .cl { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); font-family:'JetBrains Mono',monospace; margin-bottom:8px; font-weight:500; }
 .cv { font-family:'Montserrat',sans-serif; font-size:30px; font-weight:700; letter-spacing:-0.01em; }
 .card.bl .cv{color:var(--iq-blue);} .card.tl .cv{color:var(--iq-teal);} .card.ol .cv{color:var(--iq-olive);}
+[data-theme="dark"] .card.bl .cv { color: #5d8df0; }
 .cs { font-size:11px; color:var(--muted); margin-top:5px; line-height:1.4; font-weight:400; }
 
-.controls { display:flex; gap:24px; flex-wrap:wrap; margin-bottom:24px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 24px; box-shadow: 0 1px 2px rgba(15,23,42,0.04); }
+/* Controls */
+.controls { display:flex; gap:24px; flex-wrap:wrap; margin-bottom:24px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 24px; box-shadow: var(--shadow); transition: background-color .25s ease, border-color .25s ease; }
 .cg { display:flex; flex-direction:column; gap:6px; }
 .clabel { font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); font-family:'JetBrains Mono',monospace; font-weight:500; }
 .cval { font-size:18px; font-family:'Montserrat',sans-serif; font-weight:700; color:var(--iq-blue); }
+[data-theme="dark"] .cval { color: var(--iq-teal); }
 input[type=range] { -webkit-appearance:none; width:155px; height:4px; background:var(--border); border-radius:2px; outline:none; }
 input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--iq-blue); cursor:pointer; box-shadow: 0 1px 3px rgba(0,67,170,0.4); }
 input[type=range]::-moz-range-thumb { width:14px; height:14px; border-radius:50%; background:var(--iq-blue); cursor:pointer; border: none; }
+[data-theme="dark"] input[type=range]::-webkit-slider-thumb { background: var(--iq-teal); }
+[data-theme="dark"] input[type=range]::-moz-range-thumb { background: var(--iq-teal); }
 
-.cw { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px 24px 16px; margin-bottom:18px; box-shadow: 0 1px 2px rgba(15,23,42,0.04); }
+/* Chart wrappers */
+.cw { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px 24px 16px; margin-bottom:18px; box-shadow: var(--shadow); transition: background-color .25s ease, border-color .25s ease; }
 .cw.pct { border-color:rgba(180,189,0,0.35); background:linear-gradient(160deg,rgba(180,189,0,0.04),var(--surface)); }
+[data-theme="dark"] .cw.pct { background: linear-gradient(160deg,rgba(180,189,0,0.08),var(--surface)); }
 .ct { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; font-weight:500; }
-.cd { font-size:13px; color:rgba(0,67,170,0.65); font-style:italic; font-weight:400; margin-bottom:14px; }
+.cd { font-size:13px; color:rgba(0,67,170,0.75); font-style:italic; font-weight:400; margin-bottom:14px; }
+[data-theme="dark"] .cd { color: rgba(97,176,188,0.85); }
 canvas { display:block; width:100%; }
 .legend { display:flex; gap:18px; flex-wrap:wrap; margin-top:14px; }
 .li { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--muted); font-weight:500; }
 .ld { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
 
+/* Annotation */
 .ann { background:linear-gradient(135deg,rgba(0,67,170,0.06),rgba(97,176,188,0.05)); border:1px solid rgba(0,67,170,0.18); border-radius:10px; padding:18px 22px; font-size:14px; color:var(--text); line-height:1.7; font-weight:400; }
+[data-theme="dark"] .ann { background:linear-gradient(135deg,rgba(0,67,170,0.18),rgba(97,176,188,0.12)); border-color: rgba(97,176,188,0.3); }
 .ann strong { color:var(--iq-blue); font-weight:700; }
+[data-theme="dark"] .ann strong { color: var(--iq-teal); }
 .pill { display:inline-block; background:rgba(0,67,170,0.1); color:var(--iq-blue); font-family:'JetBrains Mono',monospace; font-size:11px; padding:2px 8px; border-radius:4px; font-weight:500; }
+[data-theme="dark"] .pill { background: rgba(97,176,188,0.18); color: var(--iq-teal); }
 
 footer {
   margin-top: 32px;
@@ -119,11 +196,13 @@ footer {
   color: var(--muted);
   font-family: 'JetBrains Mono', monospace;
   letter-spacing: .1em;
+  transition: border-color .25s ease;
 }
 
-@media (max-width: 600px) {
-  .topbar { flex-direction: column; gap: 12px; align-items: flex-start; }
+@media (max-width: 640px) {
+  .topbar { flex-direction: column; align-items: flex-start; gap: 14px; }
   .logo-iq { height: 44px; }
+  .tb-left { width: 100%; justify-content: space-between; }
 }
 </style>
 </head>
@@ -131,59 +210,193 @@ footer {
 <div class="wrapper">
 
   <div class="topbar">
-    <div class="brand-mark">IQ <span>SOLUCIONES FINANCIERAS</span></div>
+    <div class="tb-left">
+      <div class="chip-group" id="langGroup" role="tablist" aria-label="Language">
+        <button class="chip lang" data-lang="es-AR">ES</button>
+        <button class="chip lang" data-lang="en-US">EN</button>
+        <button class="chip lang" data-lang="pt-BR">PT</button>
+      </div>
+      <button class="chip-theme" id="themeToggle" aria-label="Toggle theme">
+        <span class="theme-icon" id="themeIcon">☀</span>
+        <span data-i18n="themeLabel">Modo claro</span>
+      </button>
+    </div>
     <img src="assets/logo-iq.svg" alt="IQ Soluciones Financieras" class="logo-iq">
   </div>
 
   <header>
-    <div class="eyebrow">Dollar-Cost Averaging · S&amp;P 500</div>
-    <h1>EL EFECTO<br><span>DILUCIÓN</span></h1>
-    <p class="subtitle">Con el tiempo, los aportes anuales se vuelven insignificantes frente al valor acumulado. La cartera deja de depender de lo que aportás y empieza a moverse sola, como el índice.</p>
+    <div class="eyebrow" data-i18n="eyebrow">Dollar-Cost Averaging · S&amp;P 500</div>
+    <h1><span data-i18n="titleA">EL PODER DEL</span><br><span data-i18n="titleB">INTERÉS COMPUESTO</span></h1>
+    <p class="subtitle" data-i18n="subtitle">—</p>
   </header>
 
   <div class="insights">
-    <div class="card bl"><div class="cl">Valor total acumulado</div><div class="cv" id="vt">—</div><div class="cs" id="st"></div></div>
-    <div class="card tl"><div class="cl">Total aportado</div><div class="cv" id="vc">—</div><div class="cs">en efectivo</div></div>
-    <div class="card ol"><div class="cl">Aporte anual / cartera</div><div class="cv" id="vr">—</div><div class="cs" id="sr"></div></div>
+    <div class="card bl"><div class="cl" data-i18n="cardTotal">Valor total acumulado</div><div class="cv" id="vt">—</div><div class="cs" id="st"></div></div>
+    <div class="card tl"><div class="cl" data-i18n="cardContributed">Total aportado</div><div class="cv" id="vc">—</div><div class="cs" data-i18n="cardContributedSub">en efectivo</div></div>
+    <div class="card ol"><div class="cl" data-i18n="cardRatio">Aporte anual / cartera</div><div class="cv" id="vr">—</div><div class="cs" id="sr"></div></div>
   </div>
 
   <div class="controls">
-    <div class="cg"><span class="clabel">Aporte mensual</span><span class="cval">$ <span id="dm">500</span></span><input type="range" id="sm" min="100" max="2000" step="50" value="500"></div>
-    <div class="cg"><span class="clabel">Años de inversión</span><span class="cval"><span id="dy">30</span> años</span><input type="range" id="sy" min="10" max="40" step="1" value="30"></div>
-    <div class="cg"><span class="clabel">Rentabilidad anual</span><span class="cval"><span id="dr">10</span> %</span><input type="range" id="sr2" min="4" max="14" step="0.5" value="10"></div>
+    <div class="cg"><span class="clabel" data-i18n="ctlMonthly">Aporte mensual</span><span class="cval"><span id="cvMoney">$ <span id="dm">500</span></span></span><input type="range" id="sm" min="100" max="2000" step="50" value="500"></div>
+    <div class="cg"><span class="clabel" data-i18n="ctlYears">Años de inversión</span><span class="cval"><span id="dy">30</span> <span data-i18n="ctlYearsUnit">años</span></span><input type="range" id="sy" min="10" max="40" step="1" value="30"></div>
+    <div class="cg"><span class="clabel" data-i18n="ctlReturn">Rentabilidad anual</span><span class="cval"><span id="dr">10</span> %</span><input type="range" id="sr2" min="4" max="14" step="0.5" value="10"></div>
   </div>
 
   <div class="cw">
-    <div class="ct">Valor de la cartera vs. capital aportado</div>
+    <div class="ct" data-i18n="chart1Title">Valor de la cartera vs. capital aportado</div>
     <canvas id="c1" height="280"></canvas>
     <div class="legend">
-      <div class="li"><div class="ld" style="background:var(--iq-blue)"></div>Valor total cartera</div>
-      <div class="li"><div class="ld" style="background:var(--iq-teal)"></div>Capital aportado acumulado</div>
+      <div class="li"><div class="ld" style="background:var(--iq-blue)"></div><span data-i18n="chart1LegA">Valor total cartera</span></div>
+      <div class="li"><div class="ld" style="background:var(--iq-teal)"></div><span data-i18n="chart1LegB">Capital aportado acumulado</span></div>
     </div>
   </div>
 
   <div class="cw pct">
-    <div class="ct">Aportación anual como <span style="color:var(--iq-olive)">% del valor total</span> de la cartera</div>
-    <div class="cd">Cuanto más cae esta curva, menos importa lo que aportás — el mercado toma el mando</div>
+    <div class="ct" id="chart2Title"></div>
+    <div class="cd" data-i18n="chart2Sub"></div>
     <canvas id="c2" height="240"></canvas>
     <div class="legend">
-      <div class="li"><div class="ld" style="background:var(--iq-olive)"></div>% aporte anual / cartera</div>
-      <div class="li"><div class="ld" style="background:rgba(180,189,0,0.25);border:1px dashed rgba(180,189,0,0.7)"></div>Umbral 5% · punto de dilución</div>
+      <div class="li"><div class="ld" style="background:var(--iq-olive)"></div><span data-i18n="chart2LegA">% aporte anual / cartera</span></div>
+      <div class="li"><div class="ld" style="background:rgba(180,189,0,0.25);border:1px dashed rgba(180,189,0,0.7)"></div><span data-i18n="chart2LegB">Umbral 5% · punto de dilución</span></div>
     </div>
   </div>
 
-  <div class="ann" id="ann">Mové los controles para ver cómo evoluciona el efecto dilución.</div>
+  <div class="ann" id="ann"></div>
 
-  <footer>© IQ Soluciones Financieras</footer>
+  <footer data-i18n="footer">© IQ Soluciones Financieras</footer>
 </div>
 
 <script>
-let M=500, Y=30, R=0.10;
+/* ===== i18n ===== */
+const I18N = {
+  'es-AR': {
+    pageTitle: 'IQ Soluciones Financieras — El poder del interés compuesto',
+    eyebrow: 'Dollar-Cost Averaging · S&P 500',
+    titleA: 'EL PODER DEL',
+    titleB: 'INTERÉS COMPUESTO',
+    subtitle: 'Con el tiempo, los aportes anuales se vuelven insignificantes frente al valor acumulado. La cartera deja de depender de lo que aportás y empieza a moverse sola, como el índice.',
+    cardTotal: 'Valor total acumulado',
+    cardContributed: 'Total aportado',
+    cardContributedSub: 'en efectivo',
+    cardRatio: 'Aporte anual / cartera',
+    ctlMonthly: 'Aporte mensual',
+    ctlYears: 'Años de inversión',
+    ctlYearsUnit: 'años',
+    ctlReturn: 'Rentabilidad anual',
+    chart1Title: 'Valor de la cartera vs. capital aportado',
+    chart1LegA: 'Valor total cartera',
+    chart1LegB: 'Capital aportado acumulado',
+    chart2TitleA: 'Aporte anual como ',
+    chart2TitleB: '% del valor total',
+    chart2TitleC: ' de la cartera',
+    chart2Sub: 'Cuanto más cae esta curva, menos importa lo que aportás — el mercado toma el mando',
+    chart2LegA: '% aporte anual / cartera',
+    chart2LegB: 'Umbral 5% · punto de dilución',
+    youControl: 'VOS CONTROLÁS ↑',
+    marketRules: '↓ EL MERCADO MANDA',
+    annDefault: 'Mové los controles para ver cómo evoluciona el efecto del interés compuesto.',
+    annTpl: 'A partir del año <span class="pill">{tY}</span>, tu aporte anual de <strong>{annual}</strong> representa menos del <strong>5%</strong> de la cartera. Una variación del <strong>±10% del S&amp;P 500</strong> mueve tu patrimonio lo mismo que <strong>{mult} años</strong> de aportes. La curva de abajo lo muestra sin vueltas: el interés compuesto toma el mando — el índice ya maneja todo solo.',
+    yearShort: 'Año',
+    atYearsTpl: 'a los {Y} años',
+    perYearVsTpl: '{annual} al año vs {p}',
+    themeLabel_light: 'Modo claro',
+    themeLabel_dark: 'Modo oscuro',
+    footer: '© IQ Soluciones Financieras',
+    currency: '$',
+    decimal: ','
+  },
+  'en-US': {
+    pageTitle: 'IQ Soluciones Financieras — The power of compound interest',
+    eyebrow: 'Dollar-Cost Averaging · S&P 500',
+    titleA: 'THE POWER OF',
+    titleB: 'COMPOUND INTEREST',
+    subtitle: 'Over time, annual contributions become insignificant compared to the accumulated value. Your portfolio stops depending on what you contribute and starts moving on its own, like the index.',
+    cardTotal: 'Total accumulated value',
+    cardContributed: 'Total contributed',
+    cardContributedSub: 'in cash',
+    cardRatio: 'Annual contribution / portfolio',
+    ctlMonthly: 'Monthly contribution',
+    ctlYears: 'Investment horizon',
+    ctlYearsUnit: 'years',
+    ctlReturn: 'Annual return',
+    chart1Title: 'Portfolio value vs. contributed capital',
+    chart1LegA: 'Total portfolio value',
+    chart1LegB: 'Accumulated contributed capital',
+    chart2TitleA: 'Annual contribution as ',
+    chart2TitleB: '% of total value',
+    chart2TitleC: ' of the portfolio',
+    chart2Sub: 'The more this curve falls, the less your contributions matter — the market takes over',
+    chart2LegA: '% annual contribution / portfolio',
+    chart2LegB: '5% threshold · dilution point',
+    youControl: 'YOU CONTROL ↑',
+    marketRules: '↓ THE MARKET RULES',
+    annDefault: 'Move the controls to see how compound interest evolves over time.',
+    annTpl: 'Starting in year <span class="pill">{tY}</span>, your annual contribution of <strong>{annual}</strong> represents less than <strong>5%</strong> of the portfolio. A <strong>±10% S&amp;P 500</strong> swing moves your wealth as much as <strong>{mult} years</strong> of contributions. The curve below makes it clear: compound interest takes over — the index now drives alone.',
+    yearShort: 'Year',
+    atYearsTpl: 'after {Y} years',
+    perYearVsTpl: '{annual} per year vs {p}',
+    themeLabel_light: 'Light mode',
+    themeLabel_dark: 'Dark mode',
+    footer: '© IQ Soluciones Financieras',
+    currency: '$',
+    decimal: '.'
+  },
+  'pt-BR': {
+    pageTitle: 'IQ Soluciones Financieras — O poder dos juros compostos',
+    eyebrow: 'Dollar-Cost Averaging · S&P 500',
+    titleA: 'O PODER DOS',
+    titleB: 'JUROS COMPOSTOS',
+    subtitle: 'Com o tempo, os aportes anuais tornam-se insignificantes em relação ao valor acumulado. A carteira deixa de depender do que você aporta e começa a se mover sozinha, como o índice.',
+    cardTotal: 'Valor total acumulado',
+    cardContributed: 'Total aportado',
+    cardContributedSub: 'em dinheiro',
+    cardRatio: 'Aporte anual / carteira',
+    ctlMonthly: 'Aporte mensal',
+    ctlYears: 'Anos de investimento',
+    ctlYearsUnit: 'anos',
+    ctlReturn: 'Rentabilidade anual',
+    chart1Title: 'Valor da carteira vs. capital aportado',
+    chart1LegA: 'Valor total da carteira',
+    chart1LegB: 'Capital aportado acumulado',
+    chart2TitleA: 'Aporte anual como ',
+    chart2TitleB: '% do valor total',
+    chart2TitleC: ' da carteira',
+    chart2Sub: 'Quanto mais essa curva cai, menos importa o que você aporta — o mercado toma o comando',
+    chart2LegA: '% aporte anual / carteira',
+    chart2LegB: 'Limite 5% · ponto de diluição',
+    youControl: 'VOCÊ CONTROLA ↑',
+    marketRules: '↓ O MERCADO MANDA',
+    annDefault: 'Mova os controles para ver como evoluem os juros compostos.',
+    annTpl: 'A partir do ano <span class="pill">{tY}</span>, seu aporte anual de <strong>{annual}</strong> representa menos de <strong>5%</strong> da carteira. Uma variação de <strong>±10% do S&amp;P 500</strong> movimenta seu patrimônio o mesmo que <strong>{mult} anos</strong> de aportes. A curva abaixo mostra sem rodeios: os juros compostos tomam o comando — o índice já dirige sozinho.',
+    yearShort: 'Ano',
+    atYearsTpl: 'após {Y} anos',
+    perYearVsTpl: '{annual} por ano vs {p}',
+    themeLabel_light: 'Modo claro',
+    themeLabel_dark: 'Modo escuro',
+    footer: '© IQ Soluciones Financieras',
+    currency: 'R$',
+    decimal: ','
+  }
+};
 
-// Colores IQ
+/* ===== Estado ===== */
+let M=500, Y=30, R=0.10;
+let LANG = localStorage.getItem('iq_lang') || (navigator.language && navigator.language.startsWith('pt') ? 'pt-BR' : navigator.language && navigator.language.startsWith('en') ? 'en-US' : 'es-AR');
+let THEME = localStorage.getItem('iq_theme') || 'light';
+
 const IQ_BLUE = '#0043aa';
 const IQ_TEAL = '#61b0bc';
 const IQ_OLIVE = '#b4bd00';
+
+/* ===== Utilidades ===== */
+function t() { return I18N[LANG]; }
+
+function fmt(n) {
+  const d = t().decimal, c = t().currency;
+  if(n>=1e6) return c + ' ' + (n/1e6).toFixed(2).replace('.', d) + ' M';
+  if(n>=1e3) return c + ' ' + (n/1e3).toFixed(1).replace('.', d) + ' k';
+  return c + ' ' + n.toFixed(0);
+}
 
 function sim() {
   const r=R/12; let p=0; const out=[];
@@ -194,12 +407,6 @@ function sim() {
   return out;
 }
 
-function fmt(n) {
-  if(n>=1e6) return '$ ' + (n/1e6).toFixed(2).replace('.', ',') + ' M';
-  if(n>=1e3) return '$ ' + (n/1e3).toFixed(1).replace('.', ',') + ' k';
-  return '$ ' + n.toFixed(0);
-}
-
 function prep(c,W,H) {
   const d=devicePixelRatio||1;
   c.width=W*d; c.height=H*d;
@@ -207,39 +414,42 @@ function prep(c,W,H) {
   const g=c.getContext('2d'); g.scale(d,d); return g;
 }
 
+function cssVar(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+/* ===== Charts ===== */
 function chart1(data) {
   const W=document.getElementById('c1').parentElement.clientWidth-48;
   const H=280;
   const g=prep(document.getElementById('c1'),W,H);
   const mx=data[data.length-1].p;
-  const L=72,R2=18,T=16,B=36;
+  const L=78,R2=18,T=16,B=36;
   const cW=W-L-R2, cH=H-T-B;
   const xi=i=>L+(i/(Y-1))*cW;
   const yv=v=>T+cH-(v/mx)*cH;
+  const grid = cssVar('--grid'), label = cssVar('--grid-label');
 
-  // grid
-  g.strokeStyle='#e2e8f0'; g.lineWidth=1;
+  g.strokeStyle=grid; g.lineWidth=1;
   for(let i=0;i<=4;i++){
     const yy=T+(i/4)*cH;
     g.beginPath();g.moveTo(L,yy);g.lineTo(L+cW,yy);g.stroke();
-    g.fillStyle='#94a3b8';g.font='10px JetBrains Mono,monospace';g.textAlign='right';
+    g.fillStyle=label;g.font='10px JetBrains Mono,monospace';g.textAlign='right';
     g.fillText(fmt(mx*(1-i/4)),L-6,yy+4);
   }
-  g.fillStyle='#94a3b8';g.font='10px JetBrains Mono,monospace';g.textAlign='center';
-  for(let y=5;y<=Y;y+=5) g.fillText('Año '+y,xi(y-1),H-5);
+  g.fillStyle=label;g.font='10px JetBrains Mono,monospace';g.textAlign='center';
+  for(let y=5;y<=Y;y+=5) g.fillText(t().yearShort+' '+y,xi(y-1),H-5);
 
-  // contributed (teal)
   g.beginPath();g.moveTo(xi(0),T+cH);
   data.forEach((d,i)=>g.lineTo(xi(i),yv(d.contrib)));
   g.lineTo(xi(Y-1),T+cH);g.closePath();
-  g.fillStyle='rgba(97,176,188,0.12)';g.fill();
+  g.fillStyle='rgba(97,176,188,0.14)';g.fill();
   g.beginPath();
   data.forEach((d,i)=>i===0?g.moveTo(xi(0),yv(d.contrib)):g.lineTo(xi(i),yv(d.contrib)));
   g.strokeStyle=IQ_TEAL;g.lineWidth=2;g.stroke();
 
-  // portfolio (blue)
   const gr=g.createLinearGradient(0,T,0,T+cH);
-  gr.addColorStop(0,'rgba(0,67,170,0.28)');
+  gr.addColorStop(0,'rgba(0,67,170,0.32)');
   gr.addColorStop(1,'rgba(0,67,170,0.02)');
   g.beginPath();g.moveTo(xi(0),T+cH);
   data.forEach((d,i)=>g.lineTo(xi(i),yv(d.p)));
@@ -247,12 +457,11 @@ function chart1(data) {
   g.fillStyle=gr;g.fill();
   g.beginPath();
   data.forEach((d,i)=>i===0?g.moveTo(xi(0),yv(d.p)):g.lineTo(xi(i),yv(d.p)));
-  g.strokeStyle=IQ_BLUE;g.lineWidth=2.5;g.stroke();
+  g.strokeStyle=THEME==='dark'?'#5d8df0':IQ_BLUE;g.lineWidth=2.5;g.stroke();
 
-  // threshold dashed (olive)
   let tY=null; for(const d of data) if(d.pct<5&&!tY) tY=d.y;
   if(tY){
-    g.strokeStyle='rgba(180,189,0,0.55)';g.lineWidth=1;g.setLineDash([4,4]);
+    g.strokeStyle='rgba(180,189,0,0.6)';g.lineWidth=1;g.setLineDash([4,4]);
     g.beginPath();g.moveTo(xi(tY-1),T);g.lineTo(xi(tY-1),T+cH);g.stroke();
     g.setLineDash([]);
   }
@@ -267,120 +476,170 @@ function chart2(data) {
   const cW=W-L-R2, cH=H-T-B;
   const xi=i=>L+(i/(Y-1))*cW;
   const yp=v=>T+cH-(v/maxP)*cH;
+  const grid = cssVar('--grid'), label = cssVar('--grid-label');
 
   let tY=null; for(const d of data) if(d.pct<5&&!tY) tY=d.y;
 
-  // zone backgrounds
   const y5=yp(5), yBot=T+cH;
   const zG1=g.createLinearGradient(0,T,0,y5);
-  zG1.addColorStop(0,'rgba(97,176,188,0.07)');
+  zG1.addColorStop(0,'rgba(97,176,188,0.08)');
   zG1.addColorStop(1,'rgba(148,163,184,0.02)');
   g.fillStyle=zG1; g.fillRect(L,T,cW,y5-T);
   const zG2=g.createLinearGradient(0,y5,0,yBot);
-  zG2.addColorStop(0,'rgba(0,67,170,0.04)');
-  zG2.addColorStop(1,'rgba(0,67,170,0.16)');
+  zG2.addColorStop(0,'rgba(0,67,170,0.05)');
+  zG2.addColorStop(1,'rgba(0,67,170,0.18)');
   g.fillStyle=zG2; g.fillRect(L,y5,cW,yBot-y5);
 
-  // grid
-  const ticks=[0,5,10,25,50].filter(t=>t<=maxP);
+  const ticks=[0,5,10,25,50].filter(x=>x<=maxP);
   const top=Math.round(maxP); if(!ticks.includes(top)) ticks.unshift(top);
-  ticks.forEach(t=>{
-    const yy=yp(t), is5=t===5;
-    g.strokeStyle=is5?'rgba(180,189,0,0.55)':'#e2e8f0';
+  ticks.forEach(x=>{
+    const yy=yp(x), is5=x===5;
+    g.strokeStyle=is5?'rgba(180,189,0,0.6)':grid;
     g.lineWidth=1; g.setLineDash(is5?[5,4]:[]);
     g.beginPath();g.moveTo(L,yy);g.lineTo(L+cW,yy);g.stroke();
     g.setLineDash([]);
-    g.fillStyle=is5?'rgba(122,128,0,1)':'#94a3b8';
-    g.font=(is5?'bold ':'')+' 10px JetBrains Mono,monospace';
+    g.fillStyle=is5?'rgba(122,128,0,1)':label;
+    g.font=(is5?'bold ':'')+'10px JetBrains Mono,monospace';
     g.textAlign='right';
-    g.fillText(t+'%',L-6,yy+4);
+    g.fillText(x+'%',L-6,yy+4);
   });
 
-  // zone text
   g.font='9px JetBrains Mono,monospace'; g.textAlign='right';
-  g.fillStyle='rgba(97,176,188,0.7)'; g.fillText('VOS CONTROLÁS ↑',L+cW-4,T+16);
-  if(y5<yBot-18){g.fillStyle='rgba(0,67,170,0.6)'; g.fillText('↓ EL MERCADO MANDA',L+cW-4,yBot-6);}
+  g.fillStyle='rgba(97,176,188,0.75)'; g.fillText(t().youControl,L+cW-4,T+16);
+  if(y5<yBot-18){g.fillStyle=THEME==='dark'?'rgba(93,141,240,0.85)':'rgba(0,67,170,0.7)'; g.fillText(t().marketRules,L+cW-4,yBot-6);}
 
-  // x labels
-  g.fillStyle='#94a3b8';g.font='10px JetBrains Mono,monospace';g.textAlign='center';
-  for(let y=5;y<=Y;y+=5) g.fillText('Año '+y,xi(y-1),H-5);
+  g.fillStyle=label;g.font='10px JetBrains Mono,monospace';g.textAlign='center';
+  for(let y=5;y<=Y;y+=5) g.fillText(t().yearShort+' '+y,xi(y-1),H-5);
 
-  // area
   const aG=g.createLinearGradient(0,T,0,T+cH);
-  aG.addColorStop(0,'rgba(180,189,0,0.32)');
-  aG.addColorStop(0.5,'rgba(180,189,0,0.12)');
+  aG.addColorStop(0,'rgba(180,189,0,0.36)');
+  aG.addColorStop(0.5,'rgba(180,189,0,0.14)');
   aG.addColorStop(1,'rgba(0,67,170,0.05)');
   g.beginPath();g.moveTo(xi(0),T+cH);
   data.forEach((d,i)=>g.lineTo(xi(i),yp(d.pct)));
   g.lineTo(xi(Y-1),T+cH);g.closePath();
   g.fillStyle=aG;g.fill();
 
-  // line gradient: teal → olive → blue
   const lG=g.createLinearGradient(xi(0),0,xi(Y-1),0);
-  lG.addColorStop(0,IQ_TEAL); lG.addColorStop(0.45,IQ_OLIVE); lG.addColorStop(1,IQ_BLUE);
+  lG.addColorStop(0,IQ_TEAL); lG.addColorStop(0.45,IQ_OLIVE); lG.addColorStop(1,THEME==='dark'?'#5d8df0':IQ_BLUE);
   g.beginPath();
   data.forEach((d,i)=>i===0?g.moveTo(xi(0),yp(d.pct)):g.lineTo(xi(i),yp(d.pct)));
   g.strokeStyle=lG;g.lineWidth=2.5;g.stroke();
 
-  // dots + labels
   data.forEach((d,i)=>{
     if(d.y%5!==0&&d.y!==tY) return;
     const px=xi(i),py=yp(d.pct),isT=d.y===tY;
     if(isT){
-      g.strokeStyle='rgba(180,189,0,0.55)';g.lineWidth=1.5;
+      g.strokeStyle='rgba(180,189,0,0.6)';g.lineWidth=1.5;
       g.beginPath();g.arc(px,py,10,0,Math.PI*2);g.stroke();
     }
     g.beginPath();g.arc(px,py,isT?5:3.5,0,Math.PI*2);
-    g.fillStyle=isT?IQ_OLIVE:'rgba(30,41,59,0.5)';g.fill();
-    g.fillStyle=isT?'rgba(122,128,0,1)':'rgba(30,41,59,0.55)';
-    g.font=(isT?'bold ':'')+' 9px JetBrains Mono,monospace';g.textAlign='center';
+    g.fillStyle=isT?IQ_OLIVE:(THEME==='dark'?'rgba(226,232,240,0.55)':'rgba(30,41,59,0.5)');g.fill();
+    g.fillStyle=isT?'rgba(122,128,0,1)':(THEME==='dark'?'rgba(226,232,240,0.6)':'rgba(30,41,59,0.55)');
+    g.font=(isT?'bold ':'')+'9px JetBrains Mono,monospace';g.textAlign='center';
     const above=py-14>T+6;
     g.fillText(d.pct.toFixed(1)+'%',px,above?py-14:py+15);
   });
 
-  // threshold vertical
   if(tY){
-    g.strokeStyle='rgba(180,189,0,0.75)';g.lineWidth=1.5;g.setLineDash([5,4]);
+    g.strokeStyle='rgba(180,189,0,0.8)';g.lineWidth=1.5;g.setLineDash([5,4]);
     g.beginPath();g.moveTo(xi(tY-1),T);g.lineTo(xi(tY-1),T+cH);g.stroke();
     g.setLineDash([]);
     g.fillStyle='rgba(122,128,0,1)';g.font='bold 9px JetBrains Mono,monospace';
-    g.textAlign='center';g.fillText('Año '+tY,xi(tY-1),T+10);
+    g.textAlign='center';g.fillText(t().yearShort+' '+tY,xi(tY-1),T+10);
   }
 }
 
+/* ===== Render texto ===== */
+function applyI18n() {
+  const T = t();
+  document.documentElement.lang = LANG.split('-')[0];
+  document.title = T.pageTitle;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if (key === 'themeLabel') {
+      el.textContent = THEME==='dark' ? T.themeLabel_dark : T.themeLabel_light;
+    } else if (T[key] !== undefined) {
+      el.textContent = T[key];
+    }
+  });
+  // chart2 title con HTML
+  document.getElementById('chart2Title').innerHTML =
+    T.chart2TitleA + '<span style="color:var(--iq-olive)">' + T.chart2TitleB + '</span>' + T.chart2TitleC;
+}
+
+function tplFill(str, vars) {
+  return str.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
+}
+
+/* ===== Update principal ===== */
 function update() {
   M=+document.getElementById('sm').value;
   Y=+document.getElementById('sy').value;
   R=+document.getElementById('sr2').value/100;
   document.getElementById('dm').textContent=M;
   document.getElementById('dy').textContent=Y;
-  document.getElementById('dr').textContent=(R*100).toFixed(1);
+  document.getElementById('dr').textContent=(R*100).toFixed(1).replace('.', t().decimal);
 
   const data=sim();
   const last=data[data.length-1];
   document.getElementById('vt').textContent=fmt(last.p);
-  document.getElementById('st').textContent=`a los ${Y} años`;
+  document.getElementById('st').textContent=tplFill(t().atYearsTpl, {Y});
   document.getElementById('vc').textContent=fmt(last.contrib);
-  document.getElementById('vr').textContent=last.pct.toFixed(1)+'%';
-  document.getElementById('sr').textContent=`${fmt(last.annual)} al año vs ${fmt(last.p)}`;
+  document.getElementById('vr').textContent=last.pct.toFixed(1).replace('.', t().decimal)+'%';
+  document.getElementById('sr').textContent=tplFill(t().perYearVsTpl, {annual: fmt(last.annual), p: fmt(last.p)});
 
   let tY=null; for(const d of data) if(d.pct<5&&!tY) tY=d.y;
   if(tY){
-    const mult=(last.p*0.10/last.annual).toFixed(1);
-    document.getElementById('ann').innerHTML=`A partir del año <span class="pill">${tY}</span>, tu aporte anual de <strong>${fmt(last.annual)}</strong> representa menos del <strong>5%</strong> de la cartera. Una variación del <strong>±10% del S&amp;P 500</strong> mueve tu patrimonio lo mismo que <strong>${mult} años</strong> de aportes. La curva de abajo lo muestra sin vueltas: tu influencia se desvanece — el índice ya maneja todo solo.`;
+    const mult=(last.p*0.10/last.annual).toFixed(1).replace('.', t().decimal);
+    document.getElementById('ann').innerHTML = tplFill(t().annTpl, {tY, annual: fmt(last.annual), mult});
   } else {
-    document.getElementById('ann').innerHTML=`Mové los controles para ver cómo evoluciona el efecto dilución.`;
+    document.getElementById('ann').innerHTML = t().annDefault;
   }
 
   chart1(data);
   chart2(data);
 }
 
+/* ===== Theme & Lang ===== */
+function setTheme(theme) {
+  THEME = theme;
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('themeIcon').textContent = theme==='dark' ? '☾' : '☀';
+  applyI18n();
+  localStorage.setItem('iq_theme', theme);
+  // re-draw charts since CSS vars changed
+  if (typeof update === 'function' && document.getElementById('sm')) update();
+}
+
+function setLang(lang) {
+  if (!I18N[lang]) return;
+  LANG = lang;
+  document.querySelectorAll('.chip.lang').forEach(b=>{
+    b.classList.toggle('active', b.getAttribute('data-lang')===lang);
+  });
+  applyI18n();
+  localStorage.setItem('iq_lang', lang);
+  update();
+}
+
+/* ===== Eventos ===== */
 document.getElementById('sm').addEventListener('input',update);
 document.getElementById('sy').addEventListener('input',update);
 document.getElementById('sr2').addEventListener('input',update);
 window.addEventListener('resize',update);
-update();
+
+document.querySelectorAll('.chip.lang').forEach(b=>{
+  b.addEventListener('click', ()=> setLang(b.getAttribute('data-lang')));
+});
+
+document.getElementById('themeToggle').addEventListener('click', ()=>{
+  setTheme(THEME === 'dark' ? 'light' : 'dark');
+});
+
+/* ===== Init ===== */
+setTheme(THEME);
+setLang(LANG);
 </script>
 </body>
 </html>
