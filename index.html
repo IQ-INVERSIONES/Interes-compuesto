@@ -3,80 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DCA S&P 500 — El efecto dilución</title>
+<title>IQ Soluciones Financieras — DCA S&P 500 — El efecto dilución</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo-iq.svg">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  --bg: #0a0a0f;
-  --surface: #111118;
-  --border: #1e1e2e;
-  --sp: #f97316;
-  --contrib: #38bdf8;
-  --text: #e2e8f0;
+  /* Paleta IQ */
+  --iq-blue: #0043aa;
+  --iq-teal: #61b0bc;
+  --iq-olive: #b4bd00;
+
+  /* Esquema claro alineado al manual */
+  --bg: #f5f7fa;
+  --surface: #ffffff;
+  --border: #e2e8f0;
+  --text: #1e293b;
   --muted: #64748b;
-  --accent: #a78bfa;
+
+  /* Roles semánticos (mapeados a la paleta IQ) */
+  --primary: var(--iq-blue);
+  --contrib: var(--iq-teal);
+  --accent: var(--iq-olive);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 20px 60px;
+  padding: 30px 20px 60px;
 }
 body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  background:
+    radial-gradient(ellipse 800px 400px at 100% 0%, rgba(97,176,188,0.10), transparent 70%),
+    radial-gradient(ellipse 700px 500px at 0% 100%, rgba(0,67,170,0.05), transparent 70%);
   pointer-events: none;
-  opacity: 0.4;
   z-index: 0;
 }
-.wrapper { position: relative; z-index: 1; width: 100%; max-width: 900px; }
+.wrapper { position: relative; z-index: 1; width: 100%; max-width: 960px; }
 
-header { margin-bottom: 32px; border-left: 3px solid var(--sp); padding-left: 20px; }
-.eyebrow { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--sp); text-transform:uppercase; margin-bottom:8px; }
-h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(36px,7vw,68px); line-height:.95; color:#fff; }
-h1 span { color:var(--sp); }
-.subtitle { margin-top:12px; font-size:14px; color:var(--muted); font-weight:300; max-width:520px; line-height:1.6; }
+/* Top bar con logo */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+.brand-mark {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .22em;
+  color: var(--iq-blue);
+  text-transform: uppercase;
+}
+.brand-mark span { color: var(--iq-teal); font-weight: 400; }
+.logo-iq {
+  height: 52px;
+  width: auto;
+  display: block;
+}
 
-.insights { display:grid; grid-template-columns:repeat(auto-fit,minmax(185px,1fr)); gap:12px; margin-bottom:24px; }
-.card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 18px; position:relative; overflow:hidden; }
-.card::after { content:''; position:absolute; top:0; left:0; width:100%; height:2px; }
-.card.or::after{background:var(--sp);} .card.bl::after{background:var(--contrib);} .card.pu::after{background:var(--accent);}
-.cl { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); font-family:'DM Mono',monospace; margin-bottom:5px; }
-.cv { font-family:'Bebas Neue',sans-serif; font-size:30px; }
-.card.or .cv{color:var(--sp);} .card.bl .cv{color:var(--contrib);} .card.pu .cv{color:var(--accent);}
-.cs { font-size:11px; color:var(--muted); margin-top:3px; line-height:1.4; }
+header { margin-bottom: 32px; border-left: 4px solid var(--iq-blue); padding-left: 22px; }
+.eyebrow { font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.2em; color:var(--iq-teal); text-transform:uppercase; margin-bottom:10px; font-weight: 500; }
+h1 { font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(34px,6.2vw,58px); line-height:1; color:var(--iq-blue); letter-spacing:-0.01em; }
+h1 span { color:var(--iq-teal); }
+.subtitle { margin-top:14px; font-size:14px; color:var(--muted); font-weight:400; max-width:560px; line-height:1.65; }
 
-.controls { display:flex; gap:24px; flex-wrap:wrap; margin-bottom:24px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px 22px; }
+.insights { display:grid; grid-template-columns:repeat(auto-fit,minmax(195px,1fr)); gap:14px; margin-bottom:26px; }
+.card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:18px 20px; position:relative; overflow:hidden; box-shadow: 0 1px 2px rgba(15,23,42,0.04); }
+.card::after { content:''; position:absolute; top:0; left:0; width:100%; height:3px; }
+.card.bl::after{background:var(--iq-blue);} .card.tl::after{background:var(--iq-teal);} .card.ol::after{background:var(--iq-olive);}
+.cl { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); font-family:'JetBrains Mono',monospace; margin-bottom:8px; font-weight:500; }
+.cv { font-family:'Montserrat',sans-serif; font-size:30px; font-weight:700; letter-spacing:-0.01em; }
+.card.bl .cv{color:var(--iq-blue);} .card.tl .cv{color:var(--iq-teal);} .card.ol .cv{color:var(--iq-olive);}
+.cs { font-size:11px; color:var(--muted); margin-top:5px; line-height:1.4; font-weight:400; }
+
+.controls { display:flex; gap:24px; flex-wrap:wrap; margin-bottom:24px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 24px; box-shadow: 0 1px 2px rgba(15,23,42,0.04); }
 .cg { display:flex; flex-direction:column; gap:6px; }
-.clabel { font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); font-family:'DM Mono',monospace; }
-.cval { font-size:19px; font-family:'Bebas Neue',sans-serif; color:var(--text); }
-input[type=range] { -webkit-appearance:none; width:145px; height:3px; background:var(--border); border-radius:2px; outline:none; }
-input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:13px; height:13px; border-radius:50%; background:var(--sp); cursor:pointer; }
+.clabel { font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); font-family:'JetBrains Mono',monospace; font-weight:500; }
+.cval { font-size:18px; font-family:'Montserrat',sans-serif; font-weight:700; color:var(--iq-blue); }
+input[type=range] { -webkit-appearance:none; width:155px; height:4px; background:var(--border); border-radius:2px; outline:none; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--iq-blue); cursor:pointer; box-shadow: 0 1px 3px rgba(0,67,170,0.4); }
+input[type=range]::-moz-range-thumb { width:14px; height:14px; border-radius:50%; background:var(--iq-blue); cursor:pointer; border: none; }
 
-.cw { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 22px 14px; margin-bottom:18px; }
-.cw.pct { border-color:rgba(167,139,250,0.28); background:linear-gradient(160deg,rgba(167,139,250,0.05),var(--surface)); }
-.ct { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
-.cd { font-size:13px; color:rgba(167,139,250,0.65); font-style:italic; font-weight:300; margin-bottom:12px; }
+.cw { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px 24px 16px; margin-bottom:18px; box-shadow: 0 1px 2px rgba(15,23,42,0.04); }
+.cw.pct { border-color:rgba(180,189,0,0.35); background:linear-gradient(160deg,rgba(180,189,0,0.04),var(--surface)); }
+.ct { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; font-weight:500; }
+.cd { font-size:13px; color:rgba(0,67,170,0.65); font-style:italic; font-weight:400; margin-bottom:14px; }
 canvas { display:block; width:100%; }
-.legend { display:flex; gap:18px; flex-wrap:wrap; margin-top:12px; }
-.li { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); }
+.legend { display:flex; gap:18px; flex-wrap:wrap; margin-top:14px; }
+.li { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--muted); font-weight:500; }
 .ld { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
 
-.ann { background:linear-gradient(135deg,rgba(167,139,250,0.07),rgba(249,115,22,0.05)); border:1px solid rgba(167,139,250,0.2); border-radius:10px; padding:16px 20px; font-size:14px; color:var(--muted); line-height:1.7; }
-.ann strong { color:var(--text); }
-.pill { display:inline-block; background:rgba(249,115,22,0.15); color:var(--sp); font-family:'DM Mono',monospace; font-size:11px; padding:1px 7px; border-radius:4px; }
+.ann { background:linear-gradient(135deg,rgba(0,67,170,0.06),rgba(97,176,188,0.05)); border:1px solid rgba(0,67,170,0.18); border-radius:10px; padding:18px 22px; font-size:14px; color:var(--text); line-height:1.7; font-weight:400; }
+.ann strong { color:var(--iq-blue); font-weight:700; }
+.pill { display:inline-block; background:rgba(0,67,170,0.1); color:var(--iq-blue); font-family:'JetBrains Mono',monospace; font-size:11px; padding:2px 8px; border-radius:4px; font-weight:500; }
+
+footer {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: .1em;
+}
+
+@media (max-width: 600px) {
+  .topbar { flex-direction: column; gap: 12px; align-items: flex-start; }
+  .logo-iq { height: 44px; }
+}
 </style>
 </head>
 <body>
 <div class="wrapper">
+
+  <div class="topbar">
+    <div class="brand-mark">IQ <span>SOLUCIONES FINANCIERAS</span></div>
+    <img src="assets/logo-iq.svg" alt="IQ Soluciones Financieras" class="logo-iq">
+  </div>
 
   <header>
     <div class="eyebrow">Dollar-Cost Averaging · S&amp;P 500</div>
@@ -85,9 +142,9 @@ canvas { display:block; width:100%; }
   </header>
 
   <div class="insights">
-    <div class="card or"><div class="cl">Valor total acumulado</div><div class="cv" id="vt">—</div><div class="cs" id="st"></div></div>
-    <div class="card bl"><div class="cl">Total aportado</div><div class="cv" id="vc">—</div><div class="cs">en efectivo</div></div>
-    <div class="card pu"><div class="cl">Aportación anual / cartera</div><div class="cv" id="vr">—</div><div class="cs" id="sr"></div></div>
+    <div class="card bl"><div class="cl">Valor total acumulado</div><div class="cv" id="vt">—</div><div class="cs" id="st"></div></div>
+    <div class="card tl"><div class="cl">Total aportado</div><div class="cv" id="vc">—</div><div class="cs">en efectivo</div></div>
+    <div class="card ol"><div class="cl">Aportación anual / cartera</div><div class="cv" id="vr">—</div><div class="cs" id="sr"></div></div>
   </div>
 
   <div class="controls">
@@ -100,26 +157,33 @@ canvas { display:block; width:100%; }
     <div class="ct">Valor de la cartera vs. capital aportado</div>
     <canvas id="c1" height="280"></canvas>
     <div class="legend">
-      <div class="li"><div class="ld" style="background:var(--sp)"></div>Valor total cartera</div>
-      <div class="li"><div class="ld" style="background:var(--contrib)"></div>Capital aportado acumulado</div>
+      <div class="li"><div class="ld" style="background:var(--iq-blue)"></div>Valor total cartera</div>
+      <div class="li"><div class="ld" style="background:var(--iq-teal)"></div>Capital aportado acumulado</div>
     </div>
   </div>
 
   <div class="cw pct">
-    <div class="ct">Aportación anual como <span style="color:var(--accent)">% del valor total</span> de la cartera</div>
+    <div class="ct">Aportación anual como <span style="color:var(--iq-olive)">% del valor total</span> de la cartera</div>
     <div class="cd">Cuanto más cae esta curva, menos importa lo que aportas — el mercado toma el mando</div>
     <canvas id="c2" height="240"></canvas>
     <div class="legend">
-      <div class="li"><div class="ld" style="background:var(--accent)"></div>% aportación anual / cartera</div>
-      <div class="li"><div class="ld" style="background:rgba(167,139,250,0.25);border:1px dashed rgba(167,139,250,0.6)"></div>Umbral 5% · punto de dilución</div>
+      <div class="li"><div class="ld" style="background:var(--iq-olive)"></div>% aportación anual / cartera</div>
+      <div class="li"><div class="ld" style="background:rgba(180,189,0,0.25);border:1px dashed rgba(180,189,0,0.7)"></div>Umbral 5% · punto de dilución</div>
     </div>
   </div>
 
   <div class="ann" id="ann">Mueve los controles para ver cómo evoluciona el efecto dilución.</div>
+
+  <footer>© IQ Soluciones Financieras</footer>
 </div>
 
 <script>
 let M=500, Y=30, R=0.10;
+
+// Colores IQ
+const IQ_BLUE = '#0043aa';
+const IQ_TEAL = '#61b0bc';
+const IQ_OLIVE = '#b4bd00';
 
 function sim() {
   const r=R/12; let p=0; const out=[];
@@ -144,62 +208,62 @@ function prep(c,W,H) {
 }
 
 function chart1(data) {
-  const W=document.getElementById('c1').parentElement.clientWidth-44;
+  const W=document.getElementById('c1').parentElement.clientWidth-48;
   const H=280;
   const g=prep(document.getElementById('c1'),W,H);
   const mx=data[data.length-1].p;
-  const L=68,R2=18,T=16,B=36;
+  const L=72,R2=18,T=16,B=36;
   const cW=W-L-R2, cH=H-T-B;
   const xi=i=>L+(i/(Y-1))*cW;
   const yv=v=>T+cH-(v/mx)*cH;
 
   // grid
-  g.strokeStyle='#1e1e2e'; g.lineWidth=1;
+  g.strokeStyle='#e2e8f0'; g.lineWidth=1;
   for(let i=0;i<=4;i++){
     const yy=T+(i/4)*cH;
     g.beginPath();g.moveTo(L,yy);g.lineTo(L+cW,yy);g.stroke();
-    g.fillStyle='#475569';g.font='10px DM Mono,monospace';g.textAlign='right';
-    g.fillText(fmt(mx*(1-i/4)),L-5,yy+4);
+    g.fillStyle='#94a3b8';g.font='10px JetBrains Mono,monospace';g.textAlign='right';
+    g.fillText(fmt(mx*(1-i/4)),L-6,yy+4);
   }
-  g.fillStyle='#475569';g.font='10px DM Mono,monospace';g.textAlign='center';
+  g.fillStyle='#94a3b8';g.font='10px JetBrains Mono,monospace';g.textAlign='center';
   for(let y=5;y<=Y;y+=5) g.fillText('Año '+y,xi(y-1),H-5);
 
-  // contributed
+  // contributed (teal)
   g.beginPath();g.moveTo(xi(0),T+cH);
   data.forEach((d,i)=>g.lineTo(xi(i),yv(d.contrib)));
   g.lineTo(xi(Y-1),T+cH);g.closePath();
-  g.fillStyle='rgba(56,189,248,0.08)';g.fill();
+  g.fillStyle='rgba(97,176,188,0.12)';g.fill();
   g.beginPath();
   data.forEach((d,i)=>i===0?g.moveTo(xi(0),yv(d.contrib)):g.lineTo(xi(i),yv(d.contrib)));
-  g.strokeStyle='rgba(56,189,248,0.65)';g.lineWidth=2;g.stroke();
+  g.strokeStyle=IQ_TEAL;g.lineWidth=2;g.stroke();
 
-  // portfolio
+  // portfolio (blue)
   const gr=g.createLinearGradient(0,T,0,T+cH);
-  gr.addColorStop(0,'rgba(249,115,22,0.28)');
-  gr.addColorStop(1,'rgba(249,115,22,0.01)');
+  gr.addColorStop(0,'rgba(0,67,170,0.28)');
+  gr.addColorStop(1,'rgba(0,67,170,0.02)');
   g.beginPath();g.moveTo(xi(0),T+cH);
   data.forEach((d,i)=>g.lineTo(xi(i),yv(d.p)));
   g.lineTo(xi(Y-1),T+cH);g.closePath();
   g.fillStyle=gr;g.fill();
   g.beginPath();
   data.forEach((d,i)=>i===0?g.moveTo(xi(0),yv(d.p)):g.lineTo(xi(i),yv(d.p)));
-  g.strokeStyle='#f97316';g.lineWidth=2.5;g.stroke();
+  g.strokeStyle=IQ_BLUE;g.lineWidth=2.5;g.stroke();
 
-  // threshold dashed
+  // threshold dashed (olive)
   let tY=null; for(const d of data) if(d.pct<5&&!tY) tY=d.y;
   if(tY){
-    g.strokeStyle='rgba(167,139,250,0.4)';g.lineWidth=1;g.setLineDash([4,4]);
+    g.strokeStyle='rgba(180,189,0,0.55)';g.lineWidth=1;g.setLineDash([4,4]);
     g.beginPath();g.moveTo(xi(tY-1),T);g.lineTo(xi(tY-1),T+cH);g.stroke();
     g.setLineDash([]);
   }
 }
 
 function chart2(data) {
-  const W=document.getElementById('c2').parentElement.clientWidth-44;
+  const W=document.getElementById('c2').parentElement.clientWidth-48;
   const H=240;
   const g=prep(document.getElementById('c2'),W,H);
   const maxP=data[0].pct;
-  const L=50,R2=18,T=16,B=36;
+  const L=54,R2=18,T=16,B=36;
   const cW=W-L-R2, cH=H-T-B;
   const xi=i=>L+(i/(Y-1))*cW;
   const yp=v=>T+cH-(v/maxP)*cH;
@@ -209,12 +273,12 @@ function chart2(data) {
   // zone backgrounds
   const y5=yp(5), yBot=T+cH;
   const zG1=g.createLinearGradient(0,T,0,y5);
-  zG1.addColorStop(0,'rgba(56,189,248,0.07)');
-  zG1.addColorStop(1,'rgba(100,116,139,0.02)');
+  zG1.addColorStop(0,'rgba(97,176,188,0.07)');
+  zG1.addColorStop(1,'rgba(148,163,184,0.02)');
   g.fillStyle=zG1; g.fillRect(L,T,cW,y5-T);
   const zG2=g.createLinearGradient(0,y5,0,yBot);
-  zG2.addColorStop(0,'rgba(249,115,22,0.04)');
-  zG2.addColorStop(1,'rgba(249,115,22,0.18)');
+  zG2.addColorStop(0,'rgba(0,67,170,0.04)');
+  zG2.addColorStop(1,'rgba(0,67,170,0.16)');
   g.fillStyle=zG2; g.fillRect(L,y5,cW,yBot-y5);
 
   // grid
@@ -222,38 +286,38 @@ function chart2(data) {
   const top=Math.round(maxP); if(!ticks.includes(top)) ticks.unshift(top);
   ticks.forEach(t=>{
     const yy=yp(t), is5=t===5;
-    g.strokeStyle=is5?'rgba(167,139,250,0.45)':'#1e1e2e';
+    g.strokeStyle=is5?'rgba(180,189,0,0.55)':'#e2e8f0';
     g.lineWidth=1; g.setLineDash(is5?[5,4]:[]);
     g.beginPath();g.moveTo(L,yy);g.lineTo(L+cW,yy);g.stroke();
     g.setLineDash([]);
-    g.fillStyle=is5?'rgba(167,139,250,0.85)':'#475569';
-    g.font=(is5?'bold ':'')+' 10px DM Mono,monospace';
+    g.fillStyle=is5?'rgba(122,128,0,1)':'#94a3b8';
+    g.font=(is5?'bold ':'')+' 10px JetBrains Mono,monospace';
     g.textAlign='right';
-    g.fillText(t+'%',L-5,yy+4);
+    g.fillText(t+'%',L-6,yy+4);
   });
 
   // zone text
-  g.font='9px DM Mono,monospace'; g.textAlign='right';
-  g.fillStyle='rgba(56,189,248,0.45)'; g.fillText('TÚ CONTROLAS ↑',L+cW-4,T+16);
-  if(y5<yBot-18){g.fillStyle='rgba(249,115,22,0.5)'; g.fillText('↓ EL MERCADO MANDA',L+cW-4,yBot-6);}
+  g.font='9px JetBrains Mono,monospace'; g.textAlign='right';
+  g.fillStyle='rgba(97,176,188,0.7)'; g.fillText('TÚ CONTROLAS ↑',L+cW-4,T+16);
+  if(y5<yBot-18){g.fillStyle='rgba(0,67,170,0.6)'; g.fillText('↓ EL MERCADO MANDA',L+cW-4,yBot-6);}
 
   // x labels
-  g.fillStyle='#475569';g.font='10px DM Mono,monospace';g.textAlign='center';
+  g.fillStyle='#94a3b8';g.font='10px JetBrains Mono,monospace';g.textAlign='center';
   for(let y=5;y<=Y;y+=5) g.fillText('Año '+y,xi(y-1),H-5);
 
   // area
   const aG=g.createLinearGradient(0,T,0,T+cH);
-  aG.addColorStop(0,'rgba(167,139,250,0.32)');
-  aG.addColorStop(0.5,'rgba(167,139,250,0.1)');
-  aG.addColorStop(1,'rgba(249,115,22,0.04)');
+  aG.addColorStop(0,'rgba(180,189,0,0.32)');
+  aG.addColorStop(0.5,'rgba(180,189,0,0.12)');
+  aG.addColorStop(1,'rgba(0,67,170,0.05)');
   g.beginPath();g.moveTo(xi(0),T+cH);
   data.forEach((d,i)=>g.lineTo(xi(i),yp(d.pct)));
   g.lineTo(xi(Y-1),T+cH);g.closePath();
   g.fillStyle=aG;g.fill();
 
-  // line
+  // line gradient: teal → olive → blue
   const lG=g.createLinearGradient(xi(0),0,xi(Y-1),0);
-  lG.addColorStop(0,'#38bdf8'); lG.addColorStop(0.38,'#a78bfa'); lG.addColorStop(1,'#f97316');
+  lG.addColorStop(0,IQ_TEAL); lG.addColorStop(0.45,IQ_OLIVE); lG.addColorStop(1,IQ_BLUE);
   g.beginPath();
   data.forEach((d,i)=>i===0?g.moveTo(xi(0),yp(d.pct)):g.lineTo(xi(i),yp(d.pct)));
   g.strokeStyle=lG;g.lineWidth=2.5;g.stroke();
@@ -263,23 +327,23 @@ function chart2(data) {
     if(d.y%5!==0&&d.y!==tY) return;
     const px=xi(i),py=yp(d.pct),isT=d.y===tY;
     if(isT){
-      g.strokeStyle='rgba(167,139,250,0.45)';g.lineWidth=1.5;
+      g.strokeStyle='rgba(180,189,0,0.55)';g.lineWidth=1.5;
       g.beginPath();g.arc(px,py,10,0,Math.PI*2);g.stroke();
     }
     g.beginPath();g.arc(px,py,isT?5:3.5,0,Math.PI*2);
-    g.fillStyle=isT?'#a78bfa':'rgba(255,255,255,0.5)';g.fill();
-    g.fillStyle=isT?'rgba(167,139,250,0.95)':'rgba(255,255,255,0.4)';
-    g.font=(isT?'bold ':'')+' 9px DM Mono,monospace';g.textAlign='center';
+    g.fillStyle=isT?IQ_OLIVE:'rgba(30,41,59,0.5)';g.fill();
+    g.fillStyle=isT?'rgba(122,128,0,1)':'rgba(30,41,59,0.55)';
+    g.font=(isT?'bold ':'')+' 9px JetBrains Mono,monospace';g.textAlign='center';
     const above=py-14>T+6;
     g.fillText(d.pct.toFixed(1)+'%',px,above?py-14:py+15);
   });
 
   // threshold vertical
   if(tY){
-    g.strokeStyle='rgba(167,139,250,0.65)';g.lineWidth=1.5;g.setLineDash([5,4]);
+    g.strokeStyle='rgba(180,189,0,0.75)';g.lineWidth=1.5;g.setLineDash([5,4]);
     g.beginPath();g.moveTo(xi(tY-1),T);g.lineTo(xi(tY-1),T+cH);g.stroke();
     g.setLineDash([]);
-    g.fillStyle='rgba(167,139,250,0.8)';g.font='bold 9px DM Mono,monospace';
+    g.fillStyle='rgba(122,128,0,1)';g.font='bold 9px JetBrains Mono,monospace';
     g.textAlign='center';g.fillText('Año '+tY,xi(tY-1),T+10);
   }
 }
@@ -304,6 +368,8 @@ function update() {
   if(tY){
     const mult=(last.p*0.10/last.annual).toFixed(1);
     document.getElementById('ann').innerHTML=`A partir del año <span class="pill">${tY}</span>, tu aportación anual de <strong>${fmt(last.annual)}</strong> representa menos del <strong>5%</strong> de la cartera. Una variación del <strong>±10% del S&amp;P 500</strong> mueve tu patrimonio lo mismo que <strong>${mult} años</strong> de aportaciones. La curva inferior lo muestra sin rodeos: tu influencia se desvanece — el índice ya dirige solo.`;
+  } else {
+    document.getElementById('ann').innerHTML=`Mueve los controles para ver cómo evoluciona el efecto dilución.`;
   }
 
   chart1(data);
