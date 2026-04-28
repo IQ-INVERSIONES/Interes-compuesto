@@ -138,17 +138,17 @@ footer {
   <header>
     <div class="eyebrow">Dollar-Cost Averaging · S&amp;P 500</div>
     <h1>EL EFECTO<br><span>DILUCIÓN</span></h1>
-    <p class="subtitle">Con el tiempo, las aportaciones anuales se vuelven insignificantes frente al valor acumulado. La cartera deja de depender de lo que aportas y empieza a moverse sola, como el índice.</p>
+    <p class="subtitle">Con el tiempo, los aportes anuales se vuelven insignificantes frente al valor acumulado. La cartera deja de depender de lo que aportás y empieza a moverse sola, como el índice.</p>
   </header>
 
   <div class="insights">
     <div class="card bl"><div class="cl">Valor total acumulado</div><div class="cv" id="vt">—</div><div class="cs" id="st"></div></div>
     <div class="card tl"><div class="cl">Total aportado</div><div class="cv" id="vc">—</div><div class="cs">en efectivo</div></div>
-    <div class="card ol"><div class="cl">Aportación anual / cartera</div><div class="cv" id="vr">—</div><div class="cs" id="sr"></div></div>
+    <div class="card ol"><div class="cl">Aporte anual / cartera</div><div class="cv" id="vr">—</div><div class="cs" id="sr"></div></div>
   </div>
 
   <div class="controls">
-    <div class="cg"><span class="clabel">Aportación mensual</span><span class="cval"><span id="dm">500</span> €</span><input type="range" id="sm" min="100" max="2000" step="50" value="500"></div>
+    <div class="cg"><span class="clabel">Aporte mensual</span><span class="cval">$ <span id="dm">500</span></span><input type="range" id="sm" min="100" max="2000" step="50" value="500"></div>
     <div class="cg"><span class="clabel">Años de inversión</span><span class="cval"><span id="dy">30</span> años</span><input type="range" id="sy" min="10" max="40" step="1" value="30"></div>
     <div class="cg"><span class="clabel">Rentabilidad anual</span><span class="cval"><span id="dr">10</span> %</span><input type="range" id="sr2" min="4" max="14" step="0.5" value="10"></div>
   </div>
@@ -164,15 +164,15 @@ footer {
 
   <div class="cw pct">
     <div class="ct">Aportación anual como <span style="color:var(--iq-olive)">% del valor total</span> de la cartera</div>
-    <div class="cd">Cuanto más cae esta curva, menos importa lo que aportas — el mercado toma el mando</div>
+    <div class="cd">Cuanto más cae esta curva, menos importa lo que aportás — el mercado toma el mando</div>
     <canvas id="c2" height="240"></canvas>
     <div class="legend">
-      <div class="li"><div class="ld" style="background:var(--iq-olive)"></div>% aportación anual / cartera</div>
+      <div class="li"><div class="ld" style="background:var(--iq-olive)"></div>% aporte anual / cartera</div>
       <div class="li"><div class="ld" style="background:rgba(180,189,0,0.25);border:1px dashed rgba(180,189,0,0.7)"></div>Umbral 5% · punto de dilución</div>
     </div>
   </div>
 
-  <div class="ann" id="ann">Mueve los controles para ver cómo evoluciona el efecto dilución.</div>
+  <div class="ann" id="ann">Mové los controles para ver cómo evoluciona el efecto dilución.</div>
 
   <footer>© IQ Soluciones Financieras</footer>
 </div>
@@ -195,9 +195,9 @@ function sim() {
 }
 
 function fmt(n) {
-  if(n>=1e6) return (n/1e6).toFixed(2)+' M€';
-  if(n>=1e3) return (n/1e3).toFixed(1)+' k€';
-  return n.toFixed(0)+' €';
+  if(n>=1e6) return '$ ' + (n/1e6).toFixed(2).replace('.', ',') + ' M';
+  if(n>=1e3) return '$ ' + (n/1e3).toFixed(1).replace('.', ',') + ' k';
+  return '$ ' + n.toFixed(0);
 }
 
 function prep(c,W,H) {
@@ -298,7 +298,7 @@ function chart2(data) {
 
   // zone text
   g.font='9px JetBrains Mono,monospace'; g.textAlign='right';
-  g.fillStyle='rgba(97,176,188,0.7)'; g.fillText('TÚ CONTROLAS ↑',L+cW-4,T+16);
+  g.fillStyle='rgba(97,176,188,0.7)'; g.fillText('VOS CONTROLÁS ↑',L+cW-4,T+16);
   if(y5<yBot-18){g.fillStyle='rgba(0,67,170,0.6)'; g.fillText('↓ EL MERCADO MANDA',L+cW-4,yBot-6);}
 
   // x labels
@@ -367,9 +367,9 @@ function update() {
   let tY=null; for(const d of data) if(d.pct<5&&!tY) tY=d.y;
   if(tY){
     const mult=(last.p*0.10/last.annual).toFixed(1);
-    document.getElementById('ann').innerHTML=`A partir del año <span class="pill">${tY}</span>, tu aportación anual de <strong>${fmt(last.annual)}</strong> representa menos del <strong>5%</strong> de la cartera. Una variación del <strong>±10% del S&amp;P 500</strong> mueve tu patrimonio lo mismo que <strong>${mult} años</strong> de aportaciones. La curva inferior lo muestra sin rodeos: tu influencia se desvanece — el índice ya dirige solo.`;
+    document.getElementById('ann').innerHTML=`A partir del año <span class="pill">${tY}</span>, tu aporte anual de <strong>${fmt(last.annual)}</strong> representa menos del <strong>5%</strong> de la cartera. Una variación del <strong>±10% del S&amp;P 500</strong> mueve tu patrimonio lo mismo que <strong>${mult} años</strong> de aportes. La curva de abajo lo muestra sin vueltas: tu influencia se desvanece — el índice ya maneja todo solo.`;
   } else {
-    document.getElementById('ann').innerHTML=`Mueve los controles para ver cómo evoluciona el efecto dilución.`;
+    document.getElementById('ann').innerHTML=`Mové los controles para ver cómo evoluciona el efecto dilución.`;
   }
 
   chart1(data);
@@ -381,6 +381,4 @@ document.getElementById('sy').addEventListener('input',update);
 document.getElementById('sr2').addEventListener('input',update);
 window.addEventListener('resize',update);
 update();
-</script>
-</body>
-</html>
+<
