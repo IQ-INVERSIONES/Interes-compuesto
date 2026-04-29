@@ -269,15 +269,15 @@ footer {
     <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;">
       <img src="assets/balanz.jpg" alt="Balanz" style="height:52px;width:52px;border-radius:10px;object-fit:cover;">
       <div style="text-align:left;">
-        <div style="font-family:Montserrat,sans-serif;font-weight:700;font-size:16px;color:var(--text);">¿Listo para empezar a invertir?</div>
-        <div style="font-family:Montserrat,sans-serif;font-weight:400;font-size:13px;color:var(--muted);margin-top:4px;">Abrí tu cuenta comitente en Balanz con el respaldo de IQ Soluciones Financieras</div>
+        <div style="font-family:Montserrat,sans-serif;font-weight:700;font-size:16px;color:var(--text);" data-i18n="balanzTitle">¿Listo para empezar a invertir?</div>
+        <div style="font-family:Montserrat,sans-serif;font-weight:400;font-size:13px;color:var(--muted);margin-top:4px;" data-i18n="balanzSub">Abrí tu cuenta comitente en Balanz con el respaldo de IQ Soluciones Financieras</div>
       </div>
     </div>
     <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
-      <a href="https://www.balanz.com/abrir-cuenta-2.aspx?reference=lseco@iqsolucionesfinancieras.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;background:#0043aa;color:#fff;font-family:Montserrat,sans-serif;font-weight:600;font-size:13px;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none;padding:13px 24px;border-radius:999px;" onmouseover="this.style.opacity=.85" onmouseout="this.style.opacity=1">Persona Física</a>
-      <a href="https://www.balanz.com/abrir-cuenta-juridica.aspx?reference=lseco@iqsolucionesfinancieras.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;background:transparent;color:#0043aa;font-family:Montserrat,sans-serif;font-weight:600;font-size:13px;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none;padding:13px 24px;border-radius:999px;border:2px solid #0043aa;" onmouseover="this.style.background='#0043aa';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#0043aa'">Persona Jurídica</a>
+      <a href="https://www.balanz.com/abrir-cuenta-2.aspx?reference=lseco@iqsolucionesfinancieras.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;background:#0043aa;color:#fff;font-family:Montserrat,sans-serif;font-weight:600;font-size:13px;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none;padding:13px 24px;border-radius:999px;" onmouseover="this.style.opacity=.85" onmouseout="this.style.opacity=1" data-i18n="balanzBtnPersonal">Persona Física</a>
+      <a href="https://www.balanz.com/abrir-cuenta-juridica.aspx?reference=lseco@iqsolucionesfinancieras.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;background:transparent;color:#0043aa;font-family:Montserrat,sans-serif;font-weight:600;font-size:13px;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none;padding:13px 24px;border-radius:999px;border:2px solid #0043aa;" onmouseover="this.style.background='#0043aa';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#0043aa'" data-i18n="balanzBtnLegal">Persona Jurídica</a>
     </div>
-    <div style="font-family:Montserrat,sans-serif;font-size:11px;color:var(--muted);opacity:0.6;">Apertura 100% online · Sin costo de mantenimiento</div>
+    <div style="font-family:Montserrat,sans-serif;font-size:11px;color:var(--muted);opacity:0.6;" data-i18n="balanzNote">Apertura 100% online · Sin costo de mantenimiento</div>
   </div>
 
   <footer data-i18n="footer">© IQ Soluciones Financieras</footer>
@@ -321,7 +321,14 @@ const I18N = {
     themeLabel_dark: 'Modo oscuro',
     footer: '© IQ Soluciones Financieras',
     currency: '$',
-    decimal: ','
+    decimal: ',',
+    balanzTitle: '¿Listo para empezar a invertir?',
+    balanzSub: 'Abrí tu cuenta comitente en Balanz con el respaldo de IQ Soluciones Financieras',
+    balanzBtnPersonal: 'Persona Física',
+    balanzBtnLegal: 'Persona Jurídica',
+    balanzNote: 'Apertura 100% online · Sin costo de mantenimiento',
+    socialFollow: 'Seguinos en nuestras redes',
+    socialRights: '© 2025 IQ Soluciones Financieras S.A. — Todos los derechos reservados.'
   },
   'en-US': {
     pageTitle: 'IQ Soluciones Financieras — The power of compound interest',
@@ -358,7 +365,14 @@ const I18N = {
     themeLabel_dark: 'Dark mode',
     footer: '© IQ Soluciones Financieras',
     currency: '$',
-    decimal: '.'
+    decimal: '.',
+    balanzTitle: 'Ready to start investing?',
+    balanzSub: 'Open your brokerage account at Balanz with the support of IQ Soluciones Financieras',
+    balanzBtnPersonal: 'Individual',
+    balanzBtnLegal: 'Corporate',
+    balanzNote: '100% online · No maintenance fees',
+    socialFollow: 'Follow us on social media',
+    socialRights: '© 2025 IQ Soluciones Financieras S.A. — All rights reserved.'
   },
   'pt-BR': {
     pageTitle: 'IQ Soluciones Financieras — O poder dos juros compostos',
@@ -395,7 +409,14 @@ const I18N = {
     themeLabel_dark: 'Modo escuro',
     footer: '© IQ Soluciones Financieras',
     currency: 'R$',
-    decimal: ','
+    decimal: ',',
+    balanzTitle: 'Pronto para começar a investir?',
+    balanzSub: 'Abra sua conta corretora na Balanz com o suporte da IQ Soluciones Financieras',
+    balanzBtnPersonal: 'Pessoa Física',
+    balanzBtnLegal: 'Pessoa Jurídica',
+    balanzNote: 'Abertura 100% online · Sem custo de manutenção',
+    socialFollow: 'Siga-nos nas redes sociais',
+    socialRights: '© 2025 IQ Soluciones Financieras S.A. — Todos os direitos reservados.'
   }
 };
 
@@ -692,7 +713,7 @@ setLang(LANG);
     color: var(--muted);
     letter-spacing: 0.05em;
     text-transform: uppercase;
-  ">Seguinos en nuestras redes</p>
+  " data-i18n="socialFollow">Seguinos en nuestras redes</p>
 
   <div style="display: flex; gap: 24px; align-items: center;">
 
@@ -754,7 +775,7 @@ setLang(LANG);
     font-size: 11px;
     color: var(--muted);
     opacity: 0.7;
-  ">© 2025 IQ Soluciones Financieras S.A. — Todos los derechos reservados.</p>
+  "><span data-i18n="socialRights">© 2025 IQ Soluciones Financieras S.A. — Todos los derechos reservados.</span></p>
 
 </footer>
 
