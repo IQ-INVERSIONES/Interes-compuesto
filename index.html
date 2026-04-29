@@ -654,5 +654,93 @@ document.getElementById('themeToggle').addEventListener('click', ()=>{
 setTheme(THEME);
 setLang(LANG);
 </script>
+
+<!-- ===== FOOTER REDES SOCIALES ===== -->
+<footer style="
+  width: 100%;
+  max-width: 960px;
+  margin: 48px auto 0;
+  padding: 28px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+">
+  <p style="
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  ">Seguinos en nuestras redes</p>
+
+  <div style="display: flex; gap: 24px; align-items: center;">
+
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/iq.solucionesfinancieras/" target="_blank" rel="noopener"
+      title="Instagram"
+      style="
+        display: flex; align-items: center; justify-content: center;
+        width: 48px; height: 48px; border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        transition: transform .2s ease, box-shadow .2s ease;
+      "
+      onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 6px 20px rgba(0,0,0,0.15)'"
+      onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='var(--shadow)'"
+    >
+      <img src="assets/ig.png" alt="Instagram" style="width:28px;height:28px;object-fit:contain;border-radius:6px;">
+    </a>
+
+    <!-- LinkedIn -->
+    <a href="https://www.linkedin.com/company/iq-soluciones-financieras/" target="_blank" rel="noopener"
+      title="LinkedIn"
+      style="
+        display: flex; align-items: center; justify-content: center;
+        width: 48px; height: 48px; border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        transition: transform .2s ease, box-shadow .2s ease;
+      "
+      onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 6px 20px rgba(0,0,0,0.15)'"
+      onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='var(--shadow)'"
+    >
+      <img src="assets/in.png" alt="LinkedIn" style="width:28px;height:28px;object-fit:contain;border-radius:6px;">
+    </a>
+
+    <!-- WhatsApp -->
+    <a href="https://wa.me/message/QUGPRYJYH7JDK1" target="_blank" rel="noopener"
+      title="WhatsApp"
+      style="
+        display: flex; align-items: center; justify-content: center;
+        width: 48px; height: 48px; border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        transition: transform .2s ease, box-shadow .2s ease;
+      "
+      onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 6px 20px rgba(0,0,0,0.15)'"
+      onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='var(--shadow)'"
+    >
+      <img src="assets/wp.png" alt="WhatsApp" style="width:28px;height:28px;object-fit:contain;">
+    </a>
+
+  </div>
+
+  <p style="
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    color: var(--muted);
+    opacity: 0.7;
+  ">© 2025 IQ Soluciones Financieras S.A. — Todos los derechos reservados.</p>
+
+</footer>
+
 </body>
 </html>
