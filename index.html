@@ -237,7 +237,8 @@ footer {
   </div>
 
   <div class="controls">
-    <div class="cg"><span class="clabel" data-i18n="ctlMonthly">Aporte mensual</span><span class="cval"><span id="cvMoney">$ <span id="dm">500</span></span></span><input type="range" id="sm" min="100" max="2000" step="50" value="500"></div>
+    <div class="cg"><span class="clabel" data-i18n="ctlInitial">Aporte inicial</span><span class="cval" id="cvInitial">$ 0</span><input type="range" id="si" min="0" max="100000" step="1000" value="0"></div>
+    <div class="cg"><span class="clabel" data-i18n="ctlMonthly">Aporte mensual</span><span class="cval" id="cvMonthly">$ 500</span><input type="range" id="sm" min="100" max="2000" step="50" value="500"></div>
     <div class="cg"><span class="clabel" data-i18n="ctlYears">Años de inversión</span><span class="cval"><span id="dy">30</span> <span data-i18n="ctlYearsUnit">años</span></span><input type="range" id="sy" min="10" max="40" step="1" value="30"></div>
     <div class="cg"><span class="clabel" data-i18n="ctlReturn">Rentabilidad anual</span><span class="cval"><span id="dr">10</span> %</span><input type="range" id="sr2" min="4" max="14" step="0.5" value="10"></div>
   </div>
@@ -279,6 +280,7 @@ const I18N = {
     cardContributed: 'Total aportado',
     cardContributedSub: 'en efectivo',
     cardRatio: 'Aporte anual / cartera',
+    ctlInitial: 'Aporte inicial',
     ctlMonthly: 'Aporte mensual',
     ctlYears: 'Años de inversión',
     ctlYearsUnit: 'años',
@@ -315,6 +317,7 @@ const I18N = {
     cardContributed: 'Total contributed',
     cardContributedSub: 'in cash',
     cardRatio: 'Annual contribution / portfolio',
+    ctlInitial: 'Initial contribution',
     ctlMonthly: 'Monthly contribution',
     ctlYears: 'Investment horizon',
     ctlYearsUnit: 'years',
@@ -351,6 +354,7 @@ const I18N = {
     cardContributed: 'Total aportado',
     cardContributedSub: 'em dinheiro',
     cardRatio: 'Aporte anual / carteira',
+    ctlInitial: 'Aporte inicial',
     ctlMonthly: 'Aporte mensal',
     ctlYears: 'Anos de investimento',
     ctlYearsUnit: 'anos',
@@ -380,7 +384,7 @@ const I18N = {
 };
 
 /* ===== Estado ===== */
-let M=500, Y=30, R=0.10;
+let I=0, M=500, Y=30, R=0.10;
 let LANG = localStorage.getItem('iq_lang') || (navigator.language && navigator.language.startsWith('pt') ? 'pt-BR' : navigator.language && navigator.language.startsWith('en') ? 'en-US' : 'es-AR');
 let THEME = localStorage.getItem('iq_theme') || 'light';
 
@@ -399,12 +403,18 @@ function fmt(n) {
 }
 
 function sim() {
-  const r=R/12; let p=0; const out=[];
+  const r=R/12; let p=I; const out=[];
   for (let y=1;y<=Y;y++) {
     for (let m=0;m<12;m++) p=(p+M)*(1+r);
-    out.push({y,p,contrib:M*12*y,annual:M*12,pct:(M*12)/p*100});
+    out.push({y,p,contrib:I+M*12*y,annual:M*12,pct:(M*12)/p*100});
   }
   return out;
+}
+
+function fmtSlider(n) {
+  // Number con separador de miles según locale + símbolo de moneda
+  const loc = LANG === 'en-US' ? 'en-US' : LANG === 'pt-BR' ? 'pt-BR' : 'es-AR';
+  return t().currency + ' ' + n.toLocaleString(loc);
 }
 
 function prep(c,W,H) {
@@ -574,10 +584,12 @@ function tplFill(str, vars) {
 
 /* ===== Update principal ===== */
 function update() {
+  I=+document.getElementById('si').value;
   M=+document.getElementById('sm').value;
   Y=+document.getElementById('sy').value;
   R=+document.getElementById('sr2').value/100;
-  document.getElementById('dm').textContent=M;
+  document.getElementById('cvInitial').textContent=fmtSlider(I);
+  document.getElementById('cvMonthly').textContent=fmtSlider(M);
   document.getElementById('dy').textContent=Y;
   document.getElementById('dr').textContent=(R*100).toFixed(1).replace('.', t().decimal);
 
@@ -624,6 +636,7 @@ function setLang(lang) {
 }
 
 /* ===== Eventos ===== */
+document.getElementById('si').addEventListener('input',update);
 document.getElementById('sm').addEventListener('input',update);
 document.getElementById('sy').addEventListener('input',update);
 document.getElementById('sr2').addEventListener('input',update);
