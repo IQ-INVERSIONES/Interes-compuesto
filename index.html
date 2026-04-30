@@ -7,13 +7,11 @@
 <link rel="icon" type="image/svg+xml" href="assets/logo-iq.svg">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
-
 :root {
   /* Paleta IQ (constantes) */
   --iq-blue: #0043aa;
   --iq-teal: #61b0bc;
   --iq-olive: #b4bd00;
-
   /* Tema claro (default) */
   --bg: #f5f7fa;
   --surface: #ffffff;
@@ -23,11 +21,11 @@
   --grid: #e2e8f0;
   --grid-label: #94a3b8;
   --shadow: 0 1px 2px rgba(15,23,42,0.04);
-
   --bg-glow-1: rgba(97,176,188,0.10);
   --bg-glow-2: rgba(0,67,170,0.05);
+  --tooltip-bg: rgba(255,255,255,0.97);
+  --tooltip-text: #1e293b;
 }
-
 [data-theme="dark"] {
   --bg: #0a1322;
   --surface: #131c30;
@@ -37,11 +35,11 @@
   --grid: #243245;
   --grid-label: #6b7d99;
   --shadow: 0 1px 3px rgba(0,0,0,0.5);
-
   --bg-glow-1: rgba(97,176,188,0.08);
   --bg-glow-2: rgba(0,67,170,0.10);
+  --tooltip-bg: rgba(19,28,48,0.97);
+  --tooltip-text: #e2e8f0;
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   background: var(--bg);
@@ -67,7 +65,6 @@ body::before {
   transition: background .25s ease;
 }
 .wrapper { position: relative; z-index: 1; width: 100%; max-width: 960px; }
-
 /* Topbar con controles + logo */
 .topbar {
   display: flex;
@@ -82,7 +79,6 @@ body::before {
 }
 .tb-left { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .logo-iq { height: 52px; width: auto; display: block; }
-
 /* Chips */
 .chip-group { display: inline-flex; gap: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 3px; box-shadow: var(--shadow); }
 .chip {
@@ -106,7 +102,6 @@ body::before {
 .chip.active { background: var(--iq-blue); color: #fff; box-shadow: 0 1px 3px rgba(0,67,170,0.3); }
 .chip.active:hover { color: #fff; }
 [data-theme="dark"] .chip.active { background: var(--iq-teal); color: #0a1322; box-shadow: 0 1px 4px rgba(97,176,188,0.4); }
-
 .chip-theme {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -134,7 +129,6 @@ body::before {
   transition: background .2s ease;
 }
 [data-theme="dark"] .theme-icon { background: var(--iq-teal); color: var(--iq-blue); }
-
 /* Header */
 header { margin-bottom: 32px; border-left: 4px solid var(--iq-blue); padding-left: 22px; }
 .eyebrow { font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.2em; color:var(--iq-teal); text-transform:uppercase; margin-bottom:10px; font-weight: 500; }
@@ -143,7 +137,6 @@ h1 { font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(32px,
 h1 span { color:var(--iq-teal); }
 [data-theme="dark"] h1 span { color: var(--iq-olive); }
 .subtitle { margin-top:14px; font-size:14px; color:var(--muted); font-weight:400; max-width:580px; line-height:1.65; }
-
 /* Cards */
 .insights { display:grid; grid-template-columns:repeat(auto-fit,minmax(195px,1fr)); gap:14px; margin-bottom:26px; }
 .card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:18px 20px; position:relative; overflow:hidden; box-shadow: var(--shadow); transition: background-color .25s ease, border-color .25s ease; }
@@ -154,7 +147,6 @@ h1 span { color:var(--iq-teal); }
 .card.bl .cv{color:var(--iq-blue);} .card.tl .cv{color:var(--iq-teal);} .card.ol .cv{color:var(--iq-olive);}
 [data-theme="dark"] .card.bl .cv { color: #5d8df0; }
 .cs { font-size:11px; color:var(--muted); margin-top:5px; line-height:1.4; font-weight:400; }
-
 /* Controls */
 .controls { display:flex; gap:24px; flex-wrap:wrap; margin-bottom:24px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 24px; box-shadow: var(--shadow); transition: background-color .25s ease, border-color .25s ease; }
 .cg { display:flex; flex-direction:column; gap:6px; }
@@ -166,7 +158,6 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px; h
 input[type=range]::-moz-range-thumb { width:14px; height:14px; border-radius:50%; background:var(--iq-blue); cursor:pointer; border: none; }
 [data-theme="dark"] input[type=range]::-webkit-slider-thumb { background: var(--iq-teal); }
 [data-theme="dark"] input[type=range]::-moz-range-thumb { background: var(--iq-teal); }
-
 /* Chart wrappers */
 .cw { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px 24px 16px; margin-bottom:18px; box-shadow: var(--shadow); transition: background-color .25s ease, border-color .25s ease; }
 .cw.pct { border-color:rgba(180,189,0,0.35); background:linear-gradient(160deg,rgba(180,189,0,0.04),var(--surface)); }
@@ -174,11 +165,10 @@ input[type=range]::-moz-range-thumb { width:14px; height:14px; border-radius:50%
 .ct { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; font-weight:500; }
 .cd { font-size:13px; color:rgba(0,67,170,0.75); font-style:italic; font-weight:400; margin-bottom:14px; }
 [data-theme="dark"] .cd { color: rgba(97,176,188,0.85); }
-canvas { display:block; width:100%; }
+canvas { display:block; width:100%; cursor: crosshair; touch-action: pan-y; }
 .legend { display:flex; gap:18px; flex-wrap:wrap; margin-top:14px; }
 .li { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--muted); font-weight:500; }
 .ld { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
-
 /* Annotation */
 .ann { background:linear-gradient(135deg,rgba(0,67,170,0.06),rgba(97,176,188,0.05)); border:1px solid rgba(0,67,170,0.18); border-radius:10px; padding:18px 22px; font-size:14px; color:var(--text); line-height:1.7; font-weight:400; }
 [data-theme="dark"] .ann { background:linear-gradient(135deg,rgba(0,67,170,0.18),rgba(97,176,188,0.12)); border-color: rgba(97,176,188,0.3); }
@@ -186,7 +176,6 @@ canvas { display:block; width:100%; }
 [data-theme="dark"] .ann strong { color: var(--iq-teal); }
 .pill { display:inline-block; background:rgba(0,67,170,0.1); color:var(--iq-blue); font-family:'JetBrains Mono',monospace; font-size:11px; padding:2px 8px; border-radius:4px; font-weight:500; }
 [data-theme="dark"] .pill { background: rgba(97,176,188,0.18); color: var(--iq-teal); }
-
 footer {
   margin-top: 32px;
   padding-top: 20px;
@@ -198,7 +187,6 @@ footer {
   letter-spacing: .1em;
   transition: border-color .25s ease;
 }
-
 @media (max-width: 640px) {
   .topbar { flex-direction: column; align-items: flex-start; gap: 14px; }
   .logo-iq { height: 44px; }
@@ -208,7 +196,6 @@ footer {
 </head>
 <body>
 <div class="wrapper">
-
   <div class="topbar">
     <div class="tb-left">
       <div class="chip-group" id="langGroup" role="tablist" aria-label="Language">
@@ -223,26 +210,22 @@ footer {
     </div>
     <img src="assets/logo-iq.svg" alt="IQ Soluciones Financieras" class="logo-iq">
   </div>
-
   <header>
     <div class="eyebrow" data-i18n="eyebrow">Dollar-Cost Averaging · S&amp;P 500</div>
     <h1><span data-i18n="titleA">EL PODER DEL</span><br><span data-i18n="titleB">INTERÉS COMPUESTO</span></h1>
     <p class="subtitle" data-i18n="subtitle">—</p>
   </header>
-
   <div class="insights">
     <div class="card bl"><div class="cl" data-i18n="cardTotal">Valor total acumulado</div><div class="cv" id="vt">—</div><div class="cs" id="st"></div></div>
     <div class="card tl"><div class="cl" data-i18n="cardContributed">Total aportado</div><div class="cv" id="vc">—</div><div class="cs" data-i18n="cardContributedSub">en efectivo</div></div>
     <div class="card ol"><div class="cl" data-i18n="cardRatio">Aporte anual / cartera</div><div class="cv" id="vr">—</div><div class="cs" id="sr"></div></div>
   </div>
-
   <div class="controls">
     <div class="cg"><span class="clabel" data-i18n="ctlInitial">Aporte inicial</span><span class="cval" id="cvInitial">$ 0</span><input type="range" id="si" min="0" max="1000000" step="1000" value="0"></div>
     <div class="cg"><span class="clabel" data-i18n="ctlMonthly">Aporte mensual</span><span class="cval" id="cvMonthly">$ 500</span><input type="range" id="sm" min="0" max="5000" step="50" value="500"></div>
     <div class="cg"><span class="clabel" data-i18n="ctlYears">Años de inversión</span><span class="cval"><span id="dy">30</span> <span data-i18n="ctlYearsUnit">años</span></span><input type="range" id="sy" min="10" max="40" step="1" value="30"></div>
     <div class="cg"><span class="clabel" data-i18n="ctlReturn">Rentabilidad anual</span><span class="cval"><span id="dr">10</span> %</span><input type="range" id="sr2" min="4" max="14" step="0.5" value="10"></div>
   </div>
-
   <div class="cw">
     <div class="ct" data-i18n="chart1Title">Valor de la cartera vs. capital aportado</div>
     <canvas id="c1" height="280"></canvas>
@@ -251,7 +234,6 @@ footer {
       <div class="li"><div class="ld" style="background:var(--iq-teal)"></div><span data-i18n="chart1LegB">Capital aportado acumulado</span></div>
     </div>
   </div>
-
   <div class="cw pct">
     <div class="ct" id="chart2Title"></div>
     <div class="cd" data-i18n="chart2Sub"></div>
@@ -261,9 +243,7 @@ footer {
       <div class="li"><div class="ld" style="background:rgba(180,189,0,0.25);border:1px dashed rgba(180,189,0,0.7)"></div><span data-i18n="chart2LegB">Umbral 5% · punto de dilución</span></div>
     </div>
   </div>
-
   <div class="ann" id="ann"></div>
-
   <!-- ===== BANNER BALANZ ===== -->
   <div style="width:100%;margin:32px 0 8px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px 32px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;">
     <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;">
@@ -279,10 +259,8 @@ footer {
     </div>
     <div style="font-family:Montserrat,sans-serif;font-size:11px;color:var(--muted);opacity:0.6;" data-i18n="balanzNote">Apertura 100% online · Sin costo de mantenimiento</div>
   </div>
-
   <footer data-i18n="footer">© IQ Soluciones Financieras</footer>
 </div>
-
 <script>
 /* ===== i18n ===== */
 const I18N = {
@@ -328,7 +306,10 @@ const I18N = {
     balanzBtnLegal: 'Persona Jurídica',
     balanzNote: 'Apertura 100% online · Sin costo de mantenimiento',
     socialFollow: 'Seguinos en nuestras redes',
-    socialRights: '© 2025 IQ Soluciones Financieras S.A. — Todos los derechos reservados.'
+    socialRights: '© 2025 IQ Soluciones Financieras S.A. — Todos los derechos reservados.',
+    ttInterest: 'Intereses generados',
+    ttAnnual: 'Aporte anual',
+    ttPortfolio: 'Valor cartera'
   },
   'en-US': {
     pageTitle: 'IQ Soluciones Financieras — The power of compound interest',
@@ -372,7 +353,10 @@ const I18N = {
     balanzBtnLegal: 'Corporate',
     balanzNote: '100% online · No maintenance fees',
     socialFollow: 'Follow us on social media',
-    socialRights: '© 2025 IQ Soluciones Financieras S.A. — All rights reserved.'
+    socialRights: '© 2025 IQ Soluciones Financieras S.A. — All rights reserved.',
+    ttInterest: 'Interest earned',
+    ttAnnual: 'Annual contribution',
+    ttPortfolio: 'Portfolio value'
   },
   'pt-BR': {
     pageTitle: 'IQ Soluciones Financieras — O poder dos juros compostos',
@@ -416,29 +400,35 @@ const I18N = {
     balanzBtnLegal: 'Pessoa Jurídica',
     balanzNote: 'Abertura 100% online · Sem custo de manutenção',
     socialFollow: 'Siga-nos nas redes sociais',
-    socialRights: '© 2025 IQ Soluciones Financieras S.A. — Todos os direitos reservados.'
+    socialRights: '© 2025 IQ Soluciones Financieras S.A. — Todos os direitos reservados.',
+    ttInterest: 'Juros gerados',
+    ttAnnual: 'Aporte anual',
+    ttPortfolio: 'Valor da carteira'
   }
 };
-
 /* ===== Estado ===== */
 let I=0, M=500, Y=30, R=0.10;
 let LANG = localStorage.getItem('iq_lang') || (navigator.language && navigator.language.startsWith('pt') ? 'pt-BR' : navigator.language && navigator.language.startsWith('en') ? 'en-US' : 'es-AR');
 let THEME = localStorage.getItem('iq_theme') || 'light';
-
 const IQ_BLUE = '#0043aa';
 const IQ_TEAL = '#61b0bc';
 const IQ_OLIVE = '#b4bd00';
-
+/* Estado para tooltips interactivos */
+let lastData = null;
+let chart1Geom = null, chart2Geom = null;
+let hoverIdx1 = null, hoverIdx2 = null;
 /* ===== Utilidades ===== */
 function t() { return I18N[LANG]; }
-
 function fmt(n) {
   const d = t().decimal, c = t().currency;
   if(n>=1e6) return c + ' ' + (n/1e6).toFixed(2).replace('.', d) + ' M';
   if(n>=1e3) return c + ' ' + (n/1e3).toFixed(1).replace('.', d) + ' k';
   return c + ' ' + n.toFixed(0);
 }
-
+function fmtFull(n) {
+  const loc = LANG === 'en-US' ? 'en-US' : LANG === 'pt-BR' ? 'pt-BR' : 'es-AR';
+  return t().currency + ' ' + Math.round(n).toLocaleString(loc);
+}
 function sim() {
   const r=R/12; let p=I; const out=[];
   for (let y=1;y<=Y;y++) {
@@ -447,24 +437,100 @@ function sim() {
   }
   return out;
 }
-
 function fmtSlider(n) {
-  // Number con separador de miles según locale + símbolo de moneda
   const loc = LANG === 'en-US' ? 'en-US' : LANG === 'pt-BR' ? 'pt-BR' : 'es-AR';
   return t().currency + ' ' + n.toLocaleString(loc);
 }
-
 function prep(c,W,H) {
   const d=devicePixelRatio||1;
   c.width=W*d; c.height=H*d;
   c.style.width=W+'px'; c.style.height=H+'px';
   const g=c.getContext('2d'); g.scale(d,d); return g;
 }
-
 function cssVar(name) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
-
+/* ===== Tooltip helper ===== */
+function drawRoundRect(g, x, y, w, h, r) {
+  g.beginPath();
+  g.moveTo(x+r, y);
+  g.lineTo(x+w-r, y);
+  g.quadraticCurveTo(x+w, y, x+w, y+r);
+  g.lineTo(x+w, y+h-r);
+  g.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  g.lineTo(x+r, y+h);
+  g.quadraticCurveTo(x, y+h, x, y+h-r);
+  g.lineTo(x, y+r);
+  g.quadraticCurveTo(x, y, x+r, y);
+  g.closePath();
+}
+/**
+ * lines: [{label, value, color}, ...]  (label puede ser null para titulo)
+ * Primer elemento se trata como título (negrita, color del título).
+ */
+function drawTooltip(g, anchorX, anchorY, lines, geom) {
+  const padX = 12, padY = 10, lh = 16, gapColon = 6;
+  g.save();
+  // Medir ancho
+  let titleW = 0, labelW = 0, valueW = 0;
+  lines.forEach((line, i) => {
+    if (i === 0) {
+      g.font = 'bold 12px Montserrat, sans-serif';
+      titleW = Math.max(titleW, g.measureText(line.value || '').width);
+    } else {
+      g.font = '11px Montserrat, sans-serif';
+      labelW = Math.max(labelW, g.measureText((line.label || '') + ':').width);
+      g.font = 'bold 11px Montserrat, sans-serif';
+      valueW = Math.max(valueW, g.measureText(line.value || '').width);
+    }
+  });
+  const contentW = Math.max(titleW, labelW + gapColon + valueW);
+  const boxW = contentW + padX*2;
+  const boxH = lines.length * lh + padY*2;
+  // Posición: a la derecha del cursor, con flip si no entra
+  let x = anchorX + 14;
+  if (x + boxW > geom.L + geom.cW) x = anchorX - 14 - boxW;
+  if (x < geom.L) x = geom.L + 4;
+  let y = anchorY - boxH/2;
+  if (y < geom.T + 4) y = geom.T + 4;
+  if (y + boxH > geom.T + geom.cH - 4) y = geom.T + geom.cH - 4 - boxH;
+  // Sombra
+  g.shadowColor = 'rgba(15,23,42,0.18)';
+  g.shadowBlur = 12;
+  g.shadowOffsetY = 3;
+  // Fondo
+  g.fillStyle = cssVar('--tooltip-bg');
+  drawRoundRect(g, x, y, boxW, boxH, 8);
+  g.fill();
+  // Borde
+  g.shadowColor = 'transparent'; g.shadowBlur = 0; g.shadowOffsetY = 0;
+  g.strokeStyle = cssVar('--border');
+  g.lineWidth = 1;
+  drawRoundRect(g, x, y, boxW, boxH, 8);
+  g.stroke();
+  // Texto
+  const textColor = cssVar('--tooltip-text');
+  g.textAlign = 'left';
+  g.textBaseline = 'top';
+  lines.forEach((line, i) => {
+    const ty = y + padY + i*lh;
+    if (i === 0) {
+      g.font = 'bold 12px Montserrat, sans-serif';
+      g.fillStyle = THEME === 'dark' ? IQ_TEAL : IQ_BLUE;
+      g.fillText(line.value || '', x + padX, ty);
+    } else {
+      g.font = '11px Montserrat, sans-serif';
+      g.fillStyle = line.color || textColor;
+      g.fillText((line.label || '') + ':', x + padX, ty);
+      g.font = 'bold 11px Montserrat, sans-serif';
+      g.fillStyle = textColor;
+      g.textAlign = 'right';
+      g.fillText(line.value || '', x + boxW - padX, ty);
+      g.textAlign = 'left';
+    }
+  });
+  g.restore();
+}
 /* ===== Charts ===== */
 function chart1(data) {
   const W=document.getElementById('c1').parentElement.clientWidth-48;
@@ -476,7 +542,6 @@ function chart1(data) {
   const xi=i=>L+(i/(Y-1))*cW;
   const yv=v=>T+cH-(v/mx)*cH;
   const grid = cssVar('--grid'), label = cssVar('--grid-label');
-
   g.strokeStyle=grid; g.lineWidth=1;
   for(let i=0;i<=4;i++){
     const yy=T+(i/4)*cH;
@@ -486,7 +551,6 @@ function chart1(data) {
   }
   g.fillStyle=label;g.font='10px JetBrains Mono,monospace';g.textAlign='center';
   for(let y=5;y<=Y;y+=5) g.fillText(t().yearShort+' '+y,xi(y-1),H-5);
-
   g.beginPath();g.moveTo(xi(0),T+cH);
   data.forEach((d,i)=>g.lineTo(xi(i),yv(d.contrib)));
   g.lineTo(xi(Y-1),T+cH);g.closePath();
@@ -494,7 +558,6 @@ function chart1(data) {
   g.beginPath();
   data.forEach((d,i)=>i===0?g.moveTo(xi(0),yv(d.contrib)):g.lineTo(xi(i),yv(d.contrib)));
   g.strokeStyle=IQ_TEAL;g.lineWidth=2;g.stroke();
-
   const gr=g.createLinearGradient(0,T,0,T+cH);
   gr.addColorStop(0,'rgba(0,67,170,0.32)');
   gr.addColorStop(1,'rgba(0,67,170,0.02)');
@@ -505,15 +568,54 @@ function chart1(data) {
   g.beginPath();
   data.forEach((d,i)=>i===0?g.moveTo(xi(0),yv(d.p)):g.lineTo(xi(i),yv(d.p)));
   g.strokeStyle=THEME==='dark'?'#5d8df0':IQ_BLUE;g.lineWidth=2.5;g.stroke();
-
   let tY=null; for(const d of data) if(d.pct<5&&!tY) tY=d.y;
   if(tY){
     g.strokeStyle='rgba(180,189,0,0.6)';g.lineWidth=1;g.setLineDash([4,4]);
     g.beginPath();g.moveTo(xi(tY-1),T);g.lineTo(xi(tY-1),T+cH);g.stroke();
     g.setLineDash([]);
   }
+  // Guardar geometría para hover
+  chart1Geom = { L, T, cW, cH, R2, B, W, H, xi, yv, mx };
+  // Dibujar overlay de hover si está activo
+  if (hoverIdx1 != null && hoverIdx1 >= 0 && hoverIdx1 < data.length) {
+    drawChart1Hover(g, data, hoverIdx1);
+  }
 }
-
+function drawChart1Hover(g, data, idx) {
+  const geom = chart1Geom;
+  const d = data[idx];
+  const px = geom.xi(idx);
+  const pyP = geom.yv(d.p);
+  const pyC = geom.yv(d.contrib);
+  // Línea vertical guía
+  g.save();
+  g.strokeStyle = THEME === 'dark' ? 'rgba(148,163,184,0.45)' : 'rgba(100,116,139,0.5)';
+  g.lineWidth = 1;
+  g.setLineDash([4,4]);
+  g.beginPath();
+  g.moveTo(px, geom.T);
+  g.lineTo(px, geom.T + geom.cH);
+  g.stroke();
+  g.setLineDash([]);
+  // Punto sobre la línea de cartera
+  g.fillStyle = THEME === 'dark' ? '#5d8df0' : IQ_BLUE;
+  g.beginPath(); g.arc(px, pyP, 5, 0, Math.PI*2); g.fill();
+  g.strokeStyle = cssVar('--surface'); g.lineWidth = 2; g.stroke();
+  // Punto sobre la línea de aporte
+  g.fillStyle = IQ_TEAL;
+  g.beginPath(); g.arc(px, pyC, 4.5, 0, Math.PI*2); g.fill();
+  g.strokeStyle = cssVar('--surface'); g.lineWidth = 2; g.stroke();
+  g.restore();
+  // Tooltip
+  const interest = d.p - d.contrib;
+  const lines = [
+    { value: t().yearShort + ' ' + d.y },
+    { label: t().chart1LegA, value: fmtFull(d.p), color: cssVar('--text') },
+    { label: t().chart1LegB, value: fmtFull(d.contrib), color: cssVar('--text') },
+    { label: t().ttInterest, value: fmtFull(interest), color: cssVar('--text') }
+  ];
+  drawTooltip(g, px, pyP, lines, geom);
+}
 function chart2(data) {
   const W=document.getElementById('c2').parentElement.clientWidth-48;
   const H=240;
@@ -524,9 +626,7 @@ function chart2(data) {
   const xi=i=>L+(i/(Y-1))*cW;
   const yp=v=>T+cH-(v/maxP)*cH;
   const grid = cssVar('--grid'), label = cssVar('--grid-label');
-
   let tY=null; for(const d of data) if(d.pct<5&&!tY) tY=d.y;
-
   const y5=yp(5), yBot=T+cH;
   const zG1=g.createLinearGradient(0,T,0,y5);
   zG1.addColorStop(0,'rgba(97,176,188,0.08)');
@@ -536,7 +636,6 @@ function chart2(data) {
   zG2.addColorStop(0,'rgba(0,67,170,0.05)');
   zG2.addColorStop(1,'rgba(0,67,170,0.18)');
   g.fillStyle=zG2; g.fillRect(L,y5,cW,yBot-y5);
-
   const ticks=[0,5,10,25,50].filter(x=>x<=maxP);
   const top=Math.round(maxP); if(!ticks.includes(top)) ticks.unshift(top);
   ticks.forEach(x=>{
@@ -550,14 +649,11 @@ function chart2(data) {
     g.textAlign='right';
     g.fillText(x+'%',L-6,yy+4);
   });
-
   g.font='9px JetBrains Mono,monospace'; g.textAlign='right';
   g.fillStyle='rgba(97,176,188,0.75)'; g.fillText(t().youControl,L+cW-4,T+16);
   if(y5<yBot-18){g.fillStyle=THEME==='dark'?'rgba(93,141,240,0.85)':'rgba(0,67,170,0.7)'; g.fillText(t().marketRules,L+cW-4,yBot-6);}
-
   g.fillStyle=label;g.font='10px JetBrains Mono,monospace';g.textAlign='center';
   for(let y=5;y<=Y;y+=5) g.fillText(t().yearShort+' '+y,xi(y-1),H-5);
-
   const aG=g.createLinearGradient(0,T,0,T+cH);
   aG.addColorStop(0,'rgba(180,189,0,0.36)');
   aG.addColorStop(0.5,'rgba(180,189,0,0.14)');
@@ -566,13 +662,11 @@ function chart2(data) {
   data.forEach((d,i)=>g.lineTo(xi(i),yp(d.pct)));
   g.lineTo(xi(Y-1),T+cH);g.closePath();
   g.fillStyle=aG;g.fill();
-
   const lG=g.createLinearGradient(xi(0),0,xi(Y-1),0);
   lG.addColorStop(0,IQ_TEAL); lG.addColorStop(0.45,IQ_OLIVE); lG.addColorStop(1,THEME==='dark'?'#5d8df0':IQ_BLUE);
   g.beginPath();
   data.forEach((d,i)=>i===0?g.moveTo(xi(0),yp(d.pct)):g.lineTo(xi(i),yp(d.pct)));
   g.strokeStyle=lG;g.lineWidth=2.5;g.stroke();
-
   data.forEach((d,i)=>{
     if(d.y%5!==0&&d.y!==tY) return;
     const px=xi(i),py=yp(d.pct),isT=d.y===tY;
@@ -587,7 +681,6 @@ function chart2(data) {
     const above=py-14>T+6;
     g.fillText(d.pct.toFixed(1)+'%',px,above?py-14:py+15);
   });
-
   if(tY){
     g.strokeStyle='rgba(180,189,0,0.8)';g.lineWidth=1.5;g.setLineDash([5,4]);
     g.beginPath();g.moveTo(xi(tY-1),T);g.lineTo(xi(tY-1),T+cH);g.stroke();
@@ -595,8 +688,43 @@ function chart2(data) {
     g.fillStyle='rgba(122,128,0,1)';g.font='bold 9px JetBrains Mono,monospace';
     g.textAlign='center';g.fillText(t().yearShort+' '+tY,xi(tY-1),T+10);
   }
+  // Guardar geometría para hover
+  chart2Geom = { L, T, cW, cH, R2, B, W, H, xi, yp, maxP };
+  // Dibujar overlay de hover si está activo
+  if (hoverIdx2 != null && hoverIdx2 >= 0 && hoverIdx2 < data.length) {
+    drawChart2Hover(g, data, hoverIdx2);
+  }
 }
-
+function drawChart2Hover(g, data, idx) {
+  const geom = chart2Geom;
+  const d = data[idx];
+  const px = geom.xi(idx);
+  const py = geom.yp(d.pct);
+  // Línea vertical guía
+  g.save();
+  g.strokeStyle = THEME === 'dark' ? 'rgba(148,163,184,0.45)' : 'rgba(100,116,139,0.5)';
+  g.lineWidth = 1;
+  g.setLineDash([4,4]);
+  g.beginPath();
+  g.moveTo(px, geom.T);
+  g.lineTo(px, geom.T + geom.cH);
+  g.stroke();
+  g.setLineDash([]);
+  // Punto destacado
+  g.fillStyle = IQ_OLIVE;
+  g.beginPath(); g.arc(px, py, 5.5, 0, Math.PI*2); g.fill();
+  g.strokeStyle = cssVar('--surface'); g.lineWidth = 2; g.stroke();
+  g.restore();
+  // Tooltip
+  const dec = t().decimal;
+  const lines = [
+    { value: t().yearShort + ' ' + d.y },
+    { label: t().chart2LegA, value: d.pct.toFixed(2).replace('.', dec) + '%', color: cssVar('--text') },
+    { label: t().ttAnnual, value: fmtFull(d.annual), color: cssVar('--text') },
+    { label: t().ttPortfolio, value: fmtFull(d.p), color: cssVar('--text') }
+  ];
+  drawTooltip(g, px, py, lines, geom);
+}
 /* ===== Render texto ===== */
 function applyI18n() {
   const T = t();
@@ -614,11 +742,9 @@ function applyI18n() {
   document.getElementById('chart2Title').innerHTML =
     T.chart2TitleA + '<span style="color:var(--iq-olive)">' + T.chart2TitleB + '</span>' + T.chart2TitleC;
 }
-
 function tplFill(str, vars) {
   return str.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
 }
-
 /* ===== Update principal ===== */
 function update() {
   I=+document.getElementById('si').value;
@@ -629,15 +755,17 @@ function update() {
   document.getElementById('cvMonthly').textContent=fmtSlider(M);
   document.getElementById('dy').textContent=Y;
   document.getElementById('dr').textContent=(R*100).toFixed(1).replace('.', t().decimal);
-
   const data=sim();
+  lastData = data;
+  // Si Y cambió, limpiar hover
+  if (hoverIdx1 != null && hoverIdx1 >= data.length) hoverIdx1 = null;
+  if (hoverIdx2 != null && hoverIdx2 >= data.length) hoverIdx2 = null;
   const last=data[data.length-1];
   document.getElementById('vt').textContent=fmt(last.p);
   document.getElementById('st').textContent=tplFill(t().atYearsTpl, {Y});
   document.getElementById('vc').textContent=fmt(last.contrib);
   document.getElementById('vr').textContent=last.pct.toFixed(1).replace('.', t().decimal)+'%';
   document.getElementById('sr').textContent=tplFill(t().perYearVsTpl, {annual: fmt(last.annual), p: fmt(last.p)});
-
   let tY=null; for(const d of data) if(d.pct<5&&!tY) tY=d.y;
   if(tY){
     const mult=(last.p*0.10/last.annual).toFixed(1).replace('.', t().decimal);
@@ -645,11 +773,9 @@ function update() {
   } else {
     document.getElementById('ann').innerHTML = t().annDefault;
   }
-
   chart1(data);
   chart2(data);
 }
-
 /* ===== Theme & Lang ===== */
 function setTheme(theme) {
   THEME = theme;
@@ -657,10 +783,8 @@ function setTheme(theme) {
   document.getElementById('themeIcon').textContent = theme==='dark' ? '☾' : '☀';
   applyI18n();
   localStorage.setItem('iq_theme', theme);
-  // re-draw charts since CSS vars changed
   if (typeof update === 'function' && document.getElementById('sm')) update();
 }
-
 function setLang(lang) {
   if (!I18N[lang]) return;
   LANG = lang;
@@ -671,27 +795,75 @@ function setLang(lang) {
   localStorage.setItem('iq_lang', lang);
   update();
 }
-
+/* ===== Hover en gráficos ===== */
+function pxToIdx(geom, x) {
+  if (!geom) return null;
+  if (x < geom.L - 4 || x > geom.L + geom.cW + 4) return null;
+  const clampedX = Math.max(geom.L, Math.min(geom.L + geom.cW, x));
+  const idx = Math.round((clampedX - geom.L) / geom.cW * (Y - 1));
+  return Math.max(0, Math.min(Y-1, idx));
+}
+function setupChartHover(canvas, geomGetter, setHover, getHover, redraw) {
+  function handleMove(clientX) {
+    const rect = canvas.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const idx = pxToIdx(geomGetter(), x);
+    if (idx !== getHover()) {
+      setHover(idx);
+      redraw();
+    }
+  }
+  canvas.addEventListener('mousemove', e => handleMove(e.clientX));
+  canvas.addEventListener('mouseleave', () => {
+    if (getHover() !== null) {
+      setHover(null);
+      redraw();
+    }
+  });
+  canvas.addEventListener('touchstart', e => {
+    if (e.touches.length > 0) handleMove(e.touches[0].clientX);
+  }, { passive: true });
+  canvas.addEventListener('touchmove', e => {
+    if (e.touches.length > 0) handleMove(e.touches[0].clientX);
+  }, { passive: true });
+  canvas.addEventListener('touchend', () => {
+    if (getHover() !== null) {
+      setHover(null);
+      redraw();
+    }
+  });
+}
 /* ===== Eventos ===== */
 document.getElementById('si').addEventListener('input',update);
 document.getElementById('sm').addEventListener('input',update);
 document.getElementById('sy').addEventListener('input',update);
 document.getElementById('sr2').addEventListener('input',update);
 window.addEventListener('resize',update);
-
 document.querySelectorAll('.chip.lang').forEach(b=>{
   b.addEventListener('click', ()=> setLang(b.getAttribute('data-lang')));
 });
-
 document.getElementById('themeToggle').addEventListener('click', ()=>{
   setTheme(THEME === 'dark' ? 'light' : 'dark');
 });
-
+/* Hover handlers */
+setupChartHover(
+  document.getElementById('c1'),
+  () => chart1Geom,
+  v => hoverIdx1 = v,
+  () => hoverIdx1,
+  () => { if (lastData) chart1(lastData); }
+);
+setupChartHover(
+  document.getElementById('c2'),
+  () => chart2Geom,
+  v => hoverIdx2 = v,
+  () => hoverIdx2,
+  () => { if (lastData) chart2(lastData); }
+);
 /* ===== Init ===== */
 setTheme(THEME);
 setLang(LANG);
 </script>
-
 <!-- ===== FOOTER REDES SOCIALES ===== -->
 <footer style="
   width: 100%;
@@ -714,9 +886,7 @@ setLang(LANG);
     letter-spacing: 0.05em;
     text-transform: uppercase;
   " data-i18n="socialFollow">Seguinos en nuestras redes</p>
-
   <div style="display: flex; gap: 24px; align-items: center;">
-
     <!-- Instagram -->
     <a href="https://www.instagram.com/iq.solucionesfinancieras/" target="_blank" rel="noopener"
       title="Instagram"
@@ -733,7 +903,6 @@ setLang(LANG);
     >
       <img src="assets/ig.png" alt="Instagram" style="width:28px;height:28px;object-fit:contain;border-radius:6px;">
     </a>
-
     <!-- LinkedIn -->
     <a href="https://www.linkedin.com/company/iq-soluciones-financieras/" target="_blank" rel="noopener"
       title="LinkedIn"
@@ -750,7 +919,6 @@ setLang(LANG);
     >
       <img src="assets/in.png" alt="LinkedIn" style="width:28px;height:28px;object-fit:contain;border-radius:6px;">
     </a>
-
     <!-- WhatsApp -->
     <a href="https://wa.me/message/QUGPRYJYH7JDK1" target="_blank" rel="noopener"
       title="WhatsApp"
@@ -767,17 +935,13 @@ setLang(LANG);
     >
       <img src="assets/wp.png" alt="WhatsApp" style="width:28px;height:28px;object-fit:contain;">
     </a>
-
   </div>
-
   <p style="
     font-family: 'Montserrat', sans-serif;
     font-size: 11px;
     color: var(--muted);
     opacity: 0.7;
   "><span data-i18n="socialRights">© 2025 IQ Soluciones Financieras S.A. — Todos los derechos reservados.</span></p>
-
 </footer>
-
 </body>
 </html>
