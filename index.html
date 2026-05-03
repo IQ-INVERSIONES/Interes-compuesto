@@ -8,11 +8,9 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 :root {
-  /* Paleta IQ (constantes) */
   --iq-blue: #0043aa;
   --iq-teal: #61b0bc;
   --iq-olive: #b4bd00;
-  /* Tema claro (default) */
   --bg: #f5f7fa;
   --surface: #ffffff;
   --border: #e2e8f0;
@@ -65,60 +63,33 @@ body::before {
   transition: background .25s ease;
 }
 .wrapper { position: relative; z-index: 1; width: 100%; max-width: 960px; }
-/* Topbar con controles + logo */
 .topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 28px;
-  padding-bottom: 18px;
-  border-bottom: 1px solid var(--border);
-  flex-wrap: wrap;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 16px; margin-bottom: 28px; padding-bottom: 18px;
+  border-bottom: 1px solid var(--border); flex-wrap: wrap;
   transition: border-color .25s ease;
 }
 .tb-left { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .logo-iq { height: 52px; width: auto; display: block; }
-/* Chips */
 .chip-group { display: inline-flex; gap: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 3px; box-shadow: var(--shadow); }
 .chip {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  font-size: 11px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  background: transparent;
-  border: none;
-  padding: 7px 14px;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: all .2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 11px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+  background: transparent; border: none; padding: 7px 14px;
+  border-radius: 999px; cursor: pointer; transition: all .2s ease;
+  display: inline-flex; align-items: center; gap: 6px;
 }
 .chip:hover { color: var(--iq-blue); }
 .chip.active { background: var(--iq-blue); color: #fff; box-shadow: 0 1px 3px rgba(0,67,170,0.3); }
 .chip.active:hover { color: #fff; }
 [data-theme="dark"] .chip.active { background: var(--iq-teal); color: #0a1322; box-shadow: 0 1px 4px rgba(97,176,188,0.4); }
 .chip-theme {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 7px 14px 7px 10px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text);
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
-  font-size: 11px;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  transition: all .2s ease;
-  box-shadow: var(--shadow);
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 999px; padding: 7px 14px 7px 10px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px; color: var(--text);
+  font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 11px;
+  letter-spacing: .1em; text-transform: uppercase;
+  transition: all .2s ease; box-shadow: var(--shadow);
 }
 .chip-theme:hover { border-color: var(--iq-blue); color: var(--iq-blue); }
 [data-theme="dark"] .chip-theme:hover { border-color: var(--iq-teal); color: var(--iq-teal); }
@@ -129,7 +100,6 @@ body::before {
   transition: background .2s ease;
 }
 [data-theme="dark"] .theme-icon { background: var(--iq-teal); color: var(--iq-blue); }
-/* Header */
 header { margin-bottom: 32px; border-left: 4px solid var(--iq-blue); padding-left: 22px; }
 .eyebrow { font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.2em; color:var(--iq-teal); text-transform:uppercase; margin-bottom:10px; font-weight: 500; }
 h1 { font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(32px,5.8vw,54px); line-height:1.02; color:var(--iq-blue); letter-spacing:-0.01em; }
@@ -137,7 +107,6 @@ h1 { font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(32px,
 h1 span { color:var(--iq-teal); }
 [data-theme="dark"] h1 span { color: var(--iq-olive); }
 .subtitle { margin-top:14px; font-size:14px; color:var(--muted); font-weight:400; max-width:580px; line-height:1.65; }
-/* Cards */
 .insights { display:grid; grid-template-columns:repeat(auto-fit,minmax(195px,1fr)); gap:14px; margin-bottom:26px; }
 .card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:18px 20px; position:relative; overflow:hidden; box-shadow: var(--shadow); transition: background-color .25s ease, border-color .25s ease; }
 .card::after { content:''; position:absolute; top:0; left:0; width:100%; height:3px; }
@@ -147,7 +116,6 @@ h1 span { color:var(--iq-teal); }
 .card.bl .cv{color:var(--iq-blue);} .card.tl .cv{color:var(--iq-teal);} .card.ol .cv{color:var(--iq-olive);}
 [data-theme="dark"] .card.bl .cv { color: #5d8df0; }
 .cs { font-size:11px; color:var(--muted); margin-top:5px; line-height:1.4; font-weight:400; }
-/* Controls */
 .controls { display:flex; gap:24px; flex-wrap:wrap; margin-bottom:24px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 24px; box-shadow: var(--shadow); transition: background-color .25s ease, border-color .25s ease; }
 .cg { display:flex; flex-direction:column; gap:6px; }
 .clabel { font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); font-family:'JetBrains Mono',monospace; font-weight:500; }
@@ -158,7 +126,6 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px; h
 input[type=range]::-moz-range-thumb { width:14px; height:14px; border-radius:50%; background:var(--iq-blue); cursor:pointer; border: none; }
 [data-theme="dark"] input[type=range]::-webkit-slider-thumb { background: var(--iq-teal); }
 [data-theme="dark"] input[type=range]::-moz-range-thumb { background: var(--iq-teal); }
-/* Chart wrappers */
 .cw { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px 24px 16px; margin-bottom:18px; box-shadow: var(--shadow); transition: background-color .25s ease, border-color .25s ease; }
 .cw.pct { border-color:rgba(180,189,0,0.35); background:linear-gradient(160deg,rgba(180,189,0,0.04),var(--surface)); }
 [data-theme="dark"] .cw.pct { background: linear-gradient(160deg,rgba(180,189,0,0.08),var(--surface)); }
@@ -169,7 +136,6 @@ canvas { display:block; width:100%; cursor: crosshair; touch-action: pan-y; }
 .legend { display:flex; gap:18px; flex-wrap:wrap; margin-top:14px; }
 .li { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--muted); font-weight:500; }
 .ld { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
-/* Annotation */
 .ann { background:linear-gradient(135deg,rgba(0,67,170,0.06),rgba(97,176,188,0.05)); border:1px solid rgba(0,67,170,0.18); border-radius:10px; padding:18px 22px; font-size:14px; color:var(--text); line-height:1.7; font-weight:400; }
 [data-theme="dark"] .ann { background:linear-gradient(135deg,rgba(0,67,170,0.18),rgba(97,176,188,0.12)); border-color: rgba(97,176,188,0.3); }
 .ann strong { color:var(--iq-blue); font-weight:700; }
@@ -244,7 +210,7 @@ footer {
     </div>
   </div>
   <div class="ann" id="ann"></div>
-  <!-- ===== BANNER BALANZ ===== -->
+  <!-- BANNER BALANZ -->
   <div style="width:100%;margin:32px 0 8px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px 32px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;">
     <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;">
       <img src="assets/balanz.jpg" alt="Balanz" style="height:52px;width:52px;border-radius:10px;object-fit:cover;">
@@ -288,10 +254,14 @@ const I18N = {
     chart2Sub: 'Cuanto más cae esta curva, menos importa lo que aportás — el mercado toma el mando',
     chart2LegA: '% aporte anual / cartera',
     chart2LegB: 'Umbral 5% · punto de dilución',
+    chart2EmptyTitle: 'Sin aportes mensuales',
+    chart2EmptyMsg: 'Si no hay aportes recurrentes, no hay dilución que mostrar — toda la cartera viene del interés compuesto sobre el aporte inicial.',
     youControl: 'VOS CONTROLÁS ↑',
     marketRules: '↓ EL MERCADO MANDA',
     annDefault: 'Mové los controles para ver cómo evoluciona el efecto del interés compuesto.',
+    annNoMonthly: 'Estás simulando solo con el <strong>aporte inicial</strong>, sin aportes recurrentes. Toda la cartera crece exclusivamente por el interés compuesto. Probá agregar un aporte mensual para ver el efecto de dilución, donde tus aportes pierden peso frente al mercado.',
     annTpl: 'A partir del año <span class="pill">{tY}</span>, tu aporte anual de <strong>{annual}</strong> representa menos del <strong>5%</strong> de la cartera. Una variación del <strong>±10% del S&amp;P 500</strong> mueve tu patrimonio lo mismo que <strong>{mult} años</strong> de aportes. La curva de abajo lo muestra sin vueltas: el interés compuesto toma el mando — el índice ya maneja todo solo.',
+    annTplNoThreshold: 'Después de <strong>{Y} años</strong>, tu aporte anual de <strong>{annual}</strong> sigue siendo el <strong>{lastPct}%</strong> de la cartera. La curva todavía no entra en zona de dilución (5%), pero si extendés el plazo o subís la rentabilidad, vas a ver cómo el interés compuesto empieza a dominar.',
     yearShort: 'Año',
     atYearsTpl: 'a los {Y} años',
     perYearVsTpl: '{annual} al año vs {p}',
@@ -335,10 +305,14 @@ const I18N = {
     chart2Sub: 'The more this curve falls, the less your contributions matter — the market takes over',
     chart2LegA: '% annual contribution / portfolio',
     chart2LegB: '5% threshold · dilution point',
+    chart2EmptyTitle: 'No monthly contributions',
+    chart2EmptyMsg: 'With no recurring contributions there is no dilution to display — the entire portfolio grows from compound interest on the initial deposit.',
     youControl: 'YOU CONTROL ↑',
     marketRules: '↓ THE MARKET RULES',
     annDefault: 'Move the controls to see how compound interest evolves over time.',
+    annNoMonthly: 'You are simulating with only an <strong>initial contribution</strong>, no recurring deposits. The portfolio grows exclusively from compound interest. Add a monthly contribution to see the dilution effect, where your contributions lose weight against the market.',
     annTpl: 'Starting in year <span class="pill">{tY}</span>, your annual contribution of <strong>{annual}</strong> represents less than <strong>5%</strong> of the portfolio. A <strong>±10% S&amp;P 500</strong> swing moves your wealth as much as <strong>{mult} years</strong> of contributions. The curve below makes it clear: compound interest takes over — the index now drives alone.',
+    annTplNoThreshold: 'After <strong>{Y} years</strong>, your annual contribution of <strong>{annual}</strong> is still <strong>{lastPct}%</strong> of the portfolio. The curve has not yet entered the dilution zone (5%), but extending the horizon or increasing the return will let compound interest take over.',
     yearShort: 'Year',
     atYearsTpl: 'after {Y} years',
     perYearVsTpl: '{annual} per year vs {p}',
@@ -382,10 +356,14 @@ const I18N = {
     chart2Sub: 'Quanto mais essa curva cai, menos importa o que você aporta — o mercado toma o comando',
     chart2LegA: '% aporte anual / carteira',
     chart2LegB: 'Limite 5% · ponto de diluição',
+    chart2EmptyTitle: 'Sem aportes mensais',
+    chart2EmptyMsg: 'Sem aportes recorrentes não há diluição a mostrar — toda a carteira cresce pelos juros compostos sobre o aporte inicial.',
     youControl: 'VOCÊ CONTROLA ↑',
     marketRules: '↓ O MERCADO MANDA',
     annDefault: 'Mova os controles para ver como evoluem os juros compostos.',
+    annNoMonthly: 'Você está simulando apenas com o <strong>aporte inicial</strong>, sem aportes recorrentes. A carteira cresce exclusivamente pelos juros compostos. Adicione um aporte mensal para ver o efeito de diluição, onde seus aportes perdem peso em relação ao mercado.',
     annTpl: 'A partir do ano <span class="pill">{tY}</span>, seu aporte anual de <strong>{annual}</strong> representa menos de <strong>5%</strong> da carteira. Uma variação de <strong>±10% do S&amp;P 500</strong> movimenta seu patrimônio o mesmo que <strong>{mult} anos</strong> de aportes. A curva abaixo mostra sem rodeios: os juros compostos tomam o comando — o índice já dirige sozinho.',
+    annTplNoThreshold: 'Depois de <strong>{Y} anos</strong>, seu aporte anual de <strong>{annual}</strong> ainda é <strong>{lastPct}%</strong> da carteira. A curva ainda não entra na zona de diluição (5%), mas estendendo o prazo ou subindo a rentabilidade, os juros compostos passam a dominar.',
     yearShort: 'Ano',
     atYearsTpl: 'após {Y} anos',
     perYearVsTpl: '{annual} por ano vs {p}',
@@ -413,11 +391,9 @@ let THEME = localStorage.getItem('iq_theme') || 'light';
 const IQ_BLUE = '#0043aa';
 const IQ_TEAL = '#61b0bc';
 const IQ_OLIVE = '#b4bd00';
-/* Estado para tooltips interactivos */
 let lastData = null;
 let chart1Geom = null, chart2Geom = null;
 let hoverIdx1 = null, hoverIdx2 = null;
-/* ===== Utilidades ===== */
 function t() { return I18N[LANG]; }
 function fmt(n) {
   const d = t().decimal, c = t().currency;
@@ -433,7 +409,7 @@ function sim() {
   const r=R/12; let p=I; const out=[];
   for (let y=1;y<=Y;y++) {
     for (let m=0;m<12;m++) p=(p+M)*(1+r);
-    out.push({y,p,contrib:I+M*12*y,annual:M*12,pct:(M*12)/p*100});
+    out.push({y,p,contrib:I+M*12*y,annual:M*12,pct: M>0 ? (M*12)/p*100 : 0});
   }
   return out;
 }
@@ -450,28 +426,18 @@ function prep(c,W,H) {
 function cssVar(name) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
-/* ===== Tooltip helper ===== */
 function drawRoundRect(g, x, y, w, h, r) {
   g.beginPath();
   g.moveTo(x+r, y);
-  g.lineTo(x+w-r, y);
-  g.quadraticCurveTo(x+w, y, x+w, y+r);
-  g.lineTo(x+w, y+h-r);
-  g.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
-  g.lineTo(x+r, y+h);
-  g.quadraticCurveTo(x, y+h, x, y+h-r);
-  g.lineTo(x, y+r);
-  g.quadraticCurveTo(x, y, x+r, y);
+  g.lineTo(x+w-r, y); g.quadraticCurveTo(x+w, y, x+w, y+r);
+  g.lineTo(x+w, y+h-r); g.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  g.lineTo(x+r, y+h); g.quadraticCurveTo(x, y+h, x, y+h-r);
+  g.lineTo(x, y+r); g.quadraticCurveTo(x, y, x+r, y);
   g.closePath();
 }
-/**
- * lines: [{label, value, color}, ...]  (label puede ser null para titulo)
- * Primer elemento se trata como título (negrita, color del título).
- */
 function drawTooltip(g, anchorX, anchorY, lines, geom) {
   const padX = 12, padY = 10, lh = 16, gapColon = 6;
   g.save();
-  // Medir ancho
   let titleW = 0, labelW = 0, valueW = 0;
   lines.forEach((line, i) => {
     if (i === 0) {
@@ -487,31 +453,20 @@ function drawTooltip(g, anchorX, anchorY, lines, geom) {
   const contentW = Math.max(titleW, labelW + gapColon + valueW);
   const boxW = contentW + padX*2;
   const boxH = lines.length * lh + padY*2;
-  // Posición: a la derecha del cursor, con flip si no entra
   let x = anchorX + 14;
   if (x + boxW > geom.L + geom.cW) x = anchorX - 14 - boxW;
   if (x < geom.L) x = geom.L + 4;
   let y = anchorY - boxH/2;
   if (y < geom.T + 4) y = geom.T + 4;
   if (y + boxH > geom.T + geom.cH - 4) y = geom.T + geom.cH - 4 - boxH;
-  // Sombra
-  g.shadowColor = 'rgba(15,23,42,0.18)';
-  g.shadowBlur = 12;
-  g.shadowOffsetY = 3;
-  // Fondo
+  g.shadowColor = 'rgba(15,23,42,0.18)'; g.shadowBlur = 12; g.shadowOffsetY = 3;
   g.fillStyle = cssVar('--tooltip-bg');
-  drawRoundRect(g, x, y, boxW, boxH, 8);
-  g.fill();
-  // Borde
+  drawRoundRect(g, x, y, boxW, boxH, 8); g.fill();
   g.shadowColor = 'transparent'; g.shadowBlur = 0; g.shadowOffsetY = 0;
-  g.strokeStyle = cssVar('--border');
-  g.lineWidth = 1;
-  drawRoundRect(g, x, y, boxW, boxH, 8);
-  g.stroke();
-  // Texto
+  g.strokeStyle = cssVar('--border'); g.lineWidth = 1;
+  drawRoundRect(g, x, y, boxW, boxH, 8); g.stroke();
   const textColor = cssVar('--tooltip-text');
-  g.textAlign = 'left';
-  g.textBaseline = 'top';
+  g.textAlign = 'left'; g.textBaseline = 'top';
   lines.forEach((line, i) => {
     const ty = y + padY + i*lh;
     if (i === 0) {
@@ -568,15 +523,14 @@ function chart1(data) {
   g.beginPath();
   data.forEach((d,i)=>i===0?g.moveTo(xi(0),yv(d.p)):g.lineTo(xi(i),yv(d.p)));
   g.strokeStyle=THEME==='dark'?'#5d8df0':IQ_BLUE;g.lineWidth=2.5;g.stroke();
-  let tY=null; for(const d of data) if(d.pct<5&&!tY) tY=d.y;
+  let tY=null;
+  if (M>0) for(const d of data) if(d.pct<5&&!tY) tY=d.y;
   if(tY){
     g.strokeStyle='rgba(180,189,0,0.6)';g.lineWidth=1;g.setLineDash([4,4]);
     g.beginPath();g.moveTo(xi(tY-1),T);g.lineTo(xi(tY-1),T+cH);g.stroke();
     g.setLineDash([]);
   }
-  // Guardar geometría para hover
   chart1Geom = { L, T, cW, cH, R2, B, W, H, xi, yv, mx };
-  // Dibujar overlay de hover si está activo
   if (hoverIdx1 != null && hoverIdx1 >= 0 && hoverIdx1 < data.length) {
     drawChart1Hover(g, data, hoverIdx1);
   }
@@ -587,26 +541,18 @@ function drawChart1Hover(g, data, idx) {
   const px = geom.xi(idx);
   const pyP = geom.yv(d.p);
   const pyC = geom.yv(d.contrib);
-  // Línea vertical guía
   g.save();
   g.strokeStyle = THEME === 'dark' ? 'rgba(148,163,184,0.45)' : 'rgba(100,116,139,0.5)';
-  g.lineWidth = 1;
-  g.setLineDash([4,4]);
-  g.beginPath();
-  g.moveTo(px, geom.T);
-  g.lineTo(px, geom.T + geom.cH);
-  g.stroke();
+  g.lineWidth = 1; g.setLineDash([4,4]);
+  g.beginPath(); g.moveTo(px, geom.T); g.lineTo(px, geom.T + geom.cH); g.stroke();
   g.setLineDash([]);
-  // Punto sobre la línea de cartera
   g.fillStyle = THEME === 'dark' ? '#5d8df0' : IQ_BLUE;
   g.beginPath(); g.arc(px, pyP, 5, 0, Math.PI*2); g.fill();
   g.strokeStyle = cssVar('--surface'); g.lineWidth = 2; g.stroke();
-  // Punto sobre la línea de aporte
   g.fillStyle = IQ_TEAL;
   g.beginPath(); g.arc(px, pyC, 4.5, 0, Math.PI*2); g.fill();
   g.strokeStyle = cssVar('--surface'); g.lineWidth = 2; g.stroke();
   g.restore();
-  // Tooltip
   const interest = d.p - d.contrib;
   const lines = [
     { value: t().yearShort + ' ' + d.y },
@@ -620,9 +566,35 @@ function chart2(data) {
   const W=document.getElementById('c2').parentElement.clientWidth-48;
   const H=240;
   const g=prep(document.getElementById('c2'),W,H);
-  const maxP=data[0].pct;
   const L=54,R2=18,T=16,B=36;
   const cW=W-L-R2, cH=H-T-B;
+  /* === Caso M=0: mostrar mensaje vacío === */
+  if (M <= 0) {
+    chart2Geom = null;
+    g.fillStyle = cssVar('--muted');
+    g.font = 'bold 13px Montserrat, sans-serif';
+    g.textAlign = 'center';
+    g.textBaseline = 'middle';
+    g.fillText(t().chart2EmptyTitle, W/2, H/2 - 14);
+    g.font = '12px Montserrat, sans-serif';
+    /* Wrap manual del mensaje */
+    const msg = t().chart2EmptyMsg;
+    const words = msg.split(' ');
+    const maxW = W * 0.78;
+    let line = '', y = H/2 + 8;
+    for (let i = 0; i < words.length; i++) {
+      const test = line + (line ? ' ' : '') + words[i];
+      if (g.measureText(test).width > maxW && line) {
+        g.fillText(line, W/2, y);
+        y += 16; line = words[i];
+      } else {
+        line = test;
+      }
+    }
+    if (line) g.fillText(line, W/2, y);
+    return;
+  }
+  const maxP=data[0].pct;
   const xi=i=>L+(i/(Y-1))*cW;
   const yp=v=>T+cH-(v/maxP)*cH;
   const grid = cssVar('--grid'), label = cssVar('--grid-label');
@@ -688,9 +660,7 @@ function chart2(data) {
     g.fillStyle='rgba(122,128,0,1)';g.font='bold 9px JetBrains Mono,monospace';
     g.textAlign='center';g.fillText(t().yearShort+' '+tY,xi(tY-1),T+10);
   }
-  // Guardar geometría para hover
   chart2Geom = { L, T, cW, cH, R2, B, W, H, xi, yp, maxP };
-  // Dibujar overlay de hover si está activo
   if (hoverIdx2 != null && hoverIdx2 >= 0 && hoverIdx2 < data.length) {
     drawChart2Hover(g, data, hoverIdx2);
   }
@@ -700,22 +670,15 @@ function drawChart2Hover(g, data, idx) {
   const d = data[idx];
   const px = geom.xi(idx);
   const py = geom.yp(d.pct);
-  // Línea vertical guía
   g.save();
   g.strokeStyle = THEME === 'dark' ? 'rgba(148,163,184,0.45)' : 'rgba(100,116,139,0.5)';
-  g.lineWidth = 1;
-  g.setLineDash([4,4]);
-  g.beginPath();
-  g.moveTo(px, geom.T);
-  g.lineTo(px, geom.T + geom.cH);
-  g.stroke();
+  g.lineWidth = 1; g.setLineDash([4,4]);
+  g.beginPath(); g.moveTo(px, geom.T); g.lineTo(px, geom.T + geom.cH); g.stroke();
   g.setLineDash([]);
-  // Punto destacado
   g.fillStyle = IQ_OLIVE;
   g.beginPath(); g.arc(px, py, 5.5, 0, Math.PI*2); g.fill();
   g.strokeStyle = cssVar('--surface'); g.lineWidth = 2; g.stroke();
   g.restore();
-  // Tooltip
   const dec = t().decimal;
   const lines = [
     { value: t().yearShort + ' ' + d.y },
@@ -725,7 +688,6 @@ function drawChart2Hover(g, data, idx) {
   ];
   drawTooltip(g, px, py, lines, geom);
 }
-/* ===== Render texto ===== */
 function applyI18n() {
   const T = t();
   document.documentElement.lang = LANG.split('-')[0];
@@ -738,14 +700,12 @@ function applyI18n() {
       el.textContent = T[key];
     }
   });
-  // chart2 title con HTML
   document.getElementById('chart2Title').innerHTML =
     T.chart2TitleA + '<span style="color:var(--iq-olive)">' + T.chart2TitleB + '</span>' + T.chart2TitleC;
 }
 function tplFill(str, vars) {
   return str.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
 }
-/* ===== Update principal ===== */
 function update() {
   I=+document.getElementById('si').value;
   M=+document.getElementById('sm').value;
@@ -757,7 +717,6 @@ function update() {
   document.getElementById('dr').textContent=(R*100).toFixed(1).replace('.', t().decimal);
   const data=sim();
   lastData = data;
-  // Si Y cambió, limpiar hover
   if (hoverIdx1 != null && hoverIdx1 >= data.length) hoverIdx1 = null;
   if (hoverIdx2 != null && hoverIdx2 >= data.length) hoverIdx2 = null;
   const last=data[data.length-1];
@@ -766,17 +725,25 @@ function update() {
   document.getElementById('vc').textContent=fmt(last.contrib);
   document.getElementById('vr').textContent=last.pct.toFixed(1).replace('.', t().decimal)+'%';
   document.getElementById('sr').textContent=tplFill(t().perYearVsTpl, {annual: fmt(last.annual), p: fmt(last.p)});
-  let tY=null; for(const d of data) if(d.pct<5&&!tY) tY=d.y;
-  if(tY){
-    const mult=(last.p*0.10/last.annual).toFixed(1).replace('.', t().decimal);
-    document.getElementById('ann').innerHTML = tplFill(t().annTpl, {tY, annual: fmt(last.annual), mult});
+  /* === Anotación con manejo de M=0 y caso "no llega al 5%" === */
+  if (M <= 0) {
+    document.getElementById('ann').innerHTML = t().annNoMonthly;
   } else {
-    document.getElementById('ann').innerHTML = t().annDefault;
+    let tY=null;
+    for(const d of data) if(d.pct<5&&!tY) tY=d.y;
+    if(tY){
+      const mult=(last.p*0.10/last.annual).toFixed(1).replace('.', t().decimal);
+      document.getElementById('ann').innerHTML = tplFill(t().annTpl, {tY, annual: fmt(last.annual), mult});
+    } else {
+      document.getElementById('ann').innerHTML = tplFill(t().annTplNoThreshold, {
+        Y, annual: fmt(last.annual),
+        lastPct: last.pct.toFixed(1).replace('.', t().decimal)
+      });
+    }
   }
   chart1(data);
   chart2(data);
 }
-/* ===== Theme & Lang ===== */
 function setTheme(theme) {
   THEME = theme;
   document.documentElement.setAttribute('data-theme', theme);
@@ -795,7 +762,6 @@ function setLang(lang) {
   localStorage.setItem('iq_lang', lang);
   update();
 }
-/* ===== Hover en gráficos ===== */
 function pxToIdx(geom, x) {
   if (!geom) return null;
   if (x < geom.L - 4 || x > geom.L + geom.cW + 4) return null;
@@ -805,6 +771,7 @@ function pxToIdx(geom, x) {
 }
 function setupChartHover(canvas, geomGetter, setHover, getHover, redraw) {
   function handleMove(clientX) {
+    if (!geomGetter()) return;
     const rect = canvas.getBoundingClientRect();
     const x = clientX - rect.left;
     const idx = pxToIdx(geomGetter(), x);
@@ -815,10 +782,7 @@ function setupChartHover(canvas, geomGetter, setHover, getHover, redraw) {
   }
   canvas.addEventListener('mousemove', e => handleMove(e.clientX));
   canvas.addEventListener('mouseleave', () => {
-    if (getHover() !== null) {
-      setHover(null);
-      redraw();
-    }
+    if (getHover() !== null) { setHover(null); redraw(); }
   });
   canvas.addEventListener('touchstart', e => {
     if (e.touches.length > 0) handleMove(e.touches[0].clientX);
@@ -827,13 +791,9 @@ function setupChartHover(canvas, geomGetter, setHover, getHover, redraw) {
     if (e.touches.length > 0) handleMove(e.touches[0].clientX);
   }, { passive: true });
   canvas.addEventListener('touchend', () => {
-    if (getHover() !== null) {
-      setHover(null);
-      redraw();
-    }
+    if (getHover() !== null) { setHover(null); redraw(); }
   });
 }
-/* ===== Eventos ===== */
 document.getElementById('si').addEventListener('input',update);
 document.getElementById('sm').addEventListener('input',update);
 document.getElementById('sy').addEventListener('input',update);
@@ -845,7 +805,6 @@ document.querySelectorAll('.chip.lang').forEach(b=>{
 document.getElementById('themeToggle').addEventListener('click', ()=>{
   setTheme(THEME === 'dark' ? 'light' : 'dark');
 });
-/* Hover handlers */
 setupChartHover(
   document.getElementById('c1'),
   () => chart1Geom,
@@ -860,11 +819,9 @@ setupChartHover(
   () => hoverIdx2,
   () => { if (lastData) chart2(lastData); }
 );
-/* ===== Init ===== */
 setTheme(THEME);
 setLang(LANG);
 </script>
-<!-- ===== FOOTER REDES SOCIALES ===== -->
 <footer style="
   width: 100%;
   max-width: 960px;
@@ -887,61 +844,32 @@ setLang(LANG);
     text-transform: uppercase;
   " data-i18n="socialFollow">Seguinos en nuestras redes</p>
   <div style="display: flex; gap: 24px; align-items: center;">
-    <!-- Instagram -->
     <a href="https://www.instagram.com/iq.solucionesfinancieras/" target="_blank" rel="noopener"
       title="Instagram"
-      style="
-        display: flex; align-items: center; justify-content: center;
-        width: 48px; height: 48px; border-radius: 12px;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow);
-        transition: transform .2s ease, box-shadow .2s ease;
-      "
+      style="display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow); transition: transform .2s ease, box-shadow .2s ease;"
       onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 6px 20px rgba(0,0,0,0.15)'"
       onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='var(--shadow)'"
     >
       <img src="assets/ig.png" alt="Instagram" style="width:28px;height:28px;object-fit:contain;border-radius:6px;">
     </a>
-    <!-- LinkedIn -->
     <a href="https://www.linkedin.com/company/iq-soluciones-financieras/" target="_blank" rel="noopener"
       title="LinkedIn"
-      style="
-        display: flex; align-items: center; justify-content: center;
-        width: 48px; height: 48px; border-radius: 12px;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow);
-        transition: transform .2s ease, box-shadow .2s ease;
-      "
+      style="display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow); transition: transform .2s ease, box-shadow .2s ease;"
       onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 6px 20px rgba(0,0,0,0.15)'"
       onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='var(--shadow)'"
     >
       <img src="assets/in.png" alt="LinkedIn" style="width:28px;height:28px;object-fit:contain;border-radius:6px;">
     </a>
-    <!-- WhatsApp -->
     <a href="https://wa.me/message/QUGPRYJYH7JDK1" target="_blank" rel="noopener"
       title="WhatsApp"
-      style="
-        display: flex; align-items: center; justify-content: center;
-        width: 48px; height: 48px; border-radius: 12px;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow);
-        transition: transform .2s ease, box-shadow .2s ease;
-      "
+      style="display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow); transition: transform .2s ease, box-shadow .2s ease;"
       onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 6px 20px rgba(0,0,0,0.15)'"
       onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='var(--shadow)'"
     >
       <img src="assets/wp.png" alt="WhatsApp" style="width:28px;height:28px;object-fit:contain;">
     </a>
   </div>
-  <p style="
-    font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    color: var(--muted);
-    opacity: 0.7;
-  "><span data-i18n="socialRights">© 2025 IQ Soluciones Financieras S.A. — Todos los derechos reservados.</span></p>
+  <p style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--muted); opacity: 0.7;"><span data-i18n="socialRights">© 2025 IQ Soluciones Financieras S.A. — Todos los derechos reservados.</span></p>
 </footer>
 </body>
 </html>
