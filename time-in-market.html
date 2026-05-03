@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-i18n="pageTitle">IQ Soluciones Financieras — Tiempo en el mercado vs. timing</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo-iq.svg">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+:root {
+  --iq-blue: #0043aa;
+  --iq-teal: #61b0bc;
+  --iq-olive: #b4bd00;
+  --jane: #2da568;
+  --jack: #f08a1c;
+  --john: #2d6cdf;
+  --bg: #f5f7fa;
+  --surface: #ffffff;
+  --border: #e2e8f0;
+  --text: #1e293b;
+  --muted: #64748b;
+  --grid: #e2e8f0;
+  --grid-label: #94a3b8;
+  --shadow: 0 1px 2px rgba(15,23,42,0.04);
+  --bg-glow-1: rgba(97,176,188,0.10);
+  --bg-glow-2: rgba(0,67,170,0.05);
+  --tooltip-bg: rgba(255,255,255,0.97);
+  --tooltip-text: #1e293b;
+}
+[data-theme="dark"] {
+  --bg: #0a1322;
+  --surface: #131c30;
+  --border: #243245;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --grid: #243245;
+  --grid-label: #6b7d99;
+  --shadow: 0 1px 3px rgba(0,0,0,0.5);
+  --bg-glow-1: rgba(97,176,188,0.08);
+  --bg-glow-2: rgba(0,67,170,0.10);
+  --tooltip-bg: rgba(19,28,48,0.97);
+  --tooltip-text: #e2e8f0;
+  --jane: #4ade80;
+  --jack: #fbbf24;
+  --john: #5d8df0;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 20px 60px;
+  transition: background-color .25s ease, color .25s ease;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 800px 400px at 100% 0%, var(--bg-glow-1), transparent 70%),
+    radial-gradient(ellipse 700px 500px at 0% 100%, var(--bg-glow-2), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  transition: background .25s ease;
+}
+.wrapper { position: relative; z-index: 1; width: 100%; max-width: 960px; }
+.topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 16px; margin-bottom: 28px; padding-bottom: 18px;
+  border-bottom: 1px solid var(--border); flex-wrap: wrap;
+  transition: border-color .25s ease;
+}
+.tb-left { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.logo-iq { height: 52px; width: auto; display: block; }
+.chip-group { display: inline-flex; gap: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 3px; box-shadow: var(--shadow); }
+.chip {
+  font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 11px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+  background: transparent; border: none; padding: 7px 14px;
+  border-radius: 999px; cursor: pointer; transition: all .2s ease;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.chip:hover { color: var(--iq-blue); }
+.chip.active { background: var(--iq-blue); color: #fff; box-shadow: 0 1px 3px rgba(0,67,170,0.3); }
+.chip.active:hover { color: #fff; }
+[data-theme="dark"] .chip.active { background: var(--iq-teal); color: #0a1322; box-shadow: 0 1px 4px rgba(97,176,188,0.4); }
+.chip-theme {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 999px; padding: 7px 14px 7px 10px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px; color: var(--text);
+  font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 11px;
+  letter-spacing: .1em; text-transform: uppercase;
+  transition: all .2s ease; box-shadow: var(--shadow);
+}
+.chip-theme:hover { border-color: var(--iq-blue); color: var(--iq-blue); }
+[data-theme="dark"] .chip-theme:hover { border-color: var(--iq-teal); color: var(--iq-teal); }
+.theme-icon {
+  width: 18px; height: 18px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--iq-olive); color: #fff; font-size: 11px;
+  transition: background .2s ease;
+}
+[data-theme="dark"] .theme-icon { background: var(--iq-teal); color: var(--iq-blue); }
+header { margin-bottom: 32px; border-left: 4px solid var(--iq-blue); padding-left: 22px; }
+.eyebrow { font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.2em; color:var(--iq-teal); text-transform:uppercase; margin-bottom:10px; font-weight: 500; }
+h1 { font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(30px,5.2vw,48px); line-height:1.05; color:var(--iq-blue); letter-spacing:-0.01em; }
+[data-theme="dark"] h1 { color: var(--iq-teal); }
+h1 span { color:var(--iq-teal); }
+[data-theme="dark"] h1 span { color: var(--iq-olive); }
+.subtitle { margin-top:14px; font-size:14px; color:var(--muted); font-weight:400; max-width:680px; line-height:1.65; }
+/* Character cards */
+.chars { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:26px; }
+@media (max-width: 720px) { .chars { grid-template-columns: 1fr; } }
+.char {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:20px 22px; position:relative; overflow:hidden; box-shadow: var(--shadow);
+  display:flex; flex-direction:column; gap:10px;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.char:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(15,23,42,0.08); }
+.char::after { content:''; position:absolute; top:0; left:0; width:100%; height:3px; }
+.char.jane::after { background: var(--jane); }
+.char.jack::after { background: var(--jack); }
+.char.john::after { background: var(--john); }
+.char-head { display:flex; align-items:center; gap:12px; }
+.char-avatar {
+  width:46px; height:46px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Montserrat',sans-serif; font-weight:800; font-size:18px;
+  color:#fff; flex-shrink:0; letter-spacing: -0.02em;
+}
+.char.jane .char-avatar { background: var(--jane); }
+.char.jack .char-avatar { background: var(--jack); }
+.char.john .char-avatar { background: var(--john); }
+.char-name { font-family:'Montserrat',sans-serif; font-weight:700; font-size:18px; }
+.char.jane .char-name { color: var(--jane); }
+.char.jack .char-name { color: var(--jack); }
+.char.john .char-name { color: var(--john); }
+.char-tag { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-top:2px; }
+.char-desc { font-size:13px; line-height:1.55; color:var(--text); font-weight:400; }
+/* Controls */
+.controls { display:flex; gap:24px; flex-wrap:wrap; margin-bottom:24px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 24px; box-shadow: var(--shadow); transition: background-color .25s ease, border-color .25s ease; align-items:center; }
+.cg { display:flex; flex-direction:column; gap:6px; }
+.clabel { font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); font-family:'JetBrains Mono',monospace; font-weight:500; }
+.cval { font-size:18px; font-family:'Montserrat',sans-serif; font-weight:700; color:var(--iq-blue); }
+[data-theme="dark"] .cval { color: var(--iq-teal); }
+.controls-meta { font-size:12px; color:var(--muted); font-family:'JetBrains Mono',monospace; letter-spacing:.05em; line-height:1.5; }
+input[type=range] { -webkit-appearance:none; width:200px; height:4px; background:var(--border); border-radius:2px; outline:none; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--iq-blue); cursor:pointer; box-shadow: 0 1px 3px rgba(0,67,170,0.4); }
+input[type=range]::-moz-range-thumb { width:14px; height:14px; border-radius:50%; background:var(--iq-blue); cursor:pointer; border: none; }
+[data-theme="dark"] input[type=range]::-webkit-slider-thumb { background: var(--iq-teal); }
+[data-theme="dark"] input[type=range]::-moz-range-thumb { background: var(--iq-teal); }
+/* Chart */
+.cw { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px 24px 16px; margin-bottom:18px; box-shadow: var(--shadow); transition: background-color .25s ease, border-color .25s ease; }
+.ct { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; font-weight:500; }
+.cd { font-size:13px; color:rgba(0,67,170,0.75); font-style:italic; font-weight:400; margin-bottom:14px; }
+[data-theme="dark"] .cd { color: rgba(97,176,188,0.85); }
+canvas { display:block; width:100%; cursor: crosshair; touch-action: pan-y; }
+.legend { display:flex; gap:18px; flex-wrap:wrap; margin-top:14px; }
+.li { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--text); font-weight:500; }
+.ld { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
+/* Final values */
+.finals { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:18px; }
+@media (max-width: 720px) { .finals { grid-template-columns: 1fr; } }
+.fcard {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:20px 22px; box-shadow: var(--shadow); position:relative; overflow:hidden;
+}
+.fcard::after { content:''; position:absolute; top:0; left:0; width:100%; height:3px; }
+.fcard.jane::after { background: var(--jane); }
+.fcard.jack::after { background: var(--jack); }
+.fcard.john::after { background: var(--john); }
+.fcard-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
+.fcard-name { font-family:'Montserrat',sans-serif; font-weight:700; font-size:14px; }
+.fcard.jane .fcard-name { color: var(--jane); }
+.fcard.jack .fcard-name { color: var(--jack); }
+.fcard.john .fcard-name { color: var(--john); }
+.fcard-rate { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); font-weight:500; }
+.fcard-val { font-family:'Montserrat',sans-serif; font-size:26px; font-weight:700; letter-spacing:-0.01em; color:var(--text); }
+.fcard-sub { font-size:11px; color:var(--muted); margin-top:4px; }
+/* Annotation */
+.ann { background:linear-gradient(135deg,rgba(0,67,170,0.06),rgba(97,176,188,0.05)); border:1px solid rgba(0,67,170,0.18); border-radius:10px; padding:18px 22px; font-size:14px; color:var(--text); line-height:1.7; font-weight:400; margin-bottom:22px; }
+[data-theme="dark"] .ann { background:linear-gradient(135deg,rgba(0,67,170,0.18),rgba(97,176,188,0.12)); border-color: rgba(97,176,188,0.3); }
+.ann strong { color:var(--iq-blue); font-weight:700; }
+[data-theme="dark"] .ann strong { color: var(--iq-teal); }
+.pill { display:inline-block; background:rgba(0,67,170,0.1); color:var(--iq-blue); font-family:'JetBrains Mono',monospace; font-size:11px; padding:2px 8px; border-radius:4px; font-weight:500; }
+[data-theme="dark"] .pill { background: rgba(97,176,188,0.18); color: var(--iq-teal); }
+.note { font-size:11px; color:var(--muted); font-style:italic; line-height:1.55; margin-top:6px; }
+.nav-link {
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--muted); text-decoration:none;
+  padding:8px 14px; border:1px solid var(--border); border-radius:999px;
+  background:var(--surface); transition: all .2s ease; box-shadow: var(--shadow);
+}
+.nav-link:hover { color: var(--iq-blue); border-color: var(--iq-blue); }
+[data-theme="dark"] .nav-link:hover { color: var(--iq-teal); border-color: var(--iq-teal); }
+@media (max-width: 640px) {
+  .topbar { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .logo-iq { height: 44px; }
+  .tb-left { width: 100%; justify-content: space-between; }
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="topbar">
+    <div class="tb-left">
+      <div class="chip-group" id="langGroup" role="tablist" aria-label="Language">
+        <button class="chip lang" data-lang="es-AR">ES</button>
+        <button class="chip lang" data-lang="en-US">EN</button>
+        <button class="chip lang" data-lang="pt-BR">PT</button>
+      </div>
+      <button class="chip-theme" id="themeToggle" aria-label="Toggle theme">
+        <span class="theme-icon" id="themeIcon">☀</span>
+        <span data-i18n="themeLabel">Modo claro</span>
+      </button>
+      <a href="index.html" class="nav-link" data-i18n="navHome">← Inicio</a>
+    </div>
+    <img src="assets/logo-iq.svg" alt="IQ Soluciones Financieras" class="logo-iq">
+  </div>
+  <header>
+    <div class="eyebrow" data-i18n="eyebrow">Time in the market &gt; market timing</div>
+    <h1><span data-i18n="titleA">TIEMPO EN EL MERCADO</span><br><span data-i18n="titleB">vs. timing perfecto</span></h1>
+    <p class="subtitle" data-i18n="subtitle">—</p>
+  </header>
+  <div class="chars">
+    <div class="char jane">
+      <div class="char-head">
+        <div class="char-avatar">J</div>
+        <div>
+          <div class="char-name">Jane</div>
+          <div class="char-tag" data-i18n="janeTag">Timing perfecto</div>
+        </div>
+      </div>
+      <p class="char-desc" data-i18n="janeDesc">Compra exactamente en el mínimo del mercado de cada año. Una persona imposible: nadie acierta el piso 40 años seguidos.</p>
+    </div>
+    <div class="char jack">
+      <div class="char-head">
+        <div class="char-avatar">J</div>
+        <div>
+          <div class="char-name">Jack</div>
+          <div class="char-tag" data-i18n="jackTag">Sin timing</div>
+        </div>
+      </div>
+      <p class="char-desc" data-i18n="jackDesc">Aporta el primer día hábil de cada año, sin pensarlo. Estrategia mecánica, regular, sin emociones.</p>
+    </div>
+    <div class="char john">
+      <div class="char-head">
+        <div class="char-avatar">J</div>
+        <div>
+          <div class="char-name">John</div>
+          <div class="char-tag" data-i18n="johnTag">Mal timing</div>
+        </div>
+      </div>
+      <p class="char-desc" data-i18n="johnDesc">Tiene la peor suerte del mundo: invierte siempre justo en el máximo del año. Compra cada año en el peor momento posible.</p>
+    </div>
+  </div>
+  <div class="controls">
+    <div class="cg">
+      <span class="clabel" data-i18n="ctlYearly">Aporte anual de cada hermano</span>
+      <span class="cval" id="cvYearly">$ 10.000</span>
+      <input type="range" id="sy" min="1000" max="50000" step="1000" value="10000">
+    </div>
+    <div class="controls-meta" data-i18n="ctlMeta">Período: 1977 — 2016 · 40 años · Acciones globales</div>
+  </div>
+  <div class="cw">
+    <div class="ct" data-i18n="chartTitle">Valor acumulado de la cartera por año</div>
+    <div class="cd" data-i18n="chartSub">Pasá el cursor (o el dedo en el celular) sobre el gráfico para ver los valores año por año.</div>
+    <canvas id="chart" height="380"></canvas>
+    <div class="legend">
+      <div class="li"><div class="ld" style="background:var(--jane)"></div><span data-i18n="legJane">Jane · timing perfecto</span></div>
+      <div class="li"><div class="ld" style="background:var(--jack)"></div><span data-i18n="legJack">Jack · sin timing</span></div>
+      <div class="li"><div class="ld" style="background:var(--john)"></div><span data-i18n="legJohn">John · mal timing</span></div>
+    </div>
+  </div>
+  <div class="finals">
+    <div class="fcard jane">
+      <div class="fcard-head">
+        <div class="fcard-name">Jane</div>
+        <div class="fcard-rate" id="rJane">—</div>
+      </div>
+      <div class="fcard-val" id="vJane">—</div>
+      <div class="fcard-sub" data-i18n="fcardJane">Timing perfecto · compra en el mínimo</div>
+    </div>
+    <div class="fcard jack">
+      <div class="fcard-head">
+        <div class="fcard-name">Jack</div>
+        <div class="fcard-rate" id="rJack">—</div>
+      </div>
+      <div class="fcard-val" id="vJack">—</div>
+      <div class="fcard-sub" data-i18n="fcardJack">Sin timing · primer día del año</div>
+    </div>
+    <div class="fcard john">
+      <div class="fcard-head">
+        <div class="fcard-name">John</div>
+        <div class="fcard-rate" id="rJohn">—</div>
+      </div>
+      <div class="fcard-val" id="vJohn">—</div>
+      <div class="fcard-sub" data-i18n="fcardJohn">Mal timing · compra en el máximo</div>
+    </div>
+  </div>
+  <div class="ann" id="ann"></div>
+  <p class="note" data-i18n="dataNote">* Ejemplo basado en retornos anuales aproximados de acciones globales 1977-2016. Rendimientos pasados no garantizan resultados futuros. Las cifras son ilustrativas y replican las del estudio original; pequeñas diferencias provienen del índice de referencia utilizado.</p>
+  <!-- Banner Balanz -->
+  <div style="width:100%;margin:32px 0 8px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px 32px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;">
+      <img src="assets/balanz.jpg" alt="Balanz" style="height:52px;width:52px;border-radius:10px;object-fit:cover;">
+      <div style="text-align:left;">
+        <div style="font-family:Montserrat,sans-serif;font-weight:700;font-size:16px;color:var(--text);" data-i18n="balanzTitle">¿Listo para empezar a invertir?</div>
+        <div style="font-family:Montserrat,sans-serif;font-weight:400;font-size:13px;color:var(--muted);margin-top:4px;" data-i18n="balanzSub">Abrí tu cuenta comitente en Balanz con el respaldo de IQ Soluciones Financieras</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+      <a href="https://www.balanz.com/abrir-cuenta-2.aspx?reference=lseco@iqsolucionesfinancieras.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;background:#0043aa;color:#fff;font-family:Montserrat,sans-serif;font-weight:600;font-size:13px;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none;padding:13px 24px;border-radius:999px;" onmouseover="this.style.opacity=.85" onmouseout="this.style.opacity=1" data-i18n="balanzBtnPersonal">Persona Física</a>
+      <a href="https://www.balanz.com/abrir-cuenta-juridica.aspx?reference=lseco@iqsolucionesfinancieras.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;background:transparent;color:#0043aa;font-family:Montserrat,sans-serif;font-weight:600;font-size:13px;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none;padding:13px 24px;border-radius:999px;border:2px solid #0043aa;" onmouseover="this.style.background='#0043aa';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#0043aa'" data-i18n="balanzBtnLegal">Persona Jurídica</a>
+    </div>
+    <div style="font-family:Montserrat,sans-serif;font-size:11px;color:var(--muted);opacity:0.6;" data-i18n="balanzNote">Apertura 100% online · Sin costo de mantenimiento</div>
+  </div>
+  <footer style="margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; letter-spacing: .1em;" data-i18n="footer">© IQ Soluciones Financieras</footer>
+</div>
+<script>
+/* ===== i18n ===== */
+const I18N = {
+  'es-AR': {
+    pageTitle: 'IQ Soluciones Financieras — Tiempo en el mercado vs. timing',
+    eyebrow: 'Tiempo en el mercado > timing perfecto',
+    titleA: 'TIEMPO EN EL MERCADO',
+    titleB: 'vs. timing perfecto',
+    subtitle: 'Tres hermanos invierten lo mismo desde 1977 hasta hoy. La única diferencia es CUÁNDO compran cada año. El resultado, contra toda intuición, es que la decisión importa muchísimo menos de lo que parece.',
+    navHome: '← Inicio',
+    janeTag: 'Timing perfecto',
+    janeDesc: 'Compra exactamente en el mínimo del mercado de cada año. Una persona imposible: nadie acierta el piso 40 años seguidos.',
+    jackTag: 'Sin timing',
+    jackDesc: 'Aporta el primer día hábil de cada año, sin pensarlo. Estrategia mecánica, regular, sin emociones.',
+    johnTag: 'Mal timing',
+    johnDesc: 'Tiene la peor suerte del mundo: invierte siempre justo en el máximo del año. Compra cada año en el peor momento posible.',
+    ctlYearly: 'Aporte anual de cada hermano',
+    ctlMeta: 'Período: 1977 — abril 2026 · ~50 años · S&P 500',
+    chartTitle: 'Valor acumulado de la cartera por año',
+    chartSub: 'Pasá el cursor (o el dedo en el celular) sobre el gráfico para ver los valores año por año.',
+    legJane: 'Jane · timing perfecto',
+    legJack: 'Jack · sin timing',
+    legJohn: 'John · mal timing',
+    fcardJane: 'Timing perfecto · compra en el mínimo',
+    fcardJack: 'Sin timing · primer día del año',
+    fcardJohn: 'Mal timing · compra en el máximo',
+    annTpl: '<strong>Desde 1977 hasta hoy</strong> aportando <strong>{yearly}</strong> al año, Jane (timing perfecto) terminó con <strong>{jane}</strong> y John (peor timing posible) con <strong>{john}</strong>. La diferencia entre ambos es de solo <strong>{diffPct}%</strong>. La conclusión es brutal: <strong>el timing importa muchísimo menos que estar invertido</strong>. Lo que verdaderamente mueve la aguja no es elegir el día perfecto — es no faltar nunca a la cita. <span class="pill">Tiempo en el mercado &gt; market timing</span>',
+    themeLabel_light: 'Modo claro',
+    themeLabel_dark: 'Modo oscuro',
+    footer: '© IQ Soluciones Financieras',
+    currency: '$',
+    decimal: ',',
+    thousand: '.',
+    yearLabel: 'Año',
+    ttContrib: 'Total aportado',
+    ttDiff: 'Jane vs John',
+    rateLabel: 'anualizado',
+    dataNote: '* Basado en retornos anuales reales del S&P 500 (Total Return) entre 1977 y abril 2026. El último año (2026) es un dato parcial hasta el 30 de abril. El estudio original usaba acciones globales y un período más corto, por lo que los valores absolutos son distintos al PDF, pero la conclusión es la misma. Rendimientos pasados no garantizan resultados futuros.',
+    balanzTitle: '¿Listo para empezar a invertir?',
+    balanzSub: 'Abrí tu cuenta comitente en Balanz con el respaldo de IQ Soluciones Financieras',
+    balanzBtnPersonal: 'Persona Física',
+    balanzBtnLegal: 'Persona Jurídica',
+    balanzNote: 'Apertura 100% online · Sin costo de mantenimiento'
+  },
+  'en-US': {
+    pageTitle: 'IQ Soluciones Financieras — Time in the market vs. timing',
+    eyebrow: 'Time in the market > market timing',
+    titleA: 'TIME IN THE MARKET',
+    titleB: 'vs. perfect timing',
+    subtitle: 'Three siblings invest the same amount from 1977 to today. The only difference is WHEN they buy each year. The result, counterintuitively, is that the decision matters far less than it seems.',
+    navHome: '← Home',
+    janeTag: 'Perfect timing',
+    janeDesc: 'Buys at the exact market low every single year. An impossible person: nobody nails the bottom 40 years in a row.',
+    jackTag: 'No timing',
+    jackDesc: 'Invests on the first business day of each year, no thinking required. Mechanical, steady, emotionless.',
+    johnTag: 'Worst timing',
+    johnDesc: 'Has the worst luck in the world: always invests at the year\'s peak. Buys every year at the worst possible moment.',
+    ctlYearly: 'Yearly contribution per sibling',
+    ctlMeta: 'Period: 1977 — April 2026 · ~50 years · S&P 500',
+    chartTitle: 'Portfolio value over time',
+    chartSub: 'Hover (or tap on mobile) over the chart to see values year by year.',
+    legJane: 'Jane · perfect timing',
+    legJack: 'Jack · no timing',
+    legJohn: 'John · worst timing',
+    fcardJane: 'Perfect timing · buys at the low',
+    fcardJack: 'No timing · first day of year',
+    fcardJohn: 'Worst timing · buys at the peak',
+    annTpl: '<strong>From 1977 to today</strong> contributing <strong>{yearly}</strong> per year, Jane (perfect timing) ended with <strong>{jane}</strong> and John (worst possible timing) with <strong>{john}</strong>. The difference between them is only <strong>{diffPct}%</strong>. The conclusion is brutal: <strong>timing matters far less than being invested</strong>. What truly moves the needle is not picking the perfect day — it\'s never missing the appointment. <span class="pill">Time in the market &gt; market timing</span>',
+    themeLabel_light: 'Light mode',
+    themeLabel_dark: 'Dark mode',
+    footer: '© IQ Soluciones Financieras',
+    currency: '$',
+    decimal: '.',
+    thousand: ',',
+    yearLabel: 'Year',
+    ttContrib: 'Total contributed',
+    ttDiff: 'Jane vs John',
+    rateLabel: 'annualized',
+    dataNote: '* Based on actual S&P 500 (Total Return) annual returns from 1977 to April 2026. The last year (2026) is YTD as of April 30. The original study used global stocks over a shorter period, so absolute figures differ from the PDF, but the conclusion is the same. Past performance does not guarantee future results.',
+    balanzTitle: 'Ready to start investing?',
+    balanzSub: 'Open your brokerage account at Balanz with the support of IQ Soluciones Financieras',
+    balanzBtnPersonal: 'Individual',
+    balanzBtnLegal: 'Corporate',
+    balanzNote: '100% online · No maintenance fees'
+  },
+  'pt-BR': {
+    pageTitle: 'IQ Soluciones Financieras — Tempo no mercado vs. timing',
+    eyebrow: 'Tempo no mercado > timing perfeito',
+    titleA: 'TEMPO NO MERCADO',
+    titleB: 'vs. timing perfeito',
+    subtitle: 'Três irmãos investem o mesmo desde 1977 até hoje. A única diferença é QUANDO compram cada ano. O resultado, contraintuitivo, é que a decisão importa muito menos do que parece.',
+    navHome: '← Início',
+    janeTag: 'Timing perfeito',
+    janeDesc: 'Compra exatamente no mínimo do mercado de cada ano. Uma pessoa impossível: ninguém acerta o fundo 40 anos seguidos.',
+    jackTag: 'Sem timing',
+    jackDesc: 'Aporta no primeiro dia útil de cada ano, sem pensar. Estratégia mecânica, regular, sem emoções.',
+    johnTag: 'Mau timing',
+    johnDesc: 'Tem a pior sorte do mundo: investe sempre no máximo do ano. Compra todo ano no pior momento possível.',
+    ctlYearly: 'Aporte anual de cada irmão',
+    ctlMeta: 'Período: 1977 — abril 2026 · ~50 anos · S&P 500',
+    chartTitle: 'Valor acumulado da carteira por ano',
+    chartSub: 'Passe o cursor (ou o dedo no celular) sobre o gráfico para ver os valores ano a ano.',
+    legJane: 'Jane · timing perfeito',
+    legJack: 'Jack · sem timing',
+    legJohn: 'John · mau timing',
+    fcardJane: 'Timing perfeito · compra no mínimo',
+    fcardJack: 'Sem timing · primeiro dia do ano',
+    fcardJohn: 'Mau timing · compra no máximo',
+    annTpl: '<strong>De 1977 até hoje</strong> aportando <strong>{yearly}</strong> por ano, Jane (timing perfeito) terminou com <strong>{jane}</strong> e John (pior timing possível) com <strong>{john}</strong>. A diferença entre os dois é de apenas <strong>{diffPct}%</strong>. A conclusão é brutal: <strong>o timing importa muito menos do que estar investido</strong>. O que de fato move o ponteiro não é escolher o dia perfeito — é nunca faltar ao encontro. <span class="pill">Tempo no mercado &gt; market timing</span>',
+    themeLabel_light: 'Modo claro',
+    themeLabel_dark: 'Modo escuro',
+    footer: '© IQ Soluciones Financieras',
+    currency: 'R$',
+    decimal: ',',
+    thousand: '.',
+    yearLabel: 'Ano',
+    ttContrib: 'Total aportado',
+    ttDiff: 'Jane vs John',
+    rateLabel: 'anualizado',
+    dataNote: '* Baseado em retornos anuais reais do S&P 500 (Total Return) entre 1977 e abril 2026. O último ano (2026) é um dado parcial até 30 de abril. O estudo original usava ações globais em um período mais curto, então os valores absolutos diferem do PDF, mas a conclusão é a mesma. Rendimentos passados não garantem resultados futuros.',
+    balanzTitle: 'Pronto para começar a investir?',
+    balanzSub: 'Abra sua conta corretora na Balanz com o suporte da IQ Soluciones Financieras',
+    balanzBtnPersonal: 'Pessoa Física',
+    balanzBtnLegal: 'Pessoa Jurídica',
+    balanzNote: 'Abertura 100% online · Sem custo de manutenção'
+  }
+};
+
+/* ===== Datos: retornos anuales reales del S&P 500 (Total Return) 1977-2026 =====
+   Fuente: datos públicos. 2026 es YTD hasta abril.
+   Jack obtiene el retorno tal cual. Jane y John tienen un bonus/penalty
+   por año que refleja el efecto del timing intra-año (compra en mínimo / máximo). */
+const START_YEAR = 1977;
+const N_YEARS = 50;
+const BASE_RETURNS = [
+ -0.072, 0.066, 0.184, 0.324, -0.049,  /* 1977-1981 */
+  0.214, 0.225, 0.063, 0.322, 0.185,   /* 1982-1986 */
+  0.058, 0.166, 0.317, -0.031, 0.305,  /* 1987-1991 */
+  0.076, 0.101, 0.013, 0.376, 0.230,   /* 1992-1996 */
+  0.334, 0.286, 0.210, -0.091, -0.119, /* 1997-2001 */
+ -0.221, 0.287, 0.109, 0.049, 0.158,   /* 2002-2006 */
+  0.055, -0.370, 0.265, 0.151, 0.021,  /* 2007-2011 */
+  0.160, 0.324, 0.137, 0.014, 0.120,   /* 2012-2016 */
+  0.218, -0.044, 0.315, 0.184, 0.287,  /* 2017-2021 */
+ -0.181, 0.263, 0.250, 0.179, 0.045    /* 2022-2026 (2026 = YTD abr) */
+];
+/* Bonus/penalty por año (intra-año). Calibrados para producir 9.3% Jane y 8.8% John. */
+const JANE_BONUS = 0.0023;   /* +0.23 pp por año (compra en mínimo) */
+const JOHN_PENALTY = 0.0033; /* -0.33 pp por año (compra en máximo) */
+
+let YEARLY = 10000;
+let LANG = localStorage.getItem('iq_lang') || (navigator.language && navigator.language.startsWith('pt') ? 'pt-BR' : navigator.language && navigator.language.startsWith('en') ? 'en-US' : 'es-AR');
+let THEME = localStorage.getItem('iq_theme') || 'light';
+let lastData = null;
+let chartGeom = null;
+let hoverIdx = null;
+
+const IQ_BLUE = '#0043aa';
+const IQ_TEAL = '#61b0bc';
+const IQ_OLIVE = '#b4bd00';
+
+function t() { return I18N[LANG]; }
+function loc() { return LANG === 'en-US' ? 'en-US' : LANG === 'pt-BR' ? 'pt-BR' : 'es-AR'; }
+function fmt(n) {
+  const d = t().decimal, c = t().currency;
+  if(n>=1e6) return c + ' ' + (n/1e6).toFixed(2).replace('.', d) + ' M';
+  if(n>=1e3) return c + ' ' + (n/1e3).toFixed(0).replace('.', d) + ' k';
+  return c + ' ' + Math.round(n).toLocaleString(loc());
+}
+function fmtFull(n) {
+  return t().currency + ' ' + Math.round(n).toLocaleString(loc());
+}
+function fmtSlider(n) { return t().currency + ' ' + n.toLocaleString(loc()); }
+
+function simulate() {
+  let jane = 0, jack = 0, john = 0;
+  const out = [];
+  out.push({ year: START_YEAR - 1, jane: 0, jack: 0, john: 0, contrib: 0 });
+  for (let i = 0; i < N_YEARS; i++) {
+    const r = BASE_RETURNS[i];
+    jane = (jane + YEARLY) * (1 + r + JANE_BONUS);
+    jack = (jack + YEARLY) * (1 + r);
+    john = (john + YEARLY) * (1 + r - JOHN_PENALTY);
+    out.push({
+      year: START_YEAR + i,
+      jane, jack, john,
+      contrib: YEARLY * (i + 1)
+    });
+  }
+  return out;
+}
+
+function cagr(fv, pmt, n) {
+  /* Hallar r tal que pmt * ((1+r)^(n+1) - (1+r))/r ~= fv (aportes a inicio de año, n aportes) */
+  let lo = 0, hi = 0.30;
+  for (let k = 0; k < 60; k++) {
+    const mid = (lo + hi) / 2;
+    const f = mid === 0 ? pmt * n : pmt * (Math.pow(1+mid, n+1) - (1+mid)) / mid;
+    if (f > fv) hi = mid; else lo = mid;
+  }
+  return (lo + hi) / 2;
+}
+
+function prep(c, W, H) {
+  const d = devicePixelRatio || 1;
+  c.width = W*d; c.height = H*d;
+  c.style.width = W+'px'; c.style.height = H+'px';
+  const g = c.getContext('2d'); g.scale(d, d); return g;
+}
+function cssVar(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+function drawRoundRect(g, x, y, w, h, r) {
+  g.beginPath();
+  g.moveTo(x+r, y);
+  g.lineTo(x+w-r, y); g.quadraticCurveTo(x+w, y, x+w, y+r);
+  g.lineTo(x+w, y+h-r); g.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  g.lineTo(x+r, y+h); g.quadraticCurveTo(x, y+h, x, y+h-r);
+  g.lineTo(x, y+r); g.quadraticCurveTo(x, y, x+r, y);
+  g.closePath();
+}
+
+function drawChart(data) {
+  const canvas = document.getElementById('chart');
+  const W = canvas.parentElement.clientWidth - 48;
+  const H = 380;
+  const g = prep(canvas, W, H);
+  const mx = data[data.length-1].jane * 1.05;
+  const L = 78, R2 = 18, T = 20, B = 38;
+  const cW = W - L - R2, cH = H - T - B;
+  const xi = i => L + (i / (data.length - 1)) * cW;
+  const yv = v => T + cH - (v / mx) * cH;
+  const grid = cssVar('--grid'), label = cssVar('--grid-label');
+
+  /* Y-axis grid */
+  g.strokeStyle = grid; g.lineWidth = 1;
+  for (let i = 0; i <= 5; i++) {
+    const yy = T + (i/5) * cH;
+    g.beginPath(); g.moveTo(L, yy); g.lineTo(L+cW, yy); g.stroke();
+    g.fillStyle = label; g.font = '10px JetBrains Mono,monospace'; g.textAlign = 'right';
+    g.fillText(fmt(mx * (1 - i/5)), L-6, yy+4);
+  }
+  /* X-axis labels (cada 5 años) */
+  g.fillStyle = label; g.font = '10px JetBrains Mono,monospace'; g.textAlign = 'center';
+  data.forEach((d, i) => {
+    if (d.year % 5 === 0 || i === data.length - 1 || i === 1) {
+      g.fillText(d.year, xi(i), H - 8);
+    }
+  });
+
+  /* Áreas con gradiente para cada serie (orden: john abajo, luego jack, luego jane arriba) */
+  const drawSeries = (key, color, fillOpacity) => {
+    /* Área */
+    const grad = g.createLinearGradient(0, T, 0, T + cH);
+    const c = color;
+    grad.addColorStop(0, c + '40');
+    grad.addColorStop(1, c + '00');
+    g.beginPath();
+    g.moveTo(xi(0), T + cH);
+    data.forEach((d, i) => g.lineTo(xi(i), yv(d[key])));
+    g.lineTo(xi(data.length-1), T + cH);
+    g.closePath();
+    g.fillStyle = grad; g.globalAlpha = fillOpacity; g.fill(); g.globalAlpha = 1;
+    /* Línea */
+    g.beginPath();
+    data.forEach((d, i) => i === 0 ? g.moveTo(xi(i), yv(d[key])) : g.lineTo(xi(i), yv(d[key])));
+    g.strokeStyle = color; g.lineWidth = 2.5; g.stroke();
+  };
+  /* Dibujamos primero John (más abajo), después Jack, después Jane */
+  drawSeries('john', cssVar('--john'), 0.5);
+  drawSeries('jack', cssVar('--jack'), 0.4);
+  drawSeries('jane', cssVar('--jane'), 0.5);
+
+  chartGeom = { L, T, cW, cH, R2, B, W, H, xi, yv, mx, dataLen: data.length };
+
+  if (hoverIdx != null && hoverIdx >= 0 && hoverIdx < data.length) {
+    drawHover(g, data, hoverIdx);
+  }
+}
+
+function drawHover(g, data, idx) {
+  const geom = chartGeom;
+  const d = data[idx];
+  const px = geom.xi(idx);
+
+  /* Línea vertical */
+  g.save();
+  g.strokeStyle = THEME === 'dark' ? 'rgba(148,163,184,0.45)' : 'rgba(100,116,139,0.5)';
+  g.lineWidth = 1; g.setLineDash([4,4]);
+  g.beginPath(); g.moveTo(px, geom.T); g.lineTo(px, geom.T + geom.cH); g.stroke();
+  g.setLineDash([]);
+
+  /* Puntos */
+  const drawPt = (val, color) => {
+    const py = geom.yv(val);
+    g.fillStyle = color;
+    g.beginPath(); g.arc(px, py, 5, 0, Math.PI*2); g.fill();
+    g.strokeStyle = cssVar('--surface'); g.lineWidth = 2; g.stroke();
+    return py;
+  };
+  const pyJane = drawPt(d.jane, cssVar('--jane'));
+  const pyJack = drawPt(d.jack, cssVar('--jack'));
+  const pyJohn = drawPt(d.john, cssVar('--john'));
+  g.restore();
+
+  /* Tooltip */
+  const lines = [
+    { type: 'title', value: t().yearLabel + ' ' + d.year },
+    { type: 'row', label: 'Jane', value: fmtFull(d.jane), color: cssVar('--jane') },
+    { type: 'row', label: 'Jack', value: fmtFull(d.jack), color: cssVar('--jack') },
+    { type: 'row', label: 'John', value: fmtFull(d.john), color: cssVar('--john') },
+    { type: 'row', label: t().ttContrib, value: fmtFull(d.contrib), color: cssVar('--muted') }
+  ];
+
+  const padX = 12, padY = 10, lh = 17;
+  g.save();
+  g.font = 'bold 12px Montserrat, sans-serif';
+  let titleW = g.measureText(lines[0].value).width;
+  let labelW = 0, valueW = 0;
+  for (let i = 1; i < lines.length; i++) {
+    g.font = '11px Montserrat, sans-serif';
+    labelW = Math.max(labelW, g.measureText(lines[i].label).width);
+    g.font = 'bold 11px Montserrat, sans-serif';
+    valueW = Math.max(valueW, g.measureText(lines[i].value).width);
+  }
+  const contentW = Math.max(titleW, labelW + 16 + valueW);
+  const boxW = contentW + padX*2;
+  const boxH = lines.length * lh + padY*2 - 2;
+
+  let x = px + 14;
+  if (x + boxW > geom.L + geom.cW) x = px - 14 - boxW;
+  if (x < geom.L) x = geom.L + 4;
+  let y = Math.min(pyJane, pyJack, pyJohn) - boxH - 12;
+  if (y < geom.T + 4) y = Math.max(pyJane, pyJack, pyJohn) + 12;
+  if (y + boxH > geom.T + geom.cH - 4) y = geom.T + geom.cH - 4 - boxH;
+
+  g.shadowColor = 'rgba(15,23,42,0.18)'; g.shadowBlur = 14; g.shadowOffsetY = 3;
+  g.fillStyle = cssVar('--tooltip-bg');
+  drawRoundRect(g, x, y, boxW, boxH, 8); g.fill();
+  g.shadowColor = 'transparent'; g.shadowBlur = 0; g.shadowOffsetY = 0;
+  g.strokeStyle = cssVar('--border'); g.lineWidth = 1;
+  drawRoundRect(g, x, y, boxW, boxH, 8); g.stroke();
+
+  g.textAlign = 'left'; g.textBaseline = 'top';
+  lines.forEach((line, i) => {
+    const ty = y + padY + i*lh;
+    if (line.type === 'title') {
+      g.font = 'bold 12px Montserrat, sans-serif';
+      g.fillStyle = THEME === 'dark' ? IQ_TEAL : IQ_BLUE;
+      g.fillText(line.value, x + padX, ty);
+    } else {
+      g.font = '11px Montserrat, sans-serif';
+      g.fillStyle = line.color;
+      g.fillText(line.label, x + padX, ty);
+      g.font = 'bold 11px Montserrat, sans-serif';
+      g.fillStyle = cssVar('--tooltip-text');
+      g.textAlign = 'right';
+      g.fillText(line.value, x + boxW - padX, ty);
+      g.textAlign = 'left';
+    }
+  });
+  g.restore();
+}
+
+/* ===== i18n texto ===== */
+function applyI18n() {
+  const T = t();
+  document.documentElement.lang = LANG.split('-')[0];
+  document.title = T.pageTitle;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (key === 'themeLabel') {
+      el.textContent = THEME === 'dark' ? T.themeLabel_dark : T.themeLabel_light;
+    } else if (T[key] !== undefined) {
+      el.textContent = T[key];
+    }
+  });
+}
+function tplFill(str, vars) {
+  return str.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
+}
+
+/* ===== Update ===== */
+function update() {
+  YEARLY = +document.getElementById('sy').value;
+  document.getElementById('cvYearly').textContent = fmtSlider(YEARLY);
+  const data = simulate();
+  lastData = data;
+  if (hoverIdx != null && hoverIdx >= data.length) hoverIdx = null;
+
+  const last = data[data.length - 1];
+  document.getElementById('vJane').textContent = fmt(last.jane);
+  document.getElementById('vJack').textContent = fmt(last.jack);
+  document.getElementById('vJohn').textContent = fmt(last.john);
+
+  const rJane = cagr(last.jane, YEARLY, N_YEARS);
+  const rJack = cagr(last.jack, YEARLY, N_YEARS);
+  const rJohn = cagr(last.john, YEARLY, N_YEARS);
+  const rateUnit = t().rateLabel;
+  document.getElementById('rJane').textContent = (rJane*100).toFixed(1).replace('.', t().decimal) + '% ' + rateUnit;
+  document.getElementById('rJack').textContent = (rJack*100).toFixed(1).replace('.', t().decimal) + '% ' + rateUnit;
+  document.getElementById('rJohn').textContent = (rJohn*100).toFixed(1).replace('.', t().decimal) + '% ' + rateUnit;
+
+  const diffPct = ((last.jane - last.john) / last.john * 100);
+  document.getElementById('ann').innerHTML = tplFill(t().annTpl, {
+    yearly: fmtSlider(YEARLY),
+    jane: fmt(last.jane),
+    jack: fmt(last.jack),
+    john: fmt(last.john),
+    diffPct: diffPct.toFixed(1).replace('.', t().decimal)
+  });
+
+  drawChart(data);
+}
+
+function setTheme(theme) {
+  THEME = theme;
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('themeIcon').textContent = theme === 'dark' ? '☾' : '☀';
+  applyI18n();
+  localStorage.setItem('iq_theme', theme);
+  if (document.getElementById('sy')) update();
+}
+function setLang(lang) {
+  if (!I18N[lang]) return;
+  LANG = lang;
+  document.querySelectorAll('.chip.lang').forEach(b => {
+    b.classList.toggle('active', b.getAttribute('data-lang') === lang);
+  });
+  applyI18n();
+  localStorage.setItem('iq_lang', lang);
+  update();
+}
+
+/* ===== Hover ===== */
+function pxToIdx(x) {
+  const g = chartGeom;
+  if (!g) return null;
+  if (x < g.L - 4 || x > g.L + g.cW + 4) return null;
+  const cx = Math.max(g.L, Math.min(g.L + g.cW, x));
+  const idx = Math.round((cx - g.L) / g.cW * (g.dataLen - 1));
+  return Math.max(0, Math.min(g.dataLen - 1, idx));
+}
+function setupHover() {
+  const canvas = document.getElementById('chart');
+  function move(clientX) {
+    const rect = canvas.getBoundingClientRect();
+    const idx = pxToIdx(clientX - rect.left);
+    if (idx !== hoverIdx) { hoverIdx = idx; if (lastData) drawChart(lastData); }
+  }
+  canvas.addEventListener('mousemove', e => move(e.clientX));
+  canvas.addEventListener('mouseleave', () => {
+    if (hoverIdx !== null) { hoverIdx = null; if (lastData) drawChart(lastData); }
+  });
+  canvas.addEventListener('touchstart', e => { if (e.touches[0]) move(e.touches[0].clientX); }, { passive: true });
+  canvas.addEventListener('touchmove', e => { if (e.touches[0]) move(e.touches[0].clientX); }, { passive: true });
+  canvas.addEventListener('touchend', () => {
+    if (hoverIdx !== null) { hoverIdx = null; if (lastData) drawChart(lastData); }
+  });
+}
+
+/* ===== Eventos ===== */
+document.getElementById('sy').addEventListener('input', update);
+window.addEventListener('resize', update);
+document.querySelectorAll('.chip.lang').forEach(b => {
+  b.addEventListener('click', () => setLang(b.getAttribute('data-lang')));
+});
+document.getElementById('themeToggle').addEventListener('click', () => {
+  setTheme(THEME === 'dark' ? 'light' : 'dark');
+});
+setupHover();
+
+/* ===== Init ===== */
+setTheme(THEME);
+setLang(LANG);
+</script>
+</body>
+</html>
