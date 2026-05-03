@@ -14,6 +14,7 @@
   --jane: #2da568;
   --jack: #f08a1c;
   --john: #2d6cdf;
+  --mark: #b54708;
   --bg: #f5f7fa;
   --surface: #ffffff;
   --border: #e2e8f0;
@@ -43,68 +44,36 @@
   --jane: #4ade80;
   --jack: #fbbf24;
   --john: #5d8df0;
+  --mark: #ea7e3c;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 300;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 24px 20px 60px;
-  transition: background-color .25s ease, color .25s ease;
+  background: var(--bg); color: var(--text);
+  font-family: 'Montserrat', sans-serif; font-weight: 300;
+  min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+  padding: 24px 20px 60px; transition: background-color .25s ease, color .25s ease;
 }
 body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
+  content: ''; position: fixed; inset: 0;
   background:
     radial-gradient(ellipse 800px 400px at 100% 0%, var(--bg-glow-1), transparent 70%),
     radial-gradient(ellipse 700px 500px at 0% 100%, var(--bg-glow-2), transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-  transition: background .25s ease;
+  pointer-events: none; z-index: 0; transition: background .25s ease;
 }
 .wrapper { position: relative; z-index: 1; width: 100%; max-width: 960px; }
-.topbar {
-  display: flex; justify-content: space-between; align-items: center;
-  gap: 16px; margin-bottom: 28px; padding-bottom: 18px;
-  border-bottom: 1px solid var(--border); flex-wrap: wrap;
-  transition: border-color .25s ease;
-}
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 28px; padding-bottom: 18px; border-bottom: 1px solid var(--border); flex-wrap: wrap; transition: border-color .25s ease; }
 .tb-left { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .logo-iq { height: 52px; width: auto; display: block; }
 .chip-group { display: inline-flex; gap: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 3px; box-shadow: var(--shadow); }
-.chip {
-  font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 11px;
-  letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
-  background: transparent; border: none; padding: 7px 14px;
-  border-radius: 999px; cursor: pointer; transition: all .2s ease;
-  display: inline-flex; align-items: center; gap: 6px;
-}
+.chip { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); background: transparent; border: none; padding: 7px 14px; border-radius: 999px; cursor: pointer; transition: all .2s ease; display: inline-flex; align-items: center; gap: 6px; }
 .chip:hover { color: var(--iq-blue); }
 .chip.active { background: var(--iq-blue); color: #fff; box-shadow: 0 1px 3px rgba(0,67,170,0.3); }
 .chip.active:hover { color: #fff; }
 [data-theme="dark"] .chip.active { background: var(--iq-teal); color: #0a1322; box-shadow: 0 1px 4px rgba(97,176,188,0.4); }
-.chip-theme {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 999px; padding: 7px 14px 7px 10px; cursor: pointer;
-  display: inline-flex; align-items: center; gap: 8px; color: var(--text);
-  font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 11px;
-  letter-spacing: .1em; text-transform: uppercase;
-  transition: all .2s ease; box-shadow: var(--shadow);
-}
+.chip-theme { background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 7px 14px 7px 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; color: var(--text); font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; transition: all .2s ease; box-shadow: var(--shadow); }
 .chip-theme:hover { border-color: var(--iq-blue); color: var(--iq-blue); }
 [data-theme="dark"] .chip-theme:hover { border-color: var(--iq-teal); color: var(--iq-teal); }
-.theme-icon {
-  width: 18px; height: 18px; border-radius: 50%;
-  display: inline-flex; align-items: center; justify-content: center;
-  background: var(--iq-olive); color: #fff; font-size: 11px;
-  transition: background .2s ease;
-}
+.theme-icon { width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--iq-olive); color: #fff; font-size: 11px; transition: background .2s ease; }
 [data-theme="dark"] .theme-icon { background: var(--iq-teal); color: var(--iq-blue); }
 header { margin-bottom: 32px; border-left: 4px solid var(--iq-blue); padding-left: 22px; }
 .eyebrow { font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.2em; color:var(--iq-teal); text-transform:uppercase; margin-bottom:10px; font-weight: 500; }
@@ -116,31 +85,24 @@ h1 span { color:var(--iq-teal); }
 /* Character cards */
 .chars { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:26px; }
 @media (max-width: 720px) { .chars { grid-template-columns: 1fr; } }
-.char {
-  background:var(--surface); border:1px solid var(--border); border-radius:12px;
-  padding:20px 22px; position:relative; overflow:hidden; box-shadow: var(--shadow);
-  display:flex; flex-direction:column; gap:10px;
-  transition: transform .2s ease, box-shadow .2s ease;
-}
+.char { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; position:relative; overflow:hidden; box-shadow: var(--shadow); display:flex; flex-direction:column; gap:10px; transition: transform .2s ease, box-shadow .2s ease; }
 .char:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(15,23,42,0.08); }
 .char::after { content:''; position:absolute; top:0; left:0; width:100%; height:3px; }
 .char.jane::after { background: var(--jane); }
 .char.jack::after { background: var(--jack); }
 .char.john::after { background: var(--john); }
+.char.mark::after { background: var(--mark); }
 .char-head { display:flex; align-items:center; gap:12px; }
-.char-avatar {
-  width:46px; height:46px; border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  font-family:'Montserrat',sans-serif; font-weight:800; font-size:18px;
-  color:#fff; flex-shrink:0; letter-spacing: -0.02em;
-}
+.char-avatar { width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Montserrat',sans-serif; font-weight:800; font-size:18px; color:#fff; flex-shrink:0; letter-spacing: -0.02em; }
 .char.jane .char-avatar { background: var(--jane); }
 .char.jack .char-avatar { background: var(--jack); }
 .char.john .char-avatar { background: var(--john); }
+.char.mark .char-avatar { background: var(--mark); }
 .char-name { font-family:'Montserrat',sans-serif; font-weight:700; font-size:18px; }
 .char.jane .char-name { color: var(--jane); }
 .char.jack .char-name { color: var(--jack); }
 .char.john .char-name { color: var(--john); }
+.char.mark .char-name { color: var(--mark); }
 .char-tag { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-top:2px; }
 .char-desc { font-size:13px; line-height:1.55; color:var(--text); font-weight:400; }
 /* Controls */
@@ -167,10 +129,7 @@ canvas { display:block; width:100%; cursor: crosshair; touch-action: pan-y; }
 /* Final values */
 .finals { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:18px; }
 @media (max-width: 720px) { .finals { grid-template-columns: 1fr; } }
-.fcard {
-  background:var(--surface); border:1px solid var(--border); border-radius:12px;
-  padding:20px 22px; box-shadow: var(--shadow); position:relative; overflow:hidden;
-}
+.fcard { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow: var(--shadow); position:relative; overflow:hidden; }
 .fcard::after { content:''; position:absolute; top:0; left:0; width:100%; height:3px; }
 .fcard.jane::after { background: var(--jane); }
 .fcard.jack::after { background: var(--jack); }
@@ -190,14 +149,55 @@ canvas { display:block; width:100%; cursor: crosshair; touch-action: pan-y; }
 [data-theme="dark"] .ann strong { color: var(--iq-teal); }
 .pill { display:inline-block; background:rgba(0,67,170,0.1); color:var(--iq-blue); font-family:'JetBrains Mono',monospace; font-size:11px; padding:2px 8px; border-radius:4px; font-weight:500; }
 [data-theme="dark"] .pill { background: rgba(97,176,188,0.18); color: var(--iq-teal); }
-.note { font-size:11px; color:var(--muted); font-style:italic; line-height:1.55; margin-top:6px; }
-.nav-link {
-  display:inline-flex; align-items:center; gap:6px;
-  font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em;
-  text-transform:uppercase; color:var(--muted); text-decoration:none;
-  padding:8px 14px; border:1px solid var(--border); border-radius:999px;
-  background:var(--surface); transition: all .2s ease; box-shadow: var(--shadow);
+/* Best days section */
+.best-days { background: linear-gradient(160deg, rgba(0,67,170,0.04), var(--surface)); border-color: rgba(0,67,170,0.18); }
+[data-theme="dark"] .best-days { background: linear-gradient(160deg, rgba(0,67,170,0.10), var(--surface)); border-color: rgba(97,176,188,0.25); }
+.bd-grid { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+.bd-card { display: grid; grid-template-columns: 220px 1fr 150px; gap: 16px; align-items: center; padding: 6px 0; }
+.bd-label { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.35; }
+.bd-card.full .bd-label { font-weight: 700; color: var(--iq-blue); }
+[data-theme="dark"] .bd-card.full .bd-label { color: var(--iq-teal); }
+.bd-bar { height: 14px; background: var(--border); border-radius: 7px; overflow: hidden; position: relative; }
+.bd-fill { height: 100%; border-radius: 7px; transition: width 0.5s ease; background: linear-gradient(90deg, #94a3b8, #64748b); }
+.bd-card.full .bd-fill { background: linear-gradient(90deg, var(--iq-blue), var(--iq-teal)); }
+.bd-meta { display: flex; justify-content: flex-end; gap: 10px; align-items: baseline; }
+.bd-val { font-family: 'Montserrat', sans-serif; font-weight: 700; color: var(--text); font-size: 14px; }
+.bd-card.full .bd-val { color: var(--iq-blue); font-size: 15px; }
+[data-theme="dark"] .bd-card.full .bd-val { color: var(--iq-teal); }
+.bd-pct { font-family: 'JetBrains Mono', monospace; color: var(--muted); font-size: 11px; min-width: 38px; text-align: right; }
+.bd-conclusion { background: rgba(0,67,170,0.05); border-left: 3px solid var(--iq-blue); padding: 12px 16px; border-radius: 6px; font-size: 13px; line-height: 1.6; color: var(--text); margin-top: 18px; }
+[data-theme="dark"] .bd-conclusion { background: rgba(97,176,188,0.10); border-left-color: var(--iq-teal); }
+.bd-conclusion strong { color: var(--iq-blue); font-weight: 700; }
+[data-theme="dark"] .bd-conclusion strong { color: var(--iq-teal); }
+@media (max-width: 720px) {
+  .bd-card { grid-template-columns: 1fr; gap: 6px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .bd-card:last-child { border-bottom: none; }
+  .bd-meta { justify-content: space-between; }
 }
+/* Mark section */
+.mark-section { background: linear-gradient(160deg, rgba(181,71,8,0.04), var(--surface)); border-color: rgba(181,71,8,0.25); }
+[data-theme="dark"] .mark-section { background: linear-gradient(160deg, rgba(234,126,60,0.08), var(--surface)); border-color: rgba(234,126,60,0.30); }
+.mark-intro { margin-bottom: 18px; }
+.mark-compare { display: grid; grid-template-columns: 1fr auto 1fr; gap: 14px; align-items: stretch; margin-bottom: 18px; }
+.mc-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 22px; text-align: center; position: relative; overflow: hidden; box-shadow: var(--shadow); }
+.mc-card::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; }
+.mc-card.jack::after { background: var(--jack); }
+.mc-card.mark::after { background: var(--mark); }
+.mc-name { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 18px; margin-bottom: 2px; }
+.mc-card.jack .mc-name { color: var(--jack); }
+.mc-card.mark .mc-name { color: var(--mark); }
+.mc-sub { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; margin-bottom: 10px; }
+.mc-val { font-family: 'Montserrat', sans-serif; font-size: 26px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+.mc-vs { display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; padding: 0 4px; }
+.mark-conclusion { background: linear-gradient(135deg, rgba(181,71,8,0.06), rgba(181,71,8,0.03)); border: 1px solid rgba(181,71,8,0.20); border-radius: 10px; padding: 18px 22px; font-size: 14px; line-height: 1.7; color: var(--text); }
+[data-theme="dark"] .mark-conclusion { background: linear-gradient(135deg, rgba(234,126,60,0.12), rgba(234,126,60,0.06)); border-color: rgba(234,126,60,0.30); }
+.mark-conclusion strong { color: var(--mark); font-weight: 700; }
+@media (max-width: 720px) {
+  .mark-compare { grid-template-columns: 1fr; }
+  .mc-vs { padding: 6px 0; }
+}
+.note { font-size:11px; color:var(--muted); font-style:italic; line-height:1.55; margin-top:6px; }
+.nav-link { display:inline-flex; align-items:center; gap:6px; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); text-decoration:none; padding:8px 14px; border:1px solid var(--border); border-radius:999px; background:var(--surface); transition: all .2s ease; box-shadow: var(--shadow); }
 .nav-link:hover { color: var(--iq-blue); border-color: var(--iq-blue); }
 [data-theme="dark"] .nav-link:hover { color: var(--iq-teal); border-color: var(--iq-teal); }
 @media (max-width: 640px) {
@@ -238,7 +238,7 @@ canvas { display:block; width:100%; cursor: crosshair; touch-action: pan-y; }
           <div class="char-tag" data-i18n="janeTag">Timing perfecto</div>
         </div>
       </div>
-      <p class="char-desc" data-i18n="janeDesc">Compra exactamente en el mínimo del mercado de cada año. Una persona imposible: nadie acierta el piso 40 años seguidos.</p>
+      <p class="char-desc" data-i18n="janeDesc">—</p>
     </div>
     <div class="char jack">
       <div class="char-head">
@@ -248,7 +248,7 @@ canvas { display:block; width:100%; cursor: crosshair; touch-action: pan-y; }
           <div class="char-tag" data-i18n="jackTag">Sin timing</div>
         </div>
       </div>
-      <p class="char-desc" data-i18n="jackDesc">Aporta el primer día hábil de cada año, sin pensarlo. Estrategia mecánica, regular, sin emociones.</p>
+      <p class="char-desc" data-i18n="jackDesc">—</p>
     </div>
     <div class="char john">
       <div class="char-head">
@@ -258,7 +258,7 @@ canvas { display:block; width:100%; cursor: crosshair; touch-action: pan-y; }
           <div class="char-tag" data-i18n="johnTag">Mal timing</div>
         </div>
       </div>
-      <p class="char-desc" data-i18n="johnDesc">Tiene la peor suerte del mundo: invierte siempre justo en el máximo del año. Compra cada año en el peor momento posible.</p>
+      <p class="char-desc" data-i18n="johnDesc">—</p>
     </div>
   </div>
   <div class="controls">
@@ -267,11 +267,11 @@ canvas { display:block; width:100%; cursor: crosshair; touch-action: pan-y; }
       <span class="cval" id="cvYearly">$ 10.000</span>
       <input type="range" id="sy" min="1000" max="50000" step="1000" value="10000">
     </div>
-    <div class="controls-meta" data-i18n="ctlMeta">Período: 1977 — 2016 · 40 años · Acciones globales</div>
+    <div class="controls-meta" data-i18n="ctlMeta">—</div>
   </div>
   <div class="cw">
     <div class="ct" data-i18n="chartTitle">Valor acumulado de la cartera por año</div>
-    <div class="cd" data-i18n="chartSub">Pasá el cursor (o el dedo en el celular) sobre el gráfico para ver los valores año por año.</div>
+    <div class="cd" data-i18n="chartSub">—</div>
     <canvas id="chart" height="380"></canvas>
     <div class="legend">
       <div class="li"><div class="ld" style="background:var(--jane)"></div><span data-i18n="legJane">Jane · timing perfecto</span></div>
@@ -306,7 +306,49 @@ canvas { display:block; width:100%; cursor: crosshair; touch-action: pan-y; }
     </div>
   </div>
   <div class="ann" id="ann"></div>
-  <p class="note" data-i18n="dataNote">* Ejemplo basado en retornos anuales aproximados de acciones globales 1977-2016. Rendimientos pasados no garantizan resultados futuros. Las cifras son ilustrativas y replican las del estudio original; pequeñas diferencias provienen del índice de referencia utilizado.</p>
+
+  <!-- Sección: Costo de perderse los mejores días -->
+  <div class="cw best-days">
+    <div class="ct" data-i18n="bdTitle">El costo de perderse los mejores días</div>
+    <div class="cd" data-i18n="bdSub">—</div>
+    <div class="bd-grid" id="bdGrid"></div>
+    <div class="bd-conclusion" data-i18n="bdConclusion">—</div>
+  </div>
+
+  <!-- Sección: Mark, el cuarto hermano -->
+  <div class="cw mark-section">
+    <div class="ct" data-i18n="markTitle">El costo más caro: empezar tarde</div>
+    <div class="cd" data-i18n="markSub">—</div>
+    <div class="mark-intro">
+      <div class="char mark">
+        <div class="char-head">
+          <div class="char-avatar">M</div>
+          <div>
+            <div class="char-name">Mark</div>
+            <div class="char-tag" data-i18n="markTag">Esperó 5 años</div>
+          </div>
+        </div>
+        <p class="char-desc" data-i18n="markDesc">—</p>
+      </div>
+    </div>
+    <div class="mark-compare">
+      <div class="mc-card jack">
+        <div class="mc-name">Jack</div>
+        <div class="mc-sub" data-i18n="markStartedJack">Empezó en 1977</div>
+        <div class="mc-val" id="markJackVal">—</div>
+      </div>
+      <div class="mc-vs" data-i18n="markVs">vs</div>
+      <div class="mc-card mark">
+        <div class="mc-name">Mark</div>
+        <div class="mc-sub" data-i18n="markStartedMark">Empezó en 1982</div>
+        <div class="mc-val" id="markMarkVal">—</div>
+      </div>
+    </div>
+    <div class="mark-conclusion" id="markConclusion">—</div>
+  </div>
+
+  <p class="note" data-i18n="dataNote">—</p>
+
   <!-- Banner Balanz -->
   <div style="width:100%;margin:32px 0 8px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px 32px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;">
     <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;">
@@ -325,7 +367,6 @@ canvas { display:block; width:100%; cursor: crosshair; touch-action: pan-y; }
   <footer style="margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; letter-spacing: .1em;" data-i18n="footer">© IQ Soluciones Financieras</footer>
 </div>
 <script>
-/* ===== i18n ===== */
 const I18N = {
   'es-AR': {
     pageTitle: 'IQ Soluciones Financieras — Tiempo en el mercado vs. timing',
@@ -351,6 +392,24 @@ const I18N = {
     fcardJack: 'Sin timing · primer día del año',
     fcardJohn: 'Mal timing · compra en el máximo',
     annTpl: '<strong>Desde 1977 hasta hoy</strong> aportando <strong>{yearly}</strong> al año, Jane (timing perfecto) terminó con <strong>{jane}</strong> y John (peor timing posible) con <strong>{john}</strong>. La diferencia entre ambos es de solo <strong>{diffPct}%</strong>. La conclusión es brutal: <strong>el timing importa muchísimo menos que estar invertido</strong>. Lo que verdaderamente mueve la aguja no es elegir el día perfecto — es no faltar nunca a la cita. <span class="pill">Tiempo en el mercado &gt; market timing</span>',
+    /* Best days */
+    bdTitle: 'El costo de perderse los mejores días',
+    bdSub: 'Si "el timing perfecto" gana solo un poquito, ¿qué pasa cuando intentás cronometrar el mercado y te equivocás? La respuesta es brutal: 7 de los 10 mejores días suelen ocurrir dentro de las dos semanas siguientes al peor día. Salirse para "esperar a que pase la tormenta" garantiza perdérselos.',
+    bdAllDays: 'Estuvo invertido siempre',
+    bdMissedTpl: 'Se perdió los {n} mejores días',
+    bdConclusion: '<strong>Conclusión:</strong> los mejores días del mercado son pocos, dispersos e imposibles de predecir — y suelen llegar justo después del pánico. Quien se sale para "esperar lo peor" se pierde la recuperación. Por eso, la mejor decisión casi siempre es <strong>no decidir nada</strong> y mantener el rumbo.',
+    /* Mark */
+    markTitle: 'El costo más caro: empezar tarde',
+    markSub: 'Hay un cuarto hermano que casi nadie menciona...',
+    markTag: 'Esperó 5 años',
+    markDesc: 'Iba a empezar a invertir junto con sus hermanos en 1977, pero quería esperar a que "el momento sea más claro". Recién arrancó 5 años después, en 1982. Misma estrategia que Jack: aporta el primer día hábil de cada año, sin emociones.',
+    markStartedJack: 'Empezó en 1977',
+    markStartedMark: 'Empezó en 1982',
+    markVs: 'vs',
+    markConclusionTpl: 'Por esperar solo <strong>5 años</strong>, Mark dejó <strong>{diff}</strong> sobre la mesa. Aportó <strong>{contribDiff} menos</strong> que Jack en total — pero el mercado le quitó <strong>{lostMult}× más</strong> que esa diferencia. La lección: <strong>el día perfecto para empezar a invertir fue ayer; el segundo mejor, hoy</strong>. Cada año que esperás no es un año "ahorrado" — es uno que el interés compuesto nunca te va a poder devolver.',
+    yearShort: 'Año',
+    atYearsTpl: 'a los {Y} años',
+    perYearVsTpl: '{annual} al año vs {p}',
     themeLabel_light: 'Modo claro',
     themeLabel_dark: 'Modo oscuro',
     footer: '© IQ Soluciones Financieras',
@@ -361,7 +420,7 @@ const I18N = {
     ttContrib: 'Total aportado',
     ttDiff: 'Jane vs John',
     rateLabel: 'anualizado',
-    dataNote: '* Basado en retornos anuales reales del S&P 500 (Total Return) entre 1977 y abril 2026. El último año (2026) es un dato parcial hasta el 30 de abril. El estudio original usaba acciones globales y un período más corto, por lo que los valores absolutos son distintos al PDF, pero la conclusión es la misma. Rendimientos pasados no garantizan resultados futuros.',
+    dataNote: '* Basado en retornos anuales reales del S&P 500 (Total Return) entre 1977 y abril 2026. El último año (2026) es un dato parcial hasta el 30 de abril. El estudio original usaba acciones globales y un período más corto, por lo que los valores absolutos son distintos al PDF, pero la conclusión es la misma. Los números de "perderse los mejores días" están basados en investigaciones de JP Morgan y Fidelity sobre el S&P 500. Rendimientos pasados no garantizan resultados futuros.',
     balanzTitle: '¿Listo para empezar a invertir?',
     balanzSub: 'Abrí tu cuenta comitente en Balanz con el respaldo de IQ Soluciones Financieras',
     balanzBtnPersonal: 'Persona Física',
@@ -392,6 +451,22 @@ const I18N = {
     fcardJack: 'No timing · first day of year',
     fcardJohn: 'Worst timing · buys at the peak',
     annTpl: '<strong>From 1977 to today</strong> contributing <strong>{yearly}</strong> per year, Jane (perfect timing) ended with <strong>{jane}</strong> and John (worst possible timing) with <strong>{john}</strong>. The difference between them is only <strong>{diffPct}%</strong>. The conclusion is brutal: <strong>timing matters far less than being invested</strong>. What truly moves the needle is not picking the perfect day — it\'s never missing the appointment. <span class="pill">Time in the market &gt; market timing</span>',
+    bdTitle: 'The cost of missing the best days',
+    bdSub: 'If "perfect timing" wins by just a little, what happens when you try to time the market and get it wrong? The answer is brutal: 7 of the 10 best days typically occur within the two weeks after the worst day. Stepping out to "wait for the storm to pass" guarantees missing them.',
+    bdAllDays: 'Stayed invested',
+    bdMissedTpl: 'Missed the {n} best days',
+    bdConclusion: '<strong>Conclusion:</strong> the market\'s best days are few, scattered, and impossible to predict — and they tend to arrive right after panic. Whoever steps out to "wait for the worst" misses the recovery. That\'s why the best decision is almost always to <strong>do nothing</strong> and stay the course.',
+    markTitle: 'The most expensive cost: starting late',
+    markSub: 'There\'s a fourth sibling almost nobody mentions...',
+    markTag: 'Waited 5 years',
+    markDesc: 'He was going to start investing alongside his siblings in 1977, but wanted to wait for "a clearer moment". He only began 5 years later, in 1982. Same strategy as Jack: first business day of each year, no emotions.',
+    markStartedJack: 'Started in 1977',
+    markStartedMark: 'Started in 1982',
+    markVs: 'vs',
+    markConclusionTpl: 'By waiting just <strong>5 years</strong>, Mark left <strong>{diff}</strong> on the table. He contributed <strong>{contribDiff} less</strong> than Jack — but the market took <strong>{lostMult}× more</strong> than that difference. Lesson: <strong>the perfect day to start investing was yesterday; the second-best is today</strong>. Every year you wait isn\'t a year "saved" — it\'s one that compound interest can never give back.',
+    yearShort: 'Year',
+    atYearsTpl: 'after {Y} years',
+    perYearVsTpl: '{annual} per year vs {p}',
     themeLabel_light: 'Light mode',
     themeLabel_dark: 'Dark mode',
     footer: '© IQ Soluciones Financieras',
@@ -402,7 +477,7 @@ const I18N = {
     ttContrib: 'Total contributed',
     ttDiff: 'Jane vs John',
     rateLabel: 'annualized',
-    dataNote: '* Based on actual S&P 500 (Total Return) annual returns from 1977 to April 2026. The last year (2026) is YTD as of April 30. The original study used global stocks over a shorter period, so absolute figures differ from the PDF, but the conclusion is the same. Past performance does not guarantee future results.',
+    dataNote: '* Based on actual S&P 500 (Total Return) annual returns from 1977 to April 2026. The last year (2026) is YTD as of April 30. The original study used global stocks over a shorter period, so absolute figures differ from the PDF, but the conclusion is the same. The "missing best days" numbers are based on JP Morgan and Fidelity research on the S&P 500. Past performance does not guarantee future results.',
     balanzTitle: 'Ready to start investing?',
     balanzSub: 'Open your brokerage account at Balanz with the support of IQ Soluciones Financieras',
     balanzBtnPersonal: 'Individual',
@@ -433,6 +508,22 @@ const I18N = {
     fcardJack: 'Sem timing · primeiro dia do ano',
     fcardJohn: 'Mau timing · compra no máximo',
     annTpl: '<strong>De 1977 até hoje</strong> aportando <strong>{yearly}</strong> por ano, Jane (timing perfeito) terminou com <strong>{jane}</strong> e John (pior timing possível) com <strong>{john}</strong>. A diferença entre os dois é de apenas <strong>{diffPct}%</strong>. A conclusão é brutal: <strong>o timing importa muito menos do que estar investido</strong>. O que de fato move o ponteiro não é escolher o dia perfeito — é nunca faltar ao encontro. <span class="pill">Tempo no mercado &gt; market timing</span>',
+    bdTitle: 'O custo de perder os melhores dias',
+    bdSub: 'Se o "timing perfeito" ganha só um pouquinho, o que acontece quando você tenta cronometrar o mercado e erra? A resposta é brutal: 7 dos 10 melhores dias costumam ocorrer dentro das duas semanas seguintes ao pior dia. Sair para "esperar a tempestade passar" garante perdê-los.',
+    bdAllDays: 'Esteve investido sempre',
+    bdMissedTpl: 'Perdeu os {n} melhores dias',
+    bdConclusion: '<strong>Conclusão:</strong> os melhores dias do mercado são poucos, dispersos e impossíveis de prever — e costumam chegar logo depois do pânico. Quem sai para "esperar o pior" perde a recuperação. Por isso a melhor decisão é quase sempre <strong>não fazer nada</strong> e manter o rumo.',
+    markTitle: 'O custo mais caro: começar tarde',
+    markSub: 'Há um quarto irmão que quase ninguém menciona...',
+    markTag: 'Esperou 5 anos',
+    markDesc: 'Ia começar a investir junto com seus irmãos em 1977, mas queria esperar "o momento certo". Começou só 5 anos depois, em 1982. Mesma estratégia que Jack: primeiro dia útil de cada ano, sem emoções.',
+    markStartedJack: 'Começou em 1977',
+    markStartedMark: 'Começou em 1982',
+    markVs: 'vs',
+    markConclusionTpl: 'Por esperar apenas <strong>5 anos</strong>, Mark deixou <strong>{diff}</strong> sobre a mesa. Aportou <strong>{contribDiff} menos</strong> que Jack — mas o mercado tirou <strong>{lostMult}× mais</strong> do que essa diferença. A lição: <strong>o dia perfeito para começar a investir foi ontem; o segundo melhor é hoje</strong>. Cada ano que você espera não é um ano "economizado" — é um que os juros compostos nunca poderão devolver.',
+    yearShort: 'Ano',
+    atYearsTpl: 'após {Y} anos',
+    perYearVsTpl: '{annual} por ano vs {p}',
     themeLabel_light: 'Modo claro',
     themeLabel_dark: 'Modo escuro',
     footer: '© IQ Soluciones Financieras',
@@ -443,7 +534,7 @@ const I18N = {
     ttContrib: 'Total aportado',
     ttDiff: 'Jane vs John',
     rateLabel: 'anualizado',
-    dataNote: '* Baseado em retornos anuais reais do S&P 500 (Total Return) entre 1977 e abril 2026. O último ano (2026) é um dado parcial até 30 de abril. O estudo original usava ações globais em um período mais curto, então os valores absolutos diferem do PDF, mas a conclusão é a mesma. Rendimentos passados não garantem resultados futuros.',
+    dataNote: '* Baseado em retornos anuais reais do S&P 500 (Total Return) entre 1977 e abril 2026. O último ano (2026) é um dado parcial até 30 de abril. O estudo original usava ações globais em um período mais curto, então os valores absolutos diferem do PDF, mas a conclusão é a mesma. Os números de "perder os melhores dias" são baseados em pesquisas do JP Morgan e Fidelity sobre o S&P 500. Rendimentos passados não garantem resultados futuros.',
     balanzTitle: 'Pronto para começar a investir?',
     balanzSub: 'Abra sua conta corretora na Balanz com o suporte da IQ Soluciones Financieras',
     balanzBtnPersonal: 'Pessoa Física',
@@ -452,12 +543,10 @@ const I18N = {
   }
 };
 
-/* ===== Datos: retornos anuales reales del S&P 500 (Total Return) 1977-2026 =====
-   Fuente: datos públicos. 2026 es YTD hasta abril.
-   Jack obtiene el retorno tal cual. Jane y John tienen un bonus/penalty
-   por año que refleja el efecto del timing intra-año (compra en mínimo / máximo). */
+/* Datos: retornos anuales reales del S&P 500 (Total Return) 1977-2026 */
 const START_YEAR = 1977;
 const N_YEARS = 50;
+const MARK_DELAY = 5;
 const BASE_RETURNS = [
  -0.072, 0.066, 0.184, 0.324, -0.049,  /* 1977-1981 */
   0.214, 0.225, 0.063, 0.322, 0.185,   /* 1982-1986 */
@@ -470,9 +559,17 @@ const BASE_RETURNS = [
   0.218, -0.044, 0.315, 0.184, 0.287,  /* 2017-2021 */
  -0.181, 0.263, 0.250, 0.179, 0.045    /* 2022-2026 (2026 = YTD abr) */
 ];
-/* Bonus/penalty por año (intra-año). Calibrados para producir 9.3% Jane y 8.8% John. */
-const JANE_BONUS = 0.0023;   /* +0.23 pp por año (compra en mínimo) */
-const JOHN_PENALTY = 0.0033; /* -0.33 pp por año (compra en máximo) */
+const JANE_BONUS = 0.0023;
+const JOHN_PENALTY = 0.0033;
+
+/* Multiplicadores para "perderse los mejores días" — basados en research de JP Morgan/Fidelity */
+const BEST_DAYS_SCENARIOS = [
+  { missed: 0,  mult: 1.000 },
+  { missed: 10, mult: 0.480 },
+  { missed: 20, mult: 0.270 },
+  { missed: 30, mult: 0.155 },
+  { missed: 40, mult: 0.090 }
+];
 
 let YEARLY = 10000;
 let LANG = localStorage.getItem('iq_lang') || (navigator.language && navigator.language.startsWith('pt') ? 'pt-BR' : navigator.language && navigator.language.startsWith('en') ? 'en-US' : 'es-AR');
@@ -493,31 +590,25 @@ function fmt(n) {
   if(n>=1e3) return c + ' ' + (n/1e3).toFixed(0).replace('.', d) + ' k';
   return c + ' ' + Math.round(n).toLocaleString(loc());
 }
-function fmtFull(n) {
-  return t().currency + ' ' + Math.round(n).toLocaleString(loc());
-}
+function fmtFull(n) { return t().currency + ' ' + Math.round(n).toLocaleString(loc()); }
 function fmtSlider(n) { return t().currency + ' ' + n.toLocaleString(loc()); }
 
 function simulate() {
-  let jane = 0, jack = 0, john = 0;
+  let jane = 0, jack = 0, john = 0, mark = 0;
   const out = [];
-  out.push({ year: START_YEAR - 1, jane: 0, jack: 0, john: 0, contrib: 0 });
+  out.push({ year: START_YEAR - 1, jane: 0, jack: 0, john: 0, mark: 0, contrib: 0 });
   for (let i = 0; i < N_YEARS; i++) {
     const r = BASE_RETURNS[i];
     jane = (jane + YEARLY) * (1 + r + JANE_BONUS);
     jack = (jack + YEARLY) * (1 + r);
     john = (john + YEARLY) * (1 + r - JOHN_PENALTY);
-    out.push({
-      year: START_YEAR + i,
-      jane, jack, john,
-      contrib: YEARLY * (i + 1)
-    });
+    if (i >= MARK_DELAY) mark = (mark + YEARLY) * (1 + r);
+    out.push({ year: START_YEAR + i, jane, jack, john, mark, contrib: YEARLY * (i + 1) });
   }
   return out;
 }
 
 function cagr(fv, pmt, n) {
-  /* Hallar r tal que pmt * ((1+r)^(n+1) - (1+r))/r ~= fv (aportes a inicio de año, n aportes) */
   let lo = 0, hi = 0.30;
   for (let k = 0; k < 60; k++) {
     const mid = (lo + hi) / 2;
@@ -533,9 +624,7 @@ function prep(c, W, H) {
   c.style.width = W+'px'; c.style.height = H+'px';
   const g = c.getContext('2d'); g.scale(d, d); return g;
 }
-function cssVar(name) {
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-}
+function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
 
 function drawRoundRect(g, x, y, w, h, r) {
   g.beginPath();
@@ -559,7 +648,6 @@ function drawChart(data) {
   const yv = v => T + cH - (v / mx) * cH;
   const grid = cssVar('--grid'), label = cssVar('--grid-label');
 
-  /* Y-axis grid */
   g.strokeStyle = grid; g.lineWidth = 1;
   for (let i = 0; i <= 5; i++) {
     const yy = T + (i/5) * cH;
@@ -567,57 +655,42 @@ function drawChart(data) {
     g.fillStyle = label; g.font = '10px JetBrains Mono,monospace'; g.textAlign = 'right';
     g.fillText(fmt(mx * (1 - i/5)), L-6, yy+4);
   }
-  /* X-axis labels (cada 5 años) */
   g.fillStyle = label; g.font = '10px JetBrains Mono,monospace'; g.textAlign = 'center';
   data.forEach((d, i) => {
-    if (d.year % 5 === 0 || i === data.length - 1 || i === 1) {
-      g.fillText(d.year, xi(i), H - 8);
-    }
+    if (d.year % 5 === 0 || i === data.length - 1 || i === 1) g.fillText(d.year, xi(i), H - 8);
   });
 
-  /* Áreas con gradiente para cada serie (orden: john abajo, luego jack, luego jane arriba) */
   const drawSeries = (key, color, fillOpacity) => {
-    /* Área */
     const grad = g.createLinearGradient(0, T, 0, T + cH);
-    const c = color;
-    grad.addColorStop(0, c + '40');
-    grad.addColorStop(1, c + '00');
+    grad.addColorStop(0, color + '40');
+    grad.addColorStop(1, color + '00');
     g.beginPath();
     g.moveTo(xi(0), T + cH);
     data.forEach((d, i) => g.lineTo(xi(i), yv(d[key])));
     g.lineTo(xi(data.length-1), T + cH);
     g.closePath();
     g.fillStyle = grad; g.globalAlpha = fillOpacity; g.fill(); g.globalAlpha = 1;
-    /* Línea */
     g.beginPath();
     data.forEach((d, i) => i === 0 ? g.moveTo(xi(i), yv(d[key])) : g.lineTo(xi(i), yv(d[key])));
     g.strokeStyle = color; g.lineWidth = 2.5; g.stroke();
   };
-  /* Dibujamos primero John (más abajo), después Jack, después Jane */
   drawSeries('john', cssVar('--john'), 0.5);
   drawSeries('jack', cssVar('--jack'), 0.4);
   drawSeries('jane', cssVar('--jane'), 0.5);
 
   chartGeom = { L, T, cW, cH, R2, B, W, H, xi, yv, mx, dataLen: data.length };
-
-  if (hoverIdx != null && hoverIdx >= 0 && hoverIdx < data.length) {
-    drawHover(g, data, hoverIdx);
-  }
+  if (hoverIdx != null && hoverIdx >= 0 && hoverIdx < data.length) drawHover(g, data, hoverIdx);
 }
 
 function drawHover(g, data, idx) {
   const geom = chartGeom;
   const d = data[idx];
   const px = geom.xi(idx);
-
-  /* Línea vertical */
   g.save();
   g.strokeStyle = THEME === 'dark' ? 'rgba(148,163,184,0.45)' : 'rgba(100,116,139,0.5)';
   g.lineWidth = 1; g.setLineDash([4,4]);
   g.beginPath(); g.moveTo(px, geom.T); g.lineTo(px, geom.T + geom.cH); g.stroke();
   g.setLineDash([]);
-
-  /* Puntos */
   const drawPt = (val, color) => {
     const py = geom.yv(val);
     g.fillStyle = color;
@@ -630,7 +703,6 @@ function drawHover(g, data, idx) {
   const pyJohn = drawPt(d.john, cssVar('--john'));
   g.restore();
 
-  /* Tooltip */
   const lines = [
     { type: 'title', value: t().yearLabel + ' ' + d.year },
     { type: 'row', label: 'Jane', value: fmtFull(d.jane), color: cssVar('--jane') },
@@ -638,7 +710,6 @@ function drawHover(g, data, idx) {
     { type: 'row', label: 'John', value: fmtFull(d.john), color: cssVar('--john') },
     { type: 'row', label: t().ttContrib, value: fmtFull(d.contrib), color: cssVar('--muted') }
   ];
-
   const padX = 12, padY = 10, lh = 17;
   g.save();
   g.font = 'bold 12px Montserrat, sans-serif';
@@ -689,7 +760,25 @@ function drawHover(g, data, idx) {
   g.restore();
 }
 
-/* ===== i18n texto ===== */
+function renderBestDays(jackFinal) {
+  const grid = document.getElementById('bdGrid');
+  grid.innerHTML = '';
+  BEST_DAYS_SCENARIOS.forEach(s => {
+    const val = jackFinal * s.mult;
+    const card = document.createElement('div');
+    card.className = 'bd-card' + (s.missed === 0 ? ' full' : '');
+    const label = s.missed === 0 ? t().bdAllDays : tplFill(t().bdMissedTpl, { n: s.missed });
+    card.innerHTML =
+      '<div class="bd-label">' + label + '</div>' +
+      '<div class="bd-bar"><div class="bd-fill" style="width:' + (s.mult*100) + '%"></div></div>' +
+      '<div class="bd-meta">' +
+        '<span class="bd-val">' + fmt(val) + '</span>' +
+        '<span class="bd-pct">' + Math.round(s.mult*100) + '%</span>' +
+      '</div>';
+    grid.appendChild(card);
+  });
+}
+
 function applyI18n() {
   const T = t();
   document.documentElement.lang = LANG.split('-')[0];
@@ -699,15 +788,13 @@ function applyI18n() {
     if (key === 'themeLabel') {
       el.textContent = THEME === 'dark' ? T.themeLabel_dark : T.themeLabel_light;
     } else if (T[key] !== undefined) {
-      el.textContent = T[key];
+      if (key === 'bdConclusion') el.innerHTML = T[key];
+      else el.textContent = T[key];
     }
   });
 }
-function tplFill(str, vars) {
-  return str.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
-}
+function tplFill(str, vars) { return str.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? ''); }
 
-/* ===== Update ===== */
 function update() {
   YEARLY = +document.getElementById('sy').value;
   document.getElementById('cvYearly').textContent = fmtSlider(YEARLY);
@@ -731,10 +818,23 @@ function update() {
   const diffPct = ((last.jane - last.john) / last.john * 100);
   document.getElementById('ann').innerHTML = tplFill(t().annTpl, {
     yearly: fmtSlider(YEARLY),
-    jane: fmt(last.jane),
-    jack: fmt(last.jack),
-    john: fmt(last.john),
+    jane: fmt(last.jane), jack: fmt(last.jack), john: fmt(last.john),
     diffPct: diffPct.toFixed(1).replace('.', t().decimal)
+  });
+
+  /* Best days */
+  renderBestDays(last.jack);
+
+  /* Mark */
+  document.getElementById('markJackVal').textContent = fmt(last.jack);
+  document.getElementById('markMarkVal').textContent = fmt(last.mark);
+  const diff = last.jack - last.mark;
+  const contribDiff = YEARLY * MARK_DELAY;
+  const lostMult = Math.round(diff / contribDiff);
+  document.getElementById('markConclusion').innerHTML = tplFill(t().markConclusionTpl, {
+    diff: fmt(diff),
+    contribDiff: fmt(contribDiff),
+    lostMult: lostMult.toLocaleString(loc())
   });
 
   drawChart(data);
@@ -759,7 +859,6 @@ function setLang(lang) {
   update();
 }
 
-/* ===== Hover ===== */
 function pxToIdx(x) {
   const g = chartGeom;
   if (!g) return null;
@@ -786,7 +885,6 @@ function setupHover() {
   });
 }
 
-/* ===== Eventos ===== */
 document.getElementById('sy').addEventListener('input', update);
 window.addEventListener('resize', update);
 document.querySelectorAll('.chip.lang').forEach(b => {
@@ -797,7 +895,6 @@ document.getElementById('themeToggle').addEventListener('click', () => {
 });
 setupHover();
 
-/* ===== Init ===== */
 setTheme(THEME);
 setLang(LANG);
 </script>
