@@ -182,6 +182,14 @@ footer { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border
       <input type="range" id="sm" min="0" max="5000" step="50" value="500">
     </div>
     <div class="cg">
+      <span class="clabel" data-i18n="ctlContribYears">Años de aporte</span>
+      <div class="cg-input-row">
+        <input type="text" class="cg-input w-int" id="scyInput" inputmode="numeric" autocomplete="off" value="30">
+        <span class="cg-input-affix" data-i18n="ctlYearsUnit">años</span>
+      </div>
+      <input type="range" id="scy" min="0" max="60" step="1" value="30">
+    </div>
+    <div class="cg">
       <span class="clabel" data-i18n="ctlYears">Años de inversión</span>
       <div class="cg-input-row">
         <input type="text" class="cg-input w-int" id="syInput" inputmode="numeric" autocomplete="off" value="30">
@@ -248,6 +256,7 @@ const I18N = {
     cardRatio: 'Aporte anual / cartera',
     ctlInitial: 'Aporte inicial',
     ctlMonthly: 'Aporte mensual',
+    ctlContribYears: 'Años de aporte',
     ctlYears: 'Años de inversión',
     ctlYearsUnit: 'años',
     ctlReturn: 'Rentabilidad anual',
@@ -262,12 +271,14 @@ const I18N = {
     chart2LegB: 'Umbral 5% · punto de dilución',
     chart2EmptyTitle: 'Sin aportes mensuales',
     chart2EmptyMsg: 'Si no hay aportes recurrentes, no hay dilución que mostrar — toda la cartera viene del interés compuesto sobre el aporte inicial.',
+    chartContribEndLabel: 'Fin de aportes',
     youControl: 'VOS CONTROLÁS ↑',
     marketRules: '↓ EL MERCADO MANDA',
     annDefault: 'Mové los controles para ver cómo evoluciona el efecto del interés compuesto.',
     annNoMonthly: 'Estás simulando solo con el <strong>aporte inicial</strong>, sin aportes recurrentes. Toda la cartera crece exclusivamente por el interés compuesto. Probá agregar un aporte mensual para ver el efecto de dilución, donde tus aportes pierden peso frente al mercado.',
     annTpl: 'A partir del año <span class="pill">{tY}</span>, tu aporte anual de <strong>{annual}</strong> representa menos del <strong>5%</strong> de la cartera. Una variación del <strong>±10% del S&amp;P 500</strong> mueve tu patrimonio lo mismo que <strong>{mult} años</strong> de aportes. La curva de abajo lo muestra sin vueltas: el interés compuesto toma el mando — el índice ya maneja todo solo.',
     annTplNoThreshold: 'Después de <strong>{Y} años</strong>, tu aporte anual de <strong>{annual}</strong> sigue siendo el <strong>{lastPct}%</strong> de la cartera. La curva todavía no entra en zona de dilución (5%), pero si extendés el plazo o subís la rentabilidad, vas a ver cómo el interés compuesto empieza a dominar.',
+    annTplPureCompound: ' <strong>Y acá viene lo bueno:</strong> después de tu último aporte en el año <strong>{CY}</strong>, dejaste de poner plata pero la cartera siguió creciendo <strong>{gap} años más</strong> solo por interés compuesto, sumando <strong>{added}</strong> sin que hicieras absolutamente nada. <span class="pill">El compuesto trabaja solo</span>',
     yearShort: 'Año',
     atYearsTpl: 'a los {Y} años',
     perYearVsTpl: '{annual} al año vs {p}',
@@ -297,6 +308,7 @@ const I18N = {
     cardRatio: 'Annual contribution / portfolio',
     ctlInitial: 'Initial contribution',
     ctlMonthly: 'Monthly contribution',
+    ctlContribYears: 'Years of contributions',
     ctlYears: 'Investment horizon',
     ctlYearsUnit: 'years',
     ctlReturn: 'Annual return',
@@ -311,12 +323,14 @@ const I18N = {
     chart2LegB: '5% threshold · dilution point',
     chart2EmptyTitle: 'No monthly contributions',
     chart2EmptyMsg: 'With no recurring contributions there is no dilution to display — the entire portfolio grows from compound interest on the initial deposit.',
+    chartContribEndLabel: 'End of contributions',
     youControl: 'YOU CONTROL ↑',
     marketRules: '↓ THE MARKET RULES',
     annDefault: 'Move the controls to see how compound interest evolves over time.',
     annNoMonthly: 'You are simulating with only an <strong>initial contribution</strong>, no recurring deposits. The portfolio grows exclusively from compound interest. Add a monthly contribution to see the dilution effect, where your contributions lose weight against the market.',
     annTpl: 'Starting in year <span class="pill">{tY}</span>, your annual contribution of <strong>{annual}</strong> represents less than <strong>5%</strong> of the portfolio. A <strong>±10% S&amp;P 500</strong> swing moves your wealth as much as <strong>{mult} years</strong> of contributions. The curve below makes it clear: compound interest takes over — the index now drives alone.',
     annTplNoThreshold: 'After <strong>{Y} years</strong>, your annual contribution of <strong>{annual}</strong> is still <strong>{lastPct}%</strong> of the portfolio. The curve has not yet entered the dilution zone (5%), but extending the horizon or increasing the return will let compound interest take over.',
+    annTplPureCompound: ' <strong>And here\'s the punchline:</strong> after your last contribution in year <strong>{CY}</strong>, you stopped putting money in but the portfolio kept growing for <strong>{gap} more years</strong> from compound interest alone, adding <strong>{added}</strong> without you doing a thing. <span class="pill">Compounding works alone</span>',
     yearShort: 'Year',
     atYearsTpl: 'after {Y} years',
     perYearVsTpl: '{annual} per year vs {p}',
@@ -346,6 +360,7 @@ const I18N = {
     cardRatio: 'Aporte anual / carteira',
     ctlInitial: 'Aporte inicial',
     ctlMonthly: 'Aporte mensal',
+    ctlContribYears: 'Anos de aporte',
     ctlYears: 'Anos de investimento',
     ctlYearsUnit: 'anos',
     ctlReturn: 'Rentabilidade anual',
@@ -360,12 +375,14 @@ const I18N = {
     chart2LegB: 'Limite 5% · ponto de diluição',
     chart2EmptyTitle: 'Sem aportes mensais',
     chart2EmptyMsg: 'Sem aportes recorrentes não há diluição a mostrar — toda a carteira cresce pelos juros compostos sobre o aporte inicial.',
+    chartContribEndLabel: 'Fim de aportes',
     youControl: 'VOCÊ CONTROLA ↑',
     marketRules: '↓ O MERCADO MANDA',
     annDefault: 'Mova os controles para ver como evoluem os juros compostos.',
     annNoMonthly: 'Você está simulando apenas com o <strong>aporte inicial</strong>, sem aportes recorrentes. A carteira cresce exclusivamente pelos juros compostos. Adicione um aporte mensal para ver o efeito de diluição, onde seus aportes perdem peso em relação ao mercado.',
     annTpl: 'A partir do ano <span class="pill">{tY}</span>, seu aporte anual de <strong>{annual}</strong> representa menos de <strong>5%</strong> da carteira. Uma variação de <strong>±10% do S&amp;P 500</strong> movimenta seu patrimônio o mesmo que <strong>{mult} anos</strong> de aportes. A curva abaixo mostra sem rodeios: os juros compostos tomam o comando — o índice já dirige sozinho.',
     annTplNoThreshold: 'Depois de <strong>{Y} anos</strong>, seu aporte anual de <strong>{annual}</strong> ainda é <strong>{lastPct}%</strong> da carteira. A curva ainda não entra na zona de diluição (5%), mas estendendo o prazo ou subindo a rentabilidade, os juros compostos passam a dominar.',
+    annTplPureCompound: ' <strong>E aqui vem o melhor:</strong> depois do seu último aporte no ano <strong>{CY}</strong>, você parou de colocar dinheiro mas a carteira continuou crescendo <strong>{gap} anos a mais</strong> só por juros compostos, somando <strong>{added}</strong> sem você fazer nada. <span class="pill">O composto trabalha sozinho</span>',
     yearShort: 'Ano',
     atYearsTpl: 'após {Y} anos',
     perYearVsTpl: '{annual} por ano vs {p}',
@@ -385,7 +402,7 @@ const I18N = {
   }
 };
 
-let I=0, M=500, Y=30, R=0.10;
+let I=0, M=500, Y=30, R=0.10, CY=30;
 let LANG = localStorage.getItem('iq_lang') || (navigator.language && navigator.language.startsWith('pt') ? 'pt-BR' : navigator.language && navigator.language.startsWith('en') ? 'en-US' : 'es-AR');
 let THEME = localStorage.getItem('iq_theme') || 'light';
 const IQ_BLUE = '#0043aa';
@@ -430,9 +447,18 @@ function clampPositive(n, max) { return Math.max(0, Math.min(n, max)); }
 /* ===== Sim ===== */
 function sim() {
   const r=R/12; let p=I; const out=[];
+  const effCY = Math.min(CY, Y);
   for (let y=1;y<=Y;y++) {
-    for (let m=0;m<12;m++) p=(p+M)*(1+r);
-    out.push({y,p,contrib:I+M*12*y,annual:M*12,pct: M>0 ? (M*12)/p*100 : 0});
+    const m_y = y <= effCY ? M : 0;
+    for (let m=0;m<12;m++) p=(p+m_y)*(1+r);
+    const annual_y = y <= effCY ? M*12 : 0;
+    out.push({
+      y, p,
+      contrib: I + M*12*Math.min(y, effCY),
+      annual: annual_y,
+      pct: annual_y > 0 ? annual_y / p * 100 : 0,
+      contributing: y <= effCY
+    });
   }
   return out;
 }
@@ -545,6 +571,29 @@ function chart1(data) {
     g.strokeStyle='rgba(180,189,0,0.6)';g.lineWidth=1;g.setLineDash([4,4]);
     g.beginPath();g.moveTo(xi(tY-1),T);g.lineTo(xi(tY-1),T+cH);g.stroke();
     g.setLineDash([]);
+  }
+  /* Línea vertical de "fin de aportes" cuando CY < Y */
+  const effCY1 = Math.min(CY, Y);
+  if (M > 0 && effCY1 >= 1 && effCY1 < Y) {
+    const xCY = xi(effCY1-1);
+    g.strokeStyle = THEME==='dark' ? 'rgba(234,126,60,0.65)' : 'rgba(181,71,8,0.65)';
+    g.lineWidth = 1.5; g.setLineDash([5,4]);
+    g.beginPath(); g.moveTo(xCY, T); g.lineTo(xCY, T+cH); g.stroke();
+    g.setLineDash([]);
+    /* Etiqueta */
+    g.fillStyle = THEME==='dark' ? '#ea7e3c' : '#b54708';
+    g.font = 'bold 10px Montserrat, sans-serif';
+    const labelText = t().chartContribEndLabel + ' · ' + t().yearShort + ' ' + effCY1;
+    const tw = g.measureText(labelText).width;
+    /* Posicionar a la izquierda o derecha de la línea según haya espacio */
+    const labelPad = 8;
+    if (xCY + labelPad + tw < L + cW - 4) {
+      g.textAlign = 'left';
+      g.fillText(labelText, xCY + labelPad, T + 12);
+    } else {
+      g.textAlign = 'right';
+      g.fillText(labelText, xCY - labelPad, T + 12);
+    }
   }
   chart1Geom = { L, T, cW, cH, R2, B, W, H, xi, yv, mx };
   if (hoverIdx1 != null && hoverIdx1 >= 0 && hoverIdx1 < data.length) drawChart1Hover(g, data, hoverIdx1);
@@ -668,6 +717,15 @@ function chart2(data) {
     g.fillStyle='rgba(122,128,0,1)';g.font='bold 9px JetBrains Mono,monospace';
     g.textAlign='center';g.fillText(t().yearShort+' '+tY,xi(tY-1),T+10);
   }
+  /* Línea de fin de aportes */
+  const effCY2 = Math.min(CY, Y);
+  if (effCY2 >= 1 && effCY2 < Y) {
+    const xCY = xi(effCY2-1);
+    g.strokeStyle = THEME==='dark' ? 'rgba(234,126,60,0.65)' : 'rgba(181,71,8,0.65)';
+    g.lineWidth = 1.5; g.setLineDash([5,4]);
+    g.beginPath(); g.moveTo(xCY, T); g.lineTo(xCY, T+cH); g.stroke();
+    g.setLineDash([]);
+  }
   chart2Geom = { L, T, cW, cH, R2, B, W, H, xi, yp, maxP };
   if (hoverIdx2 != null && hoverIdx2 >= 0 && hoverIdx2 < data.length) drawChart2Hover(g, data, hoverIdx2);
 }
@@ -713,15 +771,18 @@ function update() {
   /* Leer desde inputs editables */
   I = clampPositive(parseMoneyInput(document.getElementById('siInput').value), 1e9);
   M = clampPositive(parseMoneyInput(document.getElementById('smInput').value), 1e7);
+  CY = Math.max(0, Math.min(80, parseIntInput(document.getElementById('scyInput').value)));
   Y = clampInt(parseIntInput(document.getElementById('syInput').value));
   R = clampPct(parsePctInput(document.getElementById('srInput').value)) / 100;
   /* Sincronizar sliders (clamp a su rango pero no cambia los inputs) */
   const siRange = document.getElementById('si');
   const smRange = document.getElementById('sm');
+  const scyRange = document.getElementById('scy');
   const syRange = document.getElementById('sy');
   const srRange = document.getElementById('sr2');
   siRange.value = Math.min(I, +siRange.max);
   smRange.value = Math.min(M, +smRange.max);
+  scyRange.value = Math.min(Math.max(CY, +scyRange.min), +scyRange.max);
   syRange.value = Math.min(Math.max(Y, +syRange.min), +syRange.max);
   srRange.value = Math.min(Math.max(R*100, +srRange.min), +srRange.max);
 
@@ -735,20 +796,38 @@ function update() {
   document.getElementById('vc').textContent=fmt(last.contrib);
   document.getElementById('vr').textContent=last.pct.toFixed(1).replace('.', t().decimal)+'%';
   document.getElementById('sr').textContent=tplFill(t().perYearVsTpl, {annual: fmt(last.annual), p: fmt(last.p)});
+  const effCY = Math.min(CY, Y);
+  const hasPureCompound = effCY < Y && M > 0 && effCY >= 1;
   if (M <= 0) {
     document.getElementById('ann').innerHTML = t().annNoMonthly;
   } else {
+    /* Buscar año de dilución solo durante la fase de aporte */
     let tY=null;
-    for(const d of data) if(d.pct<5&&!tY) tY=d.y;
-    if(tY){
-      const mult=(last.p*0.10/last.annual).toFixed(1).replace('.', t().decimal);
-      document.getElementById('ann').innerHTML = tplFill(t().annTpl, {tY, annual: fmt(last.annual), mult});
-    } else {
-      document.getElementById('ann').innerHTML = tplFill(t().annTplNoThreshold, {
-        Y, annual: fmt(last.annual),
-        lastPct: last.pct.toFixed(1).replace('.', t().decimal)
+    for (let i = 0; i < effCY; i++) {
+      const d = data[i];
+      if (d.pct < 5 && !tY) tY = d.y;
+    }
+    const pCY = effCY >= 1 ? data[effCY-1].p : 0;
+    const annualCY = M * 12;
+    let baseText = '';
+    if (tY) {
+      const mult = (pCY * 0.10 / annualCY).toFixed(1).replace('.', t().decimal);
+      baseText = tplFill(t().annTpl, { tY, annual: fmt(annualCY), mult });
+    } else if (effCY >= 1) {
+      const lastPctVal = (annualCY) / pCY * 100;
+      baseText = tplFill(t().annTplNoThreshold, {
+        Y: effCY, annual: fmt(annualCY),
+        lastPct: lastPctVal.toFixed(1).replace('.', t().decimal)
       });
     }
+    if (hasPureCompound) {
+      const gap = Y - effCY;
+      const added = last.p - pCY;
+      baseText += tplFill(t().annTplPureCompound, {
+        CY: effCY, gap, added: fmt(added)
+      });
+    }
+    document.getElementById('ann').innerHTML = baseText || t().annNoMonthly;
   }
   chart1(data);
   chart2(data);
@@ -756,6 +835,7 @@ function update() {
 function reformatInputsFromState() {
   document.getElementById('siInput').value = fmtMoneyInput(I);
   document.getElementById('smInput').value = fmtMoneyInput(M);
+  document.getElementById('scyInput').value = String(CY);
   document.getElementById('syInput').value = String(Y);
   document.getElementById('srInput').value = fmtPctInput(R*100);
 }
@@ -828,6 +908,7 @@ function bindControl(rangeId, inputId, kind, sliderMax) {
 }
 bindControl('si', 'siInput', 'money');
 bindControl('sm', 'smInput', 'money');
+bindControl('scy', 'scyInput', 'int');
 bindControl('sy', 'syInput', 'int');
 bindControl('sr2', 'srInput', 'pct');
 window.addEventListener('resize',update);
