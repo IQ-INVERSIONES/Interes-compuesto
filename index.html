@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title data-i18n="pageTitle">IQ Soluciones Financieras — El poder del interés compuesto</title>
 <link rel="icon" type="image/svg+xml" href="assets/logo-iq.svg">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 :root {
@@ -130,6 +131,47 @@ canvas { display:block; width:100%; cursor: crosshair; touch-action: pan-y; }
 .pill { display:inline-block; background:rgba(0,67,170,0.1); color:var(--iq-blue); font-family:'JetBrains Mono',monospace; font-size:11px; padding:2px 8px; border-radius:4px; font-weight:500; }
 [data-theme="dark"] .pill { background: rgba(97,176,188,0.18); color: var(--iq-teal); }
 footer { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; letter-spacing: .1em; transition: border-color .25s ease; }
+/* Personalización + PDF */
+.personalize-bar {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 16px 24px; margin-bottom: 18px;
+  display: flex; justify-content: space-between; align-items: flex-end;
+  gap: 24px; flex-wrap: wrap; box-shadow: var(--shadow);
+}
+.personalize-fields { display: flex; gap: 24px; flex-wrap: wrap; flex: 1; }
+.personalize-fields .cg { gap: 6px; }
+.cg-input-text {
+  font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 600;
+  color: var(--text); background: transparent; border: none;
+  border-bottom: 1.5px dashed rgba(0,67,170,0.40); outline: none;
+  padding: 4px 2px; min-width: 230px; cursor: text;
+  transition: border-color .15s ease, background .15s ease;
+}
+.cg-input-text:hover { border-bottom-color: var(--iq-blue); background: rgba(0,67,170,0.04); }
+.cg-input-text:focus { border-bottom: 1.5px solid var(--iq-blue); background: rgba(0,67,170,0.06); }
+.cg-input-text::placeholder { color: var(--muted); opacity: 0.5; font-weight: 400; }
+[data-theme="dark"] .cg-input-text { border-bottom-color: rgba(97,176,188,0.45); }
+[data-theme="dark"] .cg-input-text:hover { border-bottom-color: var(--iq-teal); background: rgba(97,176,188,0.08); }
+[data-theme="dark"] .cg-input-text:focus { border-bottom-color: var(--iq-teal); background: rgba(97,176,188,0.12); }
+.btn-pdf {
+  background: var(--iq-blue); color: #fff; border: none; border-radius: 999px;
+  padding: 12px 22px; font-family: 'Montserrat', sans-serif; font-weight: 600;
+  font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase;
+  cursor: pointer; transition: opacity .2s ease, transform .15s ease, background .25s ease;
+  display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0,67,170,0.3);
+}
+.btn-pdf:hover { opacity: 0.92; transform: translateY(-1px); }
+.btn-pdf:active { transform: translateY(0); }
+.btn-pdf:disabled { opacity: 0.6; cursor: wait; transform: none; }
+[data-theme="dark"] .btn-pdf { background: var(--iq-teal); color: #0a1322; box-shadow: 0 2px 6px rgba(97,176,188,0.3); }
+.btn-pdf svg { width: 16px; height: 16px; }
+#pdfContainer { position: absolute; left: -99999px; top: 0; width: 210mm; }
+@media (max-width: 640px) {
+  .personalize-bar { flex-direction: column; align-items: stretch; }
+  .cg-input-text { min-width: 0; width: 100%; }
+  .btn-pdf { justify-content: center; }
+}
 @media (max-width: 640px) {
   .topbar { flex-direction: column; align-items: flex-start; gap: 14px; }
   .logo-iq { height: 44px; }
@@ -164,6 +206,22 @@ footer { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border
     <div class="card ol"><div class="cl" data-i18n="cardRatio">Aporte anual / cartera</div><div class="cv" id="vr">—</div><div class="cs" id="sr"></div></div>
   </div>
 
+  <div class="personalize-bar">
+    <div class="personalize-fields">
+      <div class="cg">
+        <span class="clabel" data-i18n="clientLabel">Cliente</span>
+        <input type="text" class="cg-input-text" id="clienteInput" autocomplete="off" data-i18n-placeholder="phName" placeholder="Nombre y apellido">
+      </div>
+      <div class="cg">
+        <span class="clabel" data-i18n="producerLabel">Asesor</span>
+        <input type="text" class="cg-input-text" id="productorInput" autocomplete="off" data-i18n-placeholder="phName" placeholder="Nombre y apellido">
+      </div>
+    </div>
+    <button class="btn-pdf" id="btnPDF">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span data-i18n="btnDownloadPDF">Descargar PDF</span>
+    </button>
+  </div>
   <div class="controls">
     <div class="cg">
       <span class="clabel" data-i18n="ctlInitial">Aporte inicial</span>
@@ -242,6 +300,7 @@ footer { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border
   </div>
   <footer data-i18n="footer">© IQ Soluciones Financieras</footer>
 </div>
+<div id="pdfContainer"></div>
 <script>
 const I18N = {
   'es-AR': {
@@ -294,7 +353,21 @@ const I18N = {
     balanzNote: 'Apertura 100% online · Sin costo de mantenimiento',
     ttInterest: 'Intereses generados',
     ttAnnual: 'Aporte anual',
-    ttPortfolio: 'Valor cartera'
+    ttPortfolio: 'Valor cartera',
+    clientLabel: 'Cliente',
+    producerLabel: 'Asesor',
+    phName: 'Nombre y apellido',
+    btnDownloadPDF: 'Descargar PDF',
+    btnGenerating: 'Generando...',
+    pdfTitle: 'Proyección de Inversión',
+    pdfSubtitle: 'El poder del interés compuesto',
+    pdfParamsLabel: 'Parámetros de la proyección',
+    pdfChartLabel: 'Valor de la cartera vs. capital aportado',
+    pdfInterest: 'Intereses generados',
+    pdfInterestSub: 'por el compuesto',
+    pdfFooterLine1: 'Documento generado el {date} · IQ Soluciones Financieras S.A.',
+    pdfFooterLine2: 'Esta proyección es ilustrativa. Rendimientos pasados no garantizan resultados futuros.',
+    pdfFooterLine3: 'Más información: iq-inversiones.github.io · @iq.solucionesfinancieras'
   },
   'en-US': {
     pageTitle: 'IQ Soluciones Financieras — The power of compound interest',
@@ -346,7 +419,21 @@ const I18N = {
     balanzNote: '100% online · No maintenance fees',
     ttInterest: 'Interest earned',
     ttAnnual: 'Annual contribution',
-    ttPortfolio: 'Portfolio value'
+    ttPortfolio: 'Portfolio value',
+    clientLabel: 'Client',
+    producerLabel: 'Advisor',
+    phName: 'First and last name',
+    btnDownloadPDF: 'Download PDF',
+    btnGenerating: 'Generating...',
+    pdfTitle: 'Investment Projection',
+    pdfSubtitle: 'The power of compound interest',
+    pdfParamsLabel: 'Projection parameters',
+    pdfChartLabel: 'Portfolio value vs. contributed capital',
+    pdfInterest: 'Interest earned',
+    pdfInterestSub: 'from compounding',
+    pdfFooterLine1: 'Document generated on {date} · IQ Soluciones Financieras S.A.',
+    pdfFooterLine2: 'This projection is illustrative. Past performance does not guarantee future results.',
+    pdfFooterLine3: 'More info: iq-inversiones.github.io · @iq.solucionesfinancieras'
   },
   'pt-BR': {
     pageTitle: 'IQ Soluciones Financieras — O poder dos juros compostos',
@@ -398,7 +485,21 @@ const I18N = {
     balanzNote: 'Abertura 100% online · Sem custo de manutenção',
     ttInterest: 'Juros gerados',
     ttAnnual: 'Aporte anual',
-    ttPortfolio: 'Valor da carteira'
+    ttPortfolio: 'Valor da carteira',
+    clientLabel: 'Cliente',
+    producerLabel: 'Assessor',
+    phName: 'Nome e sobrenome',
+    btnDownloadPDF: 'Baixar PDF',
+    btnGenerating: 'Gerando...',
+    pdfTitle: 'Projeção de Investimento',
+    pdfSubtitle: 'O poder dos juros compostos',
+    pdfParamsLabel: 'Parâmetros da projeção',
+    pdfChartLabel: 'Valor da carteira vs. capital aportado',
+    pdfInterest: 'Juros gerados',
+    pdfInterestSub: 'pelo composto',
+    pdfFooterLine1: 'Documento gerado em {date} · IQ Soluciones Financieras S.A.',
+    pdfFooterLine2: 'Esta projeção é ilustrativa. Rendimentos passados não garantem resultados futuros.',
+    pdfFooterLine3: 'Mais info: iq-inversiones.github.io · @iq.solucionesfinancieras'
   }
 };
 
@@ -761,10 +862,141 @@ function applyI18n() {
     if (key === 'themeLabel') el.textContent = THEME==='dark' ? T.themeLabel_dark : T.themeLabel_light;
     else if (T[key] !== undefined) el.textContent = T[key];
   });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (T[key] !== undefined) el.placeholder = T[key];
+  });
   document.getElementById('curIni').textContent = T.currency;
   document.getElementById('curMon').textContent = T.currency;
   document.getElementById('chart2Title').innerHTML =
     T.chart2TitleA + '<span style="color:var(--iq-olive)">' + T.chart2TitleB + '</span>' + T.chart2TitleC;
+}
+/* ===== Generación de PDF personalizado ===== */
+async function generatePDF() {
+  const btn = document.getElementById('btnPDF');
+  if (typeof html2pdf === 'undefined') {
+    alert('No se pudo cargar la librería de PDF. Verificá la conexión a internet e intentá de nuevo.');
+    return;
+  }
+  const originalLabel = btn.querySelector('span').textContent;
+  btn.disabled = true;
+  btn.querySelector('span').textContent = t().btnGenerating;
+  /* Forzar tema claro para PDF prolijo */
+  const wasDark = THEME === 'dark';
+  if (wasDark) { setTheme('light'); await new Promise(r => setTimeout(r, 250)); }
+  try {
+    const c1img = document.getElementById('c1').toDataURL('image/png');
+    const T = t();
+    const cliente = (document.getElementById('clienteInput').value || '').trim() || '—';
+    const asesor = (document.getElementById('productorInput').value || '').trim() || '—';
+    const today = new Date();
+    const dateStr = today.toLocaleDateString(loc(), { year:'numeric', month:'long', day:'numeric' });
+    const data = lastData;
+    const last = data[data.length-1];
+    const interesGenerado = last.p - last.contrib;
+    const conclusionHTML = document.getElementById('ann').innerHTML;
+    const params = [
+      [T.ctlInitial, fmtFull(I)],
+      [T.ctlMonthly, fmtFull(M)],
+      [T.ctlContribYears, CY + ' ' + T.ctlYearsUnit],
+      [T.ctlYears, Y + ' ' + T.ctlYearsUnit],
+      [T.ctlReturn, fmtPctInput(R*100) + ' %']
+    ];
+    const paramsHTML = params.map(([label, value], i) => {
+      const isLast = i === params.length - 1;
+      return `<tr>
+        <td style="padding:8px 8px; ${isLast?'':'border-bottom:1px solid #e2e8f0;'} color:#64748b; font-size:11px;">${label}</td>
+        <td style="padding:8px 8px; ${isLast?'':'border-bottom:1px solid #e2e8f0;'} font-weight:700; color:#1e293b; text-align:right; font-size:12px;">${value}</td>
+      </tr>`;
+    }).join('');
+    const footer1 = tplFill(T.pdfFooterLine1, { date: dateStr });
+    const pdfHTML = `
+      <div style="padding:18mm 16mm; font-family:'Helvetica Neue', Arial, sans-serif; color:#1e293b; box-sizing:border-box; background:#fff; width:210mm; min-height:297mm;">
+        <style>
+          .pdf-pill { display:inline-block; background:rgba(0,67,170,0.12); color:#0043aa; font-family:'JetBrains Mono', monospace; font-size:10px; padding:2px 8px; border-radius:4px; font-weight:600; }
+          .pdf-content .pill { display:inline-block; background:rgba(0,67,170,0.12); color:#0043aa; font-family:'JetBrains Mono', monospace; font-size:10px; padding:2px 8px; border-radius:4px; font-weight:600; }
+          .pdf-content strong { color:#0043aa; font-weight:700; }
+        </style>
+        <!-- HEADER -->
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; border-bottom:3px solid #0043aa; padding-bottom:10px; margin-bottom:18px;">
+          <div>
+            <div style="font-size:9px; color:#61b0bc; text-transform:uppercase; letter-spacing:0.18em; font-weight:600;">IQ Soluciones Financieras</div>
+            <h1 style="font-size:24px; color:#0043aa; margin:6px 0 0 0; font-weight:800; letter-spacing:-0.01em;">${T.pdfTitle}</h1>
+            <div style="font-size:11px; color:#64748b; margin-top:3px; font-style:italic;">${T.pdfSubtitle}</div>
+          </div>
+          <div style="font-size:10px; color:#64748b; text-align:right;">${dateStr}</div>
+        </div>
+        <!-- CLIENTE / ASESOR -->
+        <div style="display:flex; gap:20px; margin-bottom:18px; padding:14px 18px; background:linear-gradient(135deg, rgba(0,67,170,0.06), rgba(97,176,188,0.04)); border-left:3px solid #0043aa; border-radius:0 6px 6px 0;">
+          <div style="flex:1;">
+            <div style="font-size:9px; color:#64748b; text-transform:uppercase; letter-spacing:0.15em; font-weight:600; margin-bottom:4px;">${T.clientLabel}</div>
+            <div style="font-size:16px; font-weight:700; color:#0043aa;">${cliente}</div>
+          </div>
+          <div style="flex:1; border-left:1px solid rgba(0,67,170,0.15); padding-left:20px;">
+            <div style="font-size:9px; color:#64748b; text-transform:uppercase; letter-spacing:0.15em; font-weight:600; margin-bottom:4px;">${T.producerLabel}</div>
+            <div style="font-size:16px; font-weight:700; color:#61b0bc;">${asesor}</div>
+          </div>
+        </div>
+        <!-- PARÁMETROS -->
+        <div style="margin-bottom:16px;">
+          <div style="font-size:10px; color:#64748b; text-transform:uppercase; letter-spacing:0.15em; font-weight:600; margin-bottom:6px;">${T.pdfParamsLabel}</div>
+          <table style="width:100%; border-collapse:collapse;">${paramsHTML}</table>
+        </div>
+        <!-- GRÁFICO -->
+        <div style="margin-bottom:14px;">
+          <div style="font-size:10px; color:#64748b; text-transform:uppercase; letter-spacing:0.15em; font-weight:600; margin-bottom:6px;">${T.pdfChartLabel}</div>
+          <img src="${c1img}" style="width:100%; display:block; border-radius:4px;">
+        </div>
+        <!-- TARJETAS DE RESULTADO -->
+        <div style="display:flex; gap:10px; margin-bottom:16px;">
+          <div style="flex:1; background:linear-gradient(135deg,rgba(0,67,170,0.07),rgba(0,67,170,0.02)); padding:12px 14px; border-radius:6px; border-top:3px solid #0043aa;">
+            <div style="font-size:8px; color:#64748b; text-transform:uppercase; letter-spacing:0.12em; font-weight:600;">${T.cardTotal}</div>
+            <div style="font-size:20px; font-weight:800; color:#0043aa; margin-top:3px;">${fmt(last.p)}</div>
+            <div style="font-size:10px; color:#64748b; margin-top:2px;">${tplFill(T.atYearsTpl, {Y})}</div>
+          </div>
+          <div style="flex:1; background:linear-gradient(135deg,rgba(97,176,188,0.08),rgba(97,176,188,0.02)); padding:12px 14px; border-radius:6px; border-top:3px solid #61b0bc;">
+            <div style="font-size:8px; color:#64748b; text-transform:uppercase; letter-spacing:0.12em; font-weight:600;">${T.cardContributed}</div>
+            <div style="font-size:20px; font-weight:800; color:#61b0bc; margin-top:3px;">${fmt(last.contrib)}</div>
+            <div style="font-size:10px; color:#64748b; margin-top:2px;">${T.cardContributedSub}</div>
+          </div>
+          <div style="flex:1; background:linear-gradient(135deg,rgba(180,189,0,0.08),rgba(180,189,0,0.02)); padding:12px 14px; border-radius:6px; border-top:3px solid #b4bd00;">
+            <div style="font-size:8px; color:#64748b; text-transform:uppercase; letter-spacing:0.12em; font-weight:600;">${T.pdfInterest}</div>
+            <div style="font-size:20px; font-weight:800; color:#7a8000; margin-top:3px;">${fmt(interesGenerado)}</div>
+            <div style="font-size:10px; color:#64748b; margin-top:2px;">${T.pdfInterestSub}</div>
+          </div>
+        </div>
+        <!-- CONCLUSIÓN -->
+        <div class="pdf-content" style="background:linear-gradient(135deg,rgba(0,67,170,0.06),rgba(97,176,188,0.05)); border:1px solid rgba(0,67,170,0.18); border-radius:6px; padding:14px 18px; font-size:11px; line-height:1.6; color:#1e293b;">
+          ${conclusionHTML}
+        </div>
+        <!-- FOOTER -->
+        <div style="margin-top:22px; padding-top:12px; border-top:1px solid #e2e8f0; font-size:9px; color:#64748b; text-align:center; line-height:1.55;">
+          ${footer1}<br>
+          ${T.pdfFooterLine2}<br>
+          ${T.pdfFooterLine3}
+        </div>
+      </div>
+    `;
+    const container = document.getElementById('pdfContainer');
+    container.innerHTML = pdfHTML;
+    const safeName = cliente !== '—' ? cliente.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]/g,'').replace(/\s+/g,'-').toLowerCase() : 'cliente';
+    const filename = `proyeccion-${safeName}.pdf`;
+    await html2pdf().from(container.firstElementChild).set({
+      margin: 0,
+      filename: filename,
+      image: { type: 'jpeg', quality: 0.96 },
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true }
+    }).save();
+    container.innerHTML = '';
+  } catch (e) {
+    console.error(e);
+    alert('Hubo un error generando el PDF. Probá de nuevo.');
+  } finally {
+    if (wasDark) setTheme('dark');
+    btn.disabled = false;
+    btn.querySelector('span').textContent = originalLabel;
+  }
 }
 function tplFill(str, vars) { return str.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? ''); }
 function update() {
@@ -918,6 +1150,7 @@ document.querySelectorAll('.chip.lang').forEach(b=>{
 document.getElementById('themeToggle').addEventListener('click', ()=>{
   setTheme(THEME === 'dark' ? 'light' : 'dark');
 });
+document.getElementById('btnPDF').addEventListener('click', generatePDF);
 setupChartHover(
   document.getElementById('c1'),
   () => chart1Geom,
