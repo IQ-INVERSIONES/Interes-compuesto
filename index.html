@@ -151,6 +151,9 @@ footer { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border
 .cg-input-text:focus { border-bottom: 1.5px solid var(--iq-blue); background: rgba(0,67,170,0.06); }
 .cg-input-text::placeholder { color: var(--muted); opacity: 0.5; font-weight: 400; }
 .cg-input-date { min-width: 165px; max-width: 200px; color-scheme: light dark; font-family: 'Montserrat', sans-serif; }
+.cg-input-select { cursor: pointer; appearance: none; -webkit-appearance: none; padding-right: 26px; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230043aa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>"); background-repeat: no-repeat; background-position: right 4px center; background-size: 14px; }
+[data-theme="dark"] .cg-input-select { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2361b0bc' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>"); }
+.cg-input-select option { background: var(--surface); color: var(--text); }
 .cg-input-date::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.6; transition: opacity .2s; }
 .cg-input-date:hover::-webkit-calendar-picker-indicator { opacity: 1; }
 .cg-age-hint { font-size: 11px; color: var(--muted); margin-top: 2px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.03em; min-height: 14px; }
@@ -225,7 +228,9 @@ footer { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border
       </div>
       <div class="cg">
         <span class="clabel" data-i18n="producerLabel">Asesor</span>
-        <input type="text" class="cg-input-text" id="productorInput" autocomplete="off" data-i18n-placeholder="phName" placeholder="Nombre y apellido">
+        <select class="cg-input-text cg-input-select" id="productorSelect">
+          <option value="-1" data-i18n="producerUnassigned">— Sin asignar —</option>
+        </select>
       </div>
     </div>
     <button class="btn-pdf" id="btnPDF">
@@ -383,7 +388,15 @@ const I18N = {
     pdfInterestSub: 'por el compuesto',
     pdfFooterLine1: 'Documento generado el {date} · IQ Soluciones Financieras S.A.',
     pdfFooterLine2: 'Esta proyección es ilustrativa. Rendimientos pasados no garantizan resultados futuros.',
-    pdfFooterLine3: 'Más información: iq-inversiones.github.io · @iq.solucionesfinancieras'
+    pdfFooterLine3: 'Más información: iq-inversiones.github.io · @iq.solucionesfinancieras',
+    producerUnassigned: '— Sin asignar —',
+    pdfMilestonesLabel: 'Hitos de la proyección',
+    mlsYear: 'Año',
+    mlsAge: 'Edad',
+    mlsContrib: 'Aportado',
+    mlsPortfolio: 'Cartera',
+    pdfAdvisorBlockLabel: 'Tu asesor',
+    pdfAdvisorContactWA: 'WhatsApp'
   },
   'en-US': {
     pageTitle: 'IQ Soluciones Financieras — The power of compound interest',
@@ -454,7 +467,15 @@ const I18N = {
     pdfInterestSub: 'from compounding',
     pdfFooterLine1: 'Document generated on {date} · IQ Soluciones Financieras S.A.',
     pdfFooterLine2: 'This projection is illustrative. Past performance does not guarantee future results.',
-    pdfFooterLine3: 'More info: iq-inversiones.github.io · @iq.solucionesfinancieras'
+    pdfFooterLine3: 'More info: iq-inversiones.github.io · @iq.solucionesfinancieras',
+    producerUnassigned: '— Unassigned —',
+    pdfMilestonesLabel: 'Projection milestones',
+    mlsYear: 'Year',
+    mlsAge: 'Age',
+    mlsContrib: 'Contributed',
+    mlsPortfolio: 'Portfolio',
+    pdfAdvisorBlockLabel: 'Your advisor',
+    pdfAdvisorContactWA: 'WhatsApp'
   },
   'pt-BR': {
     pageTitle: 'IQ Soluciones Financieras — O poder dos juros compostos',
@@ -525,11 +546,59 @@ const I18N = {
     pdfInterestSub: 'pelo composto',
     pdfFooterLine1: 'Documento gerado em {date} · IQ Soluciones Financieras S.A.',
     pdfFooterLine2: 'Esta projeção é ilustrativa. Rendimentos passados não garantem resultados futuros.',
-    pdfFooterLine3: 'Mais info: iq-inversiones.github.io · @iq.solucionesfinancieras'
+    pdfFooterLine3: 'Mais info: iq-inversiones.github.io · @iq.solucionesfinancieras',
+    producerUnassigned: '— Não atribuído —',
+    pdfMilestonesLabel: 'Marcos da projeção',
+    mlsYear: 'Ano',
+    mlsAge: 'Idade',
+    mlsContrib: 'Aportado',
+    mlsPortfolio: 'Carteira',
+    pdfAdvisorBlockLabel: 'Seu assessor',
+    pdfAdvisorContactWA: 'WhatsApp'
   }
 };
 
 let I=0, M=500, Y=30, R=0.10, CY=30;
+/* === Lista de productores IQ === */
+const PRODUCERS = [
+  { name: 'Anabella Diez',           whatsapp: '+54 9 11 5098-6675', email: 'adiez@iqsolucionesfinancieras.com' },
+  { name: 'Andres Geirola',          whatsapp: '+54 9 11 5601-8185', email: 'ageirola@iqsolucionesfinancieras.com' },
+  { name: 'Antonio Serrano',         whatsapp: '+54 9 11 5043-1715', email: 'tserrano@iqsolucionesfinancieras.com' },
+  { name: 'Belen Szikla',            whatsapp: '+54 9 11 3557-2948', email: 'belenszikla@iqsolucionesfinancieras.com' },
+  { name: 'Celeste Pascual',         whatsapp: '+54 9 11 5952-3798', email: 'cpascual@iqsolucionesfinancieras.com' },
+  { name: 'Christian Rossi',         whatsapp: '+54 9 11 5472-7293', email: 'crossi@iqsolucionesfinancieras.com' },
+  { name: 'Claudio Ponce',           whatsapp: '+54 9 11 6933-4207', email: 'cponce@iqsolucionesfinancieras.com' },
+  { name: 'Federico Seco',           whatsapp: '+46 73 392 55 77',   email: '' },
+  { name: 'Gabriel Rebecchi',        whatsapp: '+54 9 11 6051-2140', email: 'grebecchi@iqsolucionesfinancieras.com' },
+  { name: 'Leandro Seco',            whatsapp: '+54 9 11 6611-2466', email: 'lseco@iqsolucionesfinancieras.com' },
+  { name: 'Luciana Nieva',           whatsapp: '+54 9 11 5564-0170', email: 'lnieva@iqsolucionesfinancieras.com' },
+  { name: 'Lucila Seco',             whatsapp: '+54 9 11 3081-9322', email: 'luseco@iqsolucionesfinancieras.com' },
+  { name: 'Manuel Serrano',          whatsapp: '+54 9 11 6195-2741', email: 'manuelserrano@iqsolucionesfinancieras.com' },
+  { name: 'Matias Diaz Perez',       whatsapp: '+54 9 11 3777-3182', email: 'matiasleon98@hotmail.com' },
+  { name: 'Nicolas Rampinini',       whatsapp: '+54 9 11 3374-1968', email: 'nrampinini@iqsolucionesfinancieras.com' },
+  { name: 'Nicolas Spandre',         whatsapp: '+54 9 11 6861-3968', email: 'nspandre@iqsolucionesfinancieras.com' },
+  { name: 'Sebastian Zaurdo',        whatsapp: '+54 9 11 5578-5146', email: 'szaurdo@iqsolucionesfinancieras.com' },
+  { name: 'Valeria Arcifa',          whatsapp: '+54 9 11 6875-6336', email: 'valeria.arcifa@gmail.com' },
+  { name: 'Valeria Martinez Urquiza',whatsapp: '+54 9 2914 73-5210', email: 'valeriamartinezurquiza@gmail.com' },
+  { name: 'Victoria Monrroy',        whatsapp: '+54 9 2915 07-0186', email: 'licvmonrroy@gmail.com' }
+];
+function waLink(whatsapp) { return 'https://wa.me/' + (whatsapp || '').replace(/\D/g,''); }
+function populateProducerDropdown() {
+  const select = document.getElementById('productorSelect');
+  while (select.options.length > 1) select.remove(1);
+  PRODUCERS.forEach((p, i) => {
+    const opt = document.createElement('option');
+    opt.value = String(i);
+    opt.textContent = p.name;
+    select.appendChild(opt);
+  });
+}
+function getCurrentProducer() {
+  const select = document.getElementById('productorSelect');
+  if (!select) return null;
+  const idx = +select.value;
+  return (idx >= 0 && PRODUCERS[idx]) ? PRODUCERS[idx] : null;
+}
 let LANG = localStorage.getItem('iq_lang') || (navigator.language && navigator.language.startsWith('pt') ? 'pt-BR' : navigator.language && navigator.language.startsWith('en') ? 'en-US' : 'es-AR');
 let THEME = localStorage.getItem('iq_theme') || 'light';
 const IQ_BLUE = '#0043aa';
@@ -925,7 +994,8 @@ async function generatePDF() {
     const c1img = document.getElementById('c1').toDataURL('image/png');
     const T = t();
     const cliente = (document.getElementById('clienteInput').value || '').trim() || '—';
-    const asesor = (document.getElementById('productorInput').value || '').trim() || '—';
+    const producer = getCurrentProducer();
+    const asesor = producer ? producer.name : '—';
     const dobStr = document.getElementById('dobInput').value;
     const pdfCurrentAge = calcAge(dobStr, 0);
     const pdfAgeAtEnd = calcAge(dobStr, Y);
@@ -939,6 +1009,43 @@ async function generatePDF() {
     const cardSubtitleAgeText = pdfAgeAtEnd != null
       ? tplFill(T.atYearsWithAgeTpl, { Y, age: pdfAgeAtEnd })
       : tplFill(T.atYearsTpl, { Y });
+    /* Bloque de contacto del asesor */
+    const asesorContactHTML = producer ? `
+      <div style="font-size:10px; color:#475569; margin-top:5px; line-height:1.6;">
+        <a href="${waLink(producer.whatsapp)}" style="color:#075e54; text-decoration:none; font-weight:600;">📱 ${producer.whatsapp}</a>
+        ${producer.email ? `<br><a href="mailto:${producer.email}" style="color:#0043aa; text-decoration:none;">✉ ${producer.email}</a>` : ''}
+      </div>` : '';
+    /* Tabla de hitos */
+    const step = Y <= 10 ? 2 : (Y <= 25 ? 5 : 5);
+    const milestoneYears = [];
+    for (let y = step; y <= Y; y += step) milestoneYears.push(y);
+    if (milestoneYears[milestoneYears.length-1] !== Y) milestoneYears.push(Y);
+    const showAgeCol = pdfCurrentAge != null;
+    const milestonesRowsHTML = milestoneYears.map(y => {
+      const d = data[y-1];
+      const ageAt = showAgeCol ? pdfCurrentAge + y : null;
+      return `<tr>
+        <td style="padding:7px 8px; border-bottom:1px solid #e2e8f0; color:#1e293b; font-weight:600; font-size:11px;">${T.mlsYear} ${y}</td>
+        ${showAgeCol ? `<td style="padding:7px 8px; border-bottom:1px solid #e2e8f0; color:#64748b; font-size:11px;">${ageAt} ${T.ctlYearsUnit}</td>` : ''}
+        <td style="padding:7px 8px; border-bottom:1px solid #e2e8f0; color:#61b0bc; font-weight:600; text-align:right; font-size:11px;">${fmt(d.contrib)}</td>
+        <td style="padding:7px 8px; border-bottom:1px solid #e2e8f0; color:#0043aa; font-weight:700; text-align:right; font-size:12px;">${fmt(d.p)}</td>
+      </tr>`;
+    }).join('');
+    const milestonesTableHTML = `
+      <div style="margin-bottom:16px;">
+        <div style="font-size:10px; color:#64748b; text-transform:uppercase; letter-spacing:0.15em; font-weight:600; margin-bottom:6px;">${T.pdfMilestonesLabel}</div>
+        <table style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr style="background:rgba(0,67,170,0.05);">
+              <th style="padding:7px 8px; text-align:left; font-size:9px; color:#64748b; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">${T.mlsYear}</th>
+              ${showAgeCol ? `<th style="padding:7px 8px; text-align:left; font-size:9px; color:#64748b; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">${T.mlsAge}</th>` : ''}
+              <th style="padding:7px 8px; text-align:right; font-size:9px; color:#64748b; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">${T.mlsContrib}</th>
+              <th style="padding:7px 8px; text-align:right; font-size:9px; color:#64748b; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">${T.mlsPortfolio}</th>
+            </tr>
+          </thead>
+          <tbody>${milestonesRowsHTML}</tbody>
+        </table>
+      </div>`;
     const params = [
       [T.ctlInitial, fmtFull(I)],
       [T.ctlMonthly, fmtFull(M)],
@@ -979,6 +1086,7 @@ async function generatePDF() {
           <div style="flex:1; border-left:1px solid rgba(0,67,170,0.15); padding-left:20px;">
             <div style="font-size:9px; color:#64748b; text-transform:uppercase; letter-spacing:0.15em; font-weight:600; margin-bottom:4px;">${T.producerLabel}</div>
             <div style="font-size:16px; font-weight:700; color:#61b0bc;">${asesor}</div>
+            ${asesorContactHTML}
           </div>
         </div>
         <!-- PARÁMETROS -->
@@ -991,6 +1099,8 @@ async function generatePDF() {
           <div style="font-size:10px; color:#64748b; text-transform:uppercase; letter-spacing:0.15em; font-weight:600; margin-bottom:6px;">${T.pdfChartLabel}</div>
           <img src="${c1img}" style="width:100%; display:block; border-radius:4px;">
         </div>
+        <!-- TABLA DE HITOS -->
+        ${milestonesTableHTML}
         <!-- TARJETAS DE RESULTADO -->
         <div style="display:flex; gap:10px; margin-bottom:16px;">
           <div style="flex:1; background:linear-gradient(135deg,rgba(0,67,170,0.07),rgba(0,67,170,0.02)); padding:12px 14px; border-radius:6px; border-top:3px solid #0043aa;">
@@ -1235,6 +1345,8 @@ setupChartHover(
   () => hoverIdx2,
   () => { if (lastData) chart2(lastData); }
 );
+populateProducerDropdown();
+document.getElementById('productorSelect').addEventListener('change', () => {});
 setTheme(THEME);
 setLang(LANG);
 /* Inicializar inputs con formato */
