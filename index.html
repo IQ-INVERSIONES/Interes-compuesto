@@ -175,7 +175,7 @@ footer { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border
 .btn-pdf:disabled { opacity: 0.6; cursor: wait; transform: none; }
 [data-theme="dark"] .btn-pdf { background: var(--iq-teal); color: #0a1322; box-shadow: 0 2px 6px rgba(97,176,188,0.3); }
 .btn-pdf svg { width: 16px; height: 16px; }
-#pdfContainer { position: absolute; left: -9999px; top: 0; width: 210mm; opacity: 1; pointer-events: none; z-index: -1; overflow: visible; }
+#pdfContainer { position: fixed; left: 0; top: 0; width: 210mm; opacity: 0; pointer-events: none; z-index: -1; }
 @media (max-width: 640px) {
   .personalize-bar { flex-direction: column; align-items: stretch; }
   .cg-input-text { min-width: 0; width: 100%; }
@@ -1096,17 +1096,13 @@ async function generatePDF() {
     const pdfHTML = `
       <div class="pdf-doc" style="font-family:'Helvetica Neue', Arial, sans-serif; color:#1e293b; background:#fff; width:210mm; box-sizing:border-box;">
         <style>
-          .pdf-doc { overflow: visible; }
-          .pdf-doc .pdf-page { padding:10mm 16mm; box-sizing:border-box; width:210mm; overflow: hidden; }
-          .pdf-doc .pdf-page.page1 { height: 297mm; max-height: 297mm; }
-          .pdf-doc .pdf-page.page2 { padding-top: 8mm; }
+          .pdf-doc .pdf-page { padding:10mm 16mm; box-sizing:border-box; width:210mm; }
           .pdf-doc .pdf-section { page-break-inside: avoid; break-inside: avoid; }
           .pdf-doc .pdf-content .pill { display:inline-block; background:rgba(0,67,170,0.12); color:#0043aa; font-family:'JetBrains Mono', monospace; font-size:10px; padding:2px 8px; border-radius:4px; font-weight:600; }
           .pdf-doc .pdf-content strong { color:#0043aa; font-weight:700; }
-          .pdf-doc a { color: inherit; }
         </style>
         <!-- ============ PÁGINA 1 ============ -->
-        <div class="pdf-page page1">
+        <div class="pdf-page">
           <!-- HEADER con LOGO -->
           <div class="pdf-section" style="display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid #0043aa; padding-bottom:8px; margin-bottom:10px;">
             <div style="display:flex; align-items:center; gap:14px; flex:1;">
@@ -1177,9 +1173,9 @@ async function generatePDF() {
           </div>
         </div>
         <!-- ============ SALTO DE PÁGINA ============ -->
-        <div class="html2pdf__page-break" style="height:0; margin:0; padding:0; border:0; overflow:hidden; page-break-after:always; break-after:page;"></div>
+        <div class="html2pdf__page-break" style="height:0; margin:0; padding:0; border:0; overflow:hidden;"></div>
         <!-- ============ PÁGINA 2 ============ -->
-        <div class="pdf-page page2" style="page-break-before:always; break-before:page;">
+        <div class="pdf-page">
           <!-- MINI HEADER -->
           <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:6px; margin-bottom:10px; border-bottom:1px solid #e2e8f0;">
             <div style="display:flex; align-items:center; gap:8px; font-size:9px; color:#64748b;">
@@ -1238,34 +1234,13 @@ async function generatePDF() {
     const filename = `proyeccion-${safeName}.pdf`;
     /* Función interna de generación con retry */
     const doPDFGeneration = async (attempt) => {
-      /* Determinar scale seguro según memoria disponible */
-      let safeScale = 2;
-      try {
-        /* En dispositivos con poca memoria o pantallas grandes, bajar scale */
-        const testCanvas = document.createElement('canvas');
-        const testSize = 210 * 2 * (297 * 2); /* A4 a scale 2 */
-        testCanvas.width = 1; testCanvas.height = 1;
-        const ctx = testCanvas.getContext('2d');
-        if (!ctx) safeScale = 1.5;
-      } catch (_) { safeScale = 1.5; }
-      /* En reintentos, bajar calidad para evitar el mismo fallo */
-      if (attempt > 1) safeScale = Math.min(safeScale, 1.5);
+      const safeScale = attempt > 1 ? 1.5 : 2;
       return html2pdf().from(container.firstElementChild).set({
         margin: 0,
         filename: filename,
         enableLinks: true,
         image: { type: 'jpeg', quality: attempt > 1 ? 0.90 : 0.96 },
-        html2canvas: {
-          scale: safeScale,
-          useCORS: true,
-          backgroundColor: '#ffffff',
-          logging: false,
-          imageTimeout: 10000,
-          allowTaint: false,
-          removeContainer: false,
-          windowWidth: container.firstElementChild.scrollWidth,
-          windowHeight: container.firstElementChild.scrollHeight
-        },
+        html2canvas: { scale: safeScale, useCORS: true, backgroundColor: '#ffffff', logging: false, imageTimeout: 10000 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
         pagebreak: { mode: ['css', 'legacy'] }
       }).save();
