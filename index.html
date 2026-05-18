@@ -992,21 +992,9 @@ function applyI18n() {
   document.getElementById('chart2Title').innerHTML =
     T.chart2TitleA + '<span style="color:var(--iq-olive)">' + T.chart2TitleB + '</span>' + T.chart2TitleC;
 }
-/* ===== Cargar logo IQ como data URL para embeber en el PDF ===== */
-let LOGO_DATA_URL = null;
-async function loadLogoDataUrl() {
-  if (LOGO_DATA_URL !== null) return LOGO_DATA_URL;
-  try {
-    const res = await fetch('assets/logo-iq.svg');
-    if (!res.ok) { LOGO_DATA_URL = ''; return ''; }
-    const txt = await res.text();
-    LOGO_DATA_URL = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(txt)));
-    return LOGO_DATA_URL;
-  } catch (e) {
-    LOGO_DATA_URL = '';
-    return '';
-  }
-}
+/* ===== Logo oficial de IQ Soluciones Financieras (embebido como data URL) ===== */
+const IQ_LOGO_DATA_URL = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2OTEuNzIgMzcxLjQyIj48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6IzAwNDNhYTt9LmNscy0ye2ZpbGw6I2I0YmQwMDt9LmNscy0ze2ZpbGw6IzYxYjBiYzt9PC9zdHlsZT48L2RlZnM+PGcgaWQ9IkNhcGFfMiIgZGF0YS1uYW1lPSJDYXBhIDIiPjxnIGlkPSJDYXBhXzEtMiIgZGF0YS1uYW1lPSJDYXBhIDEiPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTY2MC4xOSwyMzcuNjFxMzEuNDgtMzYuNSwzMS41My04Ni4zLDAtNTUuNTQtMzguNDEtOTQuMThUNTYxLjM4LDE4LjVhMTI4LjE2LDEyOC4xNiwwLDAsMC02NS42LDE3Ljc3LDEzMCwxMzAsMCwwLDAtNDgsNDcuOTRxLTE3LjQ2LDMwLjE4LTE3LjQ1LDY2LjI0LDAsNTQsMzcuNDksOTMuMDl0OTQuMTMsMzlxMzIuMTMsMCw1OC41Ny0xMy41OGw1LjIxLDYuNzdBOC4yNyw4LjI3LDAsMCwwLDYzMi4zLDI3OWg0My43NmE4LjI2LDguMjYsMCwwLDAsNi41NC0xMy4zWm0tOTguNDItMS4zNGE4Mi40NCw4Mi40NCwwLDAsMS01My4yNS0xOXEtMzAtMjQuMjctMzAtNjYsMC0zNy40NCwyMy43OC02MS43dDU5LTI0LjI4cTM0LjIyLDAsNTguMzQsMjVUNjQzLjg1LDE1MWE4Ny4yNCw4Ny4yNCwwLDAsMS0xNC4xMSw0OC4yMmwtOS0xMy43NGE4LjI2LDguMjYsMCwwLDAtNi41NC0zLjIxSDU3MC40N2E4LjI2LDguMjYsMCwwLDAtNi41NCwxMy4zMWwyNy4xNCwzNS4yM0E3OC41NSw3OC41NSwwLDAsMSw1NjEuNzcsMjM2LjI3WiIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTM3NS41LDI1LjExSDQwN2E3LjQ5LDcuNDksMCwwLDEsOCw3LjQ2VjI2OC4yM3MwLDguMzMtOC40NSw4LjMzSDM3NS43OWMtOC4wNiwwLTguMy03LjctOC4zLTcuN1YzMi41OVMzNjYuNjEsMjUuMTEsMzc1LjUsMjUuMTFaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMjcxLjU3LDI3OS4yN0gyMjUuMzFhOC42OSw4LjY5LDAsMCwxLTYuOTEtMy40MWwtMTMuNjYtMTcuNzFIMTExLjQ2QTguNzIsOC43MiwwLDAsMSwxMDQsMjQ1TDE3MC40LDEzMy4wNmE4Ljc0LDguNzQsMCwwLDEsNy41MS00LjI3SDMwMS41OWE4LjcyLDguNzIsMCwwLDEsNy42LDEzTDI1NiwyMzYuMWwyMi40NiwyOS4xYTguNzQsOC43NCwwLDAsMS02LjkyLDE0LjA3WiIvPjxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTgzLDI0Mi4zOGE4LjcxLDguNzEsMCwwLDEtNi45MS0zLjRMMy43NSwxNDUuNTFhOC43Myw4LjczLDAsMCwxLS43LTkuNjRMNjcuNDMsMjIuMWE4Ljc0LDguNzQsMCwwLDEsMTQuNTEtMWw3NC4zOSw5Ni4xOGE4Ljc0LDguNzQsMCwwLDEsLjU4LDkuODRsLTY2LjQ2LDExMWE4LjczLDguNzMsMCwwLDEtNyw0LjIzWiIvPjxwYXRoIGNsYXNzPSJjbHMtMyIgZD0iTTMwMC42MiwxMTQuMTRIMTc2Ljk0YTguNzMsOC43MywwLDAsMS02LjkxLTMuNEw5NS4zOSwxNC4wNkE4LjczLDguNzMsMCwwLDEsMTAyLjMsMEgyMjUuODdhOC43NSw4Ljc1LDAsMCwxLDYuOTEsMy4zOWw3NC43NSw5Ni42N2E4Ljc0LDguNzQsMCwwLDEtNi45MSwxNC4wOFoiLz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0yNC41NiwzNDNjLTIuNTEtNC02LjU1LTQuNjItMTAuNDQtNC42N3MtMTAuNDMsMS40Ny0xMC40Myw3YzAsNC4zOCw0LjcyLDUuNDIsMTAuNTMsNi41LDYuNjQsMS4yOCwxMy41MywyLjQ2LDEzLjUzLDkuODksMCw3Ljc3LTcuODcsOS42NC0xMy42Myw5LjY0LTUuMzYsMC0xMS40Ni0yLjIxLTE0LjEyLTcuNDdsMi4zNi0xLjE5QzQuNDgsMzY2LjksOS44OSwzNjksMTQuMTIsMzY5czExLTEuMTgsMTEtNy4yOGMwLTUuMTctNS42Ni02LjMtMTEuMzItNy4zOEM3LjQ4LDM1My4wNywxLDM1MS43OSwxLDM0NS40NGMtLjE0LTcuMjgsNy40My05LjU0LDEzLjA5LTkuNTQsNC45MiwwLDkuMjEuNzgsMTIuNiw1Ljg1WiIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTY5LjA5LDM1My42NmMwLDktNS44MSwxNy43Ni0xNy4zNywxNy43NnMtMTcuMzctOC43Ni0xNy4zNy0xNy44Niw1Ljc1LTE3LjcxLDE3LjM3LTE3LjcxUzY5LjE0LDM0NC4zNiw2OS4wOSwzNTMuNjZaTTM3LDM1My42MWMwLDcuNzgsNSwxNS4zNSwxNC43NywxNS4zNXMxNC44MS03LjU3LDE0LjgxLTE1LjM1YzAtOC00LjkyLTE1LjMtMTQuODEtMTUuM1MzNi45LDM0NS40OSwzNywzNTMuNjFaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODAuNSwzMzYuMzl2MzEuOTNIOTkuODl2Mi41MWgtMjJWMzM2LjM5WiIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTEzMS43MywzMzYuMzl2MjEuNGMwLDE4LTI2LjM4LDE4LjA2LTI2LjM4LDB2LTIxLjRIMTA4djIxLjRjMCwxNC44MiwyMS4xNiwxNC43NywyMS4xNiwwdi0yMS40WiIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTE2OS44NiwzNjYuMDZhMTcuNzUsMTcuNzUsMCwwLDEtMTIuNTUsNS4xN2MtMTEuNjEsMC0xNy42Ni04LjEyLTE3LjcxLTE3LjQyUzE0NS41LDMzNiwxNTcuMzEsMzM2YTE3Ljc1LDE3Ljc1LDAsMCwxLDEyLjU1LDUuMTdMMTY4LDM0Mi43NGExNSwxNSwwLDAsMC0xMC43My00LjM4Yy0xMCwwLTE1LjIsNy4wOC0xNS4xNSwxNS4zNS4wOSw4LjA3LDUuMjEsMTUuMDYsMTUuMTUsMTUuMDZhMTUuNDEsMTUuNDEsMCwwLDAsMTAuNzgtNC4zOFoiLz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xNzguNjIsMzcwLjgzVjMzNi4zOWgyLjYxdjM0LjQ0WiIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTIyNS41NiwzNTMuNjZjLS4wNSw5LTUuODEsMTcuNzYtMTcuMzcsMTcuNzZzLTE3LjM3LTguNzYtMTcuMzctMTcuODYsNS43Ni0xNy43MSwxNy4zNy0xNy43MVMyMjUuNjEsMzQ0LjM2LDIyNS41NiwzNTMuNjZabS0zMi4xMy0uMDVjMCw3Ljc4LDUsMTUuMzUsMTQuNzYsMTUuMzVTMjIzLDM2MS4zOSwyMjMsMzUzLjYxYzAtOC00LjkyLTE1LjMtMTQuODEtMTUuM1MxOTMuMzgsMzQ1LjQ5LDE5My40MywzNTMuNjFaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMjM1LjUsMzM2LjM5bDIzLjE4LDI4LjQ5VjMzNi4zOWgyLjZ2MzQuNDRoLTFMMjM3LDM0Mi4zOXYyOC40NGgtMi42NVYzMzYuMzlaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMjc0LDM1Mi4yOEgyOTQuMnYyLjQxSDI3NHYxMy41OWgyMS43NXYyLjU1SDI3MS40MlYzMzYuMzloMjMuNzd2Mi41MUgyNzRaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMzI3LjQ3LDM0M2MtMi41MS00LTYuNTUtNC42Mi0xMC40NC00LjY3cy0xMC40MywxLjQ3LTEwLjQzLDdjMCw0LjM4LDQuNzMsNS40MiwxMC41Myw2LjUsNi42NSwxLjI4LDEzLjUzLDIuNDYsMTMuNTMsOS44OSwwLDcuNzctNy44Nyw5LjY0LTEzLjYzLDkuNjQtNS4zNiwwLTExLjQ2LTIuMjEtMTQuMTItNy40N2wyLjM2LTEuMTlDMzA3LjM5LDM2Ni45LDMxMi44LDM2OSwzMTcsMzY5czExLTEuMTgsMTEtNy4yOGMuMDUtNS4xNy01LjY2LTYuMy0xMS4zMi03LjM4LTYuMy0xLjIzLTEyLjc1LTIuNTEtMTIuNzUtOC44Ni0uMTQtNy4yOCw3LjQzLTkuNTQsMTMuMDktOS41NCw0LjkyLDAsOS4yMS43OCwxMi42LDUuODVaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMzU3LjM4LDM1Mi43N2gxOS44M3YyLjUxSDM1Ny4zOHYxNS42aC0yLjY2VjMzNi4zOUgzNzcuOVYzMzlIMzU3LjM4WiIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTM4Ni43NiwzNzAuODNWMzM2LjM5aDIuNnYzNC40NFoiLz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik00MDAuNTgsMzM2LjM5bDIzLjE4LDI4LjQ5VjMzNi4zOWgyLjYxdjM0LjQ0aC0xbC0yMy4yMy0yOC40NHYyOC40NGgtMi42NlYzMzYuMzlaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDYzLjkxLDM3MC44M2wtMy43OC04LjQ2SDQzOS41NmwtMy43NCw4LjQ2SDQzM2wxNS40NS0zNC40NGgyLjkxbDE1LjQ1LDM0LjQ0Wm0tNC44Mi0xMC45Mi05LjI1LTIxLTkuMjUsMjFaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDc0LjgzLDMzNi4zOSw0OTgsMzY0Ljg4VjMzNi4zOWgyLjYxdjM0LjQ0aC0xbC0yMy4yMy0yOC40NHYyOC40NEg0NzMuN1YzMzYuMzlaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTM5LjIsMzY2LjA2YTE3Ljc3LDE3Ljc3LDAsMCwxLTEyLjU1LDUuMTdjLTExLjYxLDAtMTcuNjctOC4xMi0xNy43Mi0xNy40MlM1MTQuODQsMzM2LDUyNi42NSwzMzZhMTcuNzcsMTcuNzcsMCwwLDEsMTIuNTUsNS4xN2wtMS44MiwxLjU4YTE1LjA2LDE1LjA2LDAsMCwwLTEwLjczLTQuMzhjLTEwLDAtMTUuMjEsNy4wOC0xNS4xNiwxNS4zNS4xLDguMDcsNS4yMiwxNS4wNiwxNS4xNiwxNS4wNmExNS40MywxNS40MywwLDAsMCwxMC43OC00LjM4WiIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTU0OCwzNzAuODNWMzM2LjM5aDIuNjF2MzQuNDRaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTYzLjIxLDM1Mi4yOGgyMC4xN3YyLjQxSDU2My4yMXYxMy41OUg1ODV2Mi41NUg1NjAuNlYzMzYuMzloMjMuNzd2Mi41MUg1NjMuMjFaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNjIwLjc4LDM3MC44M2gtMy40OWwtMTEuOTEtMTNINTk2djEzaC0yLjY2VjMzNi4zOWgxNS4xNmM3LjQ4LDAsMTEuMjcsNS4zNiwxMS4zMiwxMC43My4wNSw1LjYtMy42NSwxMC41My0xMS4xNywxMC41M1pNNTk2LDM1NS4yOGgxMi4yYzYsMCw4LjY2LTMuMzksOC43MS04LjIxLjA1LTQtMi43LTguMjItOC40MS04LjIySDU5NloiLz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik02NTUuMDgsMzcwLjgzbC0zLjc5LTguNDZINjMwLjcyTDYyNywzNzAuODNoLTIuODZsMTUuNDYtMzQuNDRoMi45bDE1LjQ1LDM0LjQ0Wm0tNC44My0xMC45Mkw2NDEsMzM5bC05LjI1LDIxWiIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTY4Ni42MiwzNDNjLTIuNTEtNC02LjU1LTQuNjItMTAuNDMtNC42Ny00LDAtMTAuNDQsMS40Ny0xMC40NCw3LDAsNC4zOCw0LjczLDUuNDIsMTAuNTMsNi41LDYuNjUsMS4yOCwxMy41NCwyLjQ2LDEzLjU0LDkuODktLjA1LDcuNzctNy44OCw5LjY0LTEzLjYzLDkuNjQtNS4zNywwLTExLjQ3LTIuMjEtMTQuMTMtNy40N2wyLjM2LTEuMTljMi4xMiw0LjE5LDcuNTMsNi4yNSwxMS43Nyw2LjI1czExLTEuMTgsMTEtNy4yOGMuMDUtNS4xNy01LjY2LTYuMy0xMS4zMi03LjM4LTYuMy0xLjIzLTEyLjc0LTIuNTEtMTIuNzQtOC44Ni0uMTUtNy4yOCw3LjQzLTkuNTQsMTMuMDktOS41NCw0LjkyLDAsOS4yLjc4LDEyLjU5LDUuODVaIi8+PC9nPjwvZz48L3N2Zz4=';
+async function loadLogoDataUrl() { return IQ_LOGO_DATA_URL; }
 /* ===== Generación de PDF personalizado ===== */
 async function generatePDF() {
   const btn = document.getElementById('btnPDF');
@@ -1095,8 +1083,8 @@ async function generatePDF() {
     const wealthMultiplier = last.contrib > 0 ? (last.p / last.contrib) : 0;
     const wealthMultStr = wealthMultiplier.toFixed(1).replace('.', T.decimal);
     const compareWithSub = tplFill(T.pdfCompareWithSubTpl, { gift: fmt(interesGenerado), mult: wealthMultStr });
-    const logoBlock = logoDataUrl ? `<img src="${logoDataUrl}" style="height:54px; width:auto;">` : '';
-    const logoMini = logoDataUrl ? `<img src="${logoDataUrl}" style="height:22px; width:auto;">` : '';
+    const logoBlock = logoDataUrl ? `<img src="${logoDataUrl}" style="height:72px; width:auto;">` : '';
+    const logoMini = logoDataUrl ? `<img src="${logoDataUrl}" style="height:26px; width:auto;">` : '';
     const pdfHTML = `
       <div class="pdf-doc" style="font-family:'Helvetica Neue', Arial, sans-serif; color:#1e293b; background:#fff; width:210mm; box-sizing:border-box;">
         <style>
@@ -1108,13 +1096,12 @@ async function generatePDF() {
         <!-- ============ PÁGINA 1 ============ -->
         <div class="pdf-page">
           <!-- HEADER con LOGO -->
-          <div class="pdf-section" style="display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid #0043aa; padding-bottom:10px; margin-bottom:14px;">
-            <div style="display:flex; align-items:center; gap:14px; flex:1;">
+          <div class="pdf-section" style="display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid #0043aa; padding-bottom:12px; margin-bottom:14px;">
+            <div style="display:flex; align-items:center; gap:18px; flex:1;">
               ${logoBlock}
-              <div>
-                <div style="font-size:9px; color:#61b0bc; text-transform:uppercase; letter-spacing:0.18em; font-weight:600;">IQ Soluciones Financieras</div>
-                <div style="font-size:22px; color:#0043aa; margin-top:3px; font-weight:800; line-height:1.05;">${T.pdfTitle}</div>
-                <div style="font-size:11px; color:#64748b; margin-top:2px; font-style:italic;">${T.pdfSubtitle}</div>
+              <div style="border-left:1px solid rgba(0,67,170,0.15); padding-left:16px;">
+                <div style="font-size:22px; color:#0043aa; font-weight:800; line-height:1.05; letter-spacing:-0.01em;">${T.pdfTitle}</div>
+                <div style="font-size:11px; color:#64748b; margin-top:3px; font-style:italic;">${T.pdfSubtitle}</div>
               </div>
             </div>
             <div style="font-size:10px; color:#64748b; text-align:right; white-space:nowrap; padding-left:10px;">${dateStr}</div>
