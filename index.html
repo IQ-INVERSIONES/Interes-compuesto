@@ -1007,14 +1007,7 @@ async function generatePDF() {
   btn.querySelector('span').textContent = t().btnGenerating;
   /* Forzar tema claro para PDF prolijo */
   const wasDark = THEME === 'dark';
-  if (wasDark) {
-    setTheme('light');
-    await new Promise(r => setTimeout(r, 350));
-    /* Forzar re-render de los gráficos con el tema claro */
-    update();
-    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(() => r())));
-    await new Promise(r => setTimeout(r, 150));
-  }
+  if (wasDark) { setTheme('light'); await new Promise(r => setTimeout(r, 250)); }
   try {
     const c1img = document.getElementById('c1').toDataURL('image/png');
     const T = t();
@@ -1035,11 +1028,10 @@ async function generatePDF() {
       ? tplFill(T.atYearsWithAgeTpl, { Y, age: pdfAgeAtEnd })
       : tplFill(T.atYearsTpl, { Y });
     /* Bloque de contacto del asesor */
-    const waUrl = producer ? waLink(producer.whatsapp) : '';
     const asesorContactHTML = producer ? `
-      <div style="margin-top:4px; line-height:1.8;">
-        <div style="font-size:10px;"><a href="${waUrl}" style="color:#075e54; text-decoration:underline; font-weight:600;">📱 ${producer.whatsapp}</a></div>
-        ${producer.email ? `<div style="font-size:10px;"><a href="mailto:${producer.email}" style="color:#0043aa; text-decoration:underline;">✉ ${producer.email}</a></div>` : ''}
+      <div style="font-size:10px; color:#475569; margin-top:5px; line-height:1.6;">
+        <a href="${waLink(producer.whatsapp)}" style="color:#075e54; text-decoration:underline; font-weight:600;">📱 ${producer.whatsapp}</a>
+        ${producer.email ? `<br><a href="mailto:${producer.email}" style="color:#0043aa; text-decoration:underline;">✉ ${producer.email}</a>` : ''}
       </div>` : '';
     /* Tabla de hitos */
     const step = Y <= 10 ? 2 : (Y <= 25 ? 5 : 5);
@@ -1091,12 +1083,12 @@ async function generatePDF() {
     const wealthMultiplier = last.contrib > 0 ? (last.p / last.contrib) : 0;
     const wealthMultStr = wealthMultiplier.toFixed(1).replace('.', T.decimal);
     const compareWithSub = tplFill(T.pdfCompareWithSubTpl, { gift: fmt(interesGenerado), mult: wealthMultStr });
-    const logoBlock = logoDataUrl ? `<img src="${logoDataUrl}" width="80" height="43" style="height:43px; width:80px; display:block; object-fit:contain;">` : '';
-    const logoMini = logoDataUrl ? `<img src="${logoDataUrl}" width="34" height="18" style="height:18px; width:34px; display:block; object-fit:contain;">` : '';
+    const logoBlock = logoDataUrl ? `<img src="${logoDataUrl}" width="80" height="43" style="height:43px; width:80px; display:block;">` : '';
+    const logoMini = logoDataUrl ? `<img src="${logoDataUrl}" width="34" height="18" style="height:18px; width:34px; display:block;">` : '';
     const pdfHTML = `
       <div class="pdf-doc" style="font-family:'Helvetica Neue', Arial, sans-serif; color:#1e293b; background:#fff; width:210mm; box-sizing:border-box;">
         <style>
-          .pdf-doc .pdf-page { padding:10mm 16mm; box-sizing:border-box; width:210mm; }
+          .pdf-doc .pdf-page { padding:14mm 16mm; box-sizing:border-box; width:210mm; }
           .pdf-doc .pdf-section { page-break-inside: avoid; break-inside: avoid; }
           .pdf-doc .pdf-content .pill { display:inline-block; background:rgba(0,67,170,0.12); color:#0043aa; font-family:'JetBrains Mono', monospace; font-size:10px; padding:2px 8px; border-radius:4px; font-weight:600; }
           .pdf-doc .pdf-content strong { color:#0043aa; font-weight:700; }
@@ -1104,18 +1096,18 @@ async function generatePDF() {
         <!-- ============ PÁGINA 1 ============ -->
         <div class="pdf-page">
           <!-- HEADER con LOGO -->
-          <div class="pdf-section" style="display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid #0043aa; padding-bottom:8px; margin-bottom:10px;">
-            <div style="display:flex; align-items:center; gap:14px; flex:1;">
+          <div class="pdf-section" style="display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid #0043aa; padding-bottom:12px; margin-bottom:14px;">
+            <div style="display:flex; align-items:center; gap:18px; flex:1;">
               ${logoBlock}
-              <div style="border-left:1px solid rgba(0,67,170,0.15); padding-left:14px;">
-                <div style="font-size:20px; color:#0043aa; font-weight:800; line-height:1.05; letter-spacing:-0.01em;">${T.pdfTitle}</div>
-                <div style="font-size:10px; color:#64748b; margin-top:2px; font-style:italic;">${T.pdfSubtitle}</div>
+              <div style="border-left:1px solid rgba(0,67,170,0.15); padding-left:16px;">
+                <div style="font-size:22px; color:#0043aa; font-weight:800; line-height:1.05; letter-spacing:-0.01em;">${T.pdfTitle}</div>
+                <div style="font-size:11px; color:#64748b; margin-top:3px; font-style:italic;">${T.pdfSubtitle}</div>
               </div>
             </div>
             <div style="font-size:10px; color:#64748b; text-align:right; white-space:nowrap; padding-left:10px;">${dateStr}</div>
           </div>
           <!-- CLIENTE / ASESOR -->
-          <div class="pdf-section" style="display:flex; gap:20px; margin-bottom:10px; padding:9px 16px; background:linear-gradient(135deg, rgba(0,67,170,0.06), rgba(97,176,188,0.04)); border-left:3px solid #0043aa; border-radius:0 6px 6px 0;">
+          <div class="pdf-section" style="display:flex; gap:20px; margin-bottom:12px; padding:11px 16px; background:linear-gradient(135deg, rgba(0,67,170,0.06), rgba(97,176,188,0.04)); border-left:3px solid #0043aa; border-radius:0 6px 6px 0;">
             <div style="flex:1;">
               <div style="font-size:9px; color:#64748b; text-transform:uppercase; letter-spacing:0.15em; font-weight:600; margin-bottom:3px;">${T.clientLabel}</div>
               <div style="font-size:15px; font-weight:700; color:#0043aa;">${clienteDisp}</div>
@@ -1177,8 +1169,8 @@ async function generatePDF() {
         <!-- ============ PÁGINA 2 ============ -->
         <div class="pdf-page">
           <!-- MINI HEADER -->
-          <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:6px; margin-bottom:10px; border-bottom:1px solid #e2e8f0;">
-            <div style="display:flex; align-items:center; gap:8px; font-size:9px; color:#64748b;">
+          <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:8px; margin-bottom:14px; border-bottom:1px solid #e2e8f0;">
+            <div style="display:flex; align-items:center; gap:10px; font-size:10px; color:#64748b;">
               ${logoMini}
               <span>IQ Soluciones Financieras · ${T.pdfTitle}</span>
             </div>
@@ -1204,7 +1196,7 @@ async function generatePDF() {
     /* ===== Esperar a que TODO esté listo antes de generar PDF ===== */
     /* 1) Esperar a que las fuentes estén cargadas */
     if (document.fonts && document.fonts.ready) {
-      try { await Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 3000))]); } catch (e) {}
+      try { await document.fonts.ready; } catch (e) {}
     }
     /* 2) Esperar a que todas las imágenes terminen de decodificar */
     const imgs = Array.from(container.getElementsByTagName('img'));
@@ -1214,7 +1206,7 @@ async function generatePDF() {
         const done = () => { img.onload = null; img.onerror = null; resolve(); };
         img.onload = done;
         img.onerror = done;
-        setTimeout(done, 8000);
+        setTimeout(done, 5000);
       });
     }));
     /* 3) Decode adicional con la API moderna si está disponible */
@@ -1224,38 +1216,21 @@ async function generatePDF() {
       }
       return Promise.resolve();
     }));
-    /* 4) Forzar reflow completo para que el browser calcule layout final */
-    void container.offsetHeight;
-    void container.firstElementChild.offsetHeight;
-    /* 5) Doble requestAnimationFrame + delay para asegurar paint completo */
-    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(() => r())));
-    await new Promise(r => setTimeout(r, 400));
+    /* 4) Pequeño delay para que el browser termine el layout */
+    await new Promise(r => setTimeout(r, 250));
     const safeName = cliente !== '—' ? cliente.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]/g,'').replace(/\s+/g,'-').toLowerCase() : 'cliente';
     const filename = `proyeccion-${safeName}.pdf`;
-    /* Función interna de generación con retry */
-    const doPDFGeneration = async (attempt) => {
-      const safeScale = attempt > 1 ? 1.5 : 2;
-      return html2pdf().from(container.firstElementChild).set({
-        margin: 0,
-        filename: filename,
-        enableLinks: true,
-        image: { type: 'jpeg', quality: attempt > 1 ? 0.90 : 0.96 },
-        html2canvas: { scale: safeScale, useCORS: true, backgroundColor: '#ffffff', logging: false, imageTimeout: 10000 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
-        pagebreak: { mode: ['css', 'legacy'] }
-      }).save();
-    };
-    /* Intentar hasta 2 veces */
-    try {
-      await doPDFGeneration(1);
-    } catch (retryErr) {
-      console.warn('PDF gen attempt 1 failed, retrying...', retryErr);
-      await new Promise(r => setTimeout(r, 500));
-      await doPDFGeneration(2);
-    }
+    await html2pdf().from(container.firstElementChild).set({
+      margin: 0,
+      filename: filename,
+      image: { type: 'jpeg', quality: 0.96 },
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false, imageTimeout: 5000 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
+      pagebreak: { mode: ['css', 'legacy'] }
+    }).save();
     container.innerHTML = '';
   } catch (e) {
-    console.error('PDF generation error:', e);
+    console.error(e);
     alert('Hubo un error generando el PDF. Probá de nuevo.');
   } finally {
     if (wasDark) setTheme('dark');
