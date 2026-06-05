@@ -390,7 +390,7 @@ const I18N = {
     pdfFooterLine2: 'Esta proyección es ilustrativa. Rendimientos pasados no garantizan resultados futuros.',
     pdfFooterLine3: 'Más información: iq-inversiones.github.io · @iq.solucionesfinancieras',
     producerUnassigned: '— Sin asignar —',
-    pdfMilestonesLabel: 'Proyección',
+    pdfMilestonesLabel: 'Hitos de la proyección',
     mlsYear: 'Año',
     mlsAge: 'Edad',
     mlsContrib: 'Aportado',
@@ -474,7 +474,7 @@ const I18N = {
     pdfFooterLine2: 'This projection is illustrative. Past performance does not guarantee future results.',
     pdfFooterLine3: 'More info: iq-inversiones.github.io · @iq.solucionesfinancieras',
     producerUnassigned: '— Unassigned —',
-    pdfMilestonesLabel: 'Projection',
+    pdfMilestonesLabel: 'Projection milestones',
     mlsYear: 'Year',
     mlsAge: 'Age',
     mlsContrib: 'Contributed',
@@ -558,7 +558,7 @@ const I18N = {
     pdfFooterLine2: 'Esta projeção é ilustrativa. Rendimentos passados não garantem resultados futuros.',
     pdfFooterLine3: 'Mais info: iq-inversiones.github.io · @iq.solucionesfinancieras',
     producerUnassigned: '— Não atribuído —',
-    pdfMilestonesLabel: 'Projeção',
+    pdfMilestonesLabel: 'Marcos da projeção',
     mlsYear: 'Ano',
     mlsAge: 'Idade',
     mlsContrib: 'Aportado',
@@ -585,6 +585,7 @@ const PRODUCERS = [
   { name: 'Claudio Ponce',           whatsapp: '+54 9 11 6933-4207', email: 'cponce@iqsolucionesfinancieras.com' },
   { name: 'Federico Seco',           whatsapp: '+46 73 392 55 77',   email: '' },
   { name: 'Gabriel Rebecchi',        whatsapp: '+54 9 11 6051-2140', email: 'grebecchi@iqsolucionesfinancieras.com' },
+  { name: 'Jose Gomez',              whatsapp: '+54 9 2914 61-7320', email: 'jgomez@xafinanzaspersonales.com.ar' },
   { name: 'Leandro Seco',            whatsapp: '+54 9 11 6611-2466', email: 'lseco@iqsolucionesfinancieras.com' },
   { name: 'Luciana Nieva',           whatsapp: '+54 9 11 5564-0170', email: 'lnieva@iqsolucionesfinancieras.com' },
   { name: 'Lucila Seco',             whatsapp: '+54 9 11 3081-9322', email: 'luseco@iqsolucionesfinancieras.com' },
@@ -1030,8 +1031,8 @@ async function generatePDF() {
     /* Bloque de contacto del asesor */
     const asesorContactHTML = producer ? `
       <div style="font-size:10px; color:#475569; margin-top:5px; line-height:1.6;">
-        <a href="${waLink(producer.whatsapp)}" style="color:#075e54; text-decoration:underline; font-weight:600;">📱 ${producer.whatsapp}</a>
-        ${producer.email ? `<br><a href="mailto:${producer.email}" style="color:#0043aa; text-decoration:underline;">✉ ${producer.email}</a>` : ''}
+        <a href="${waLink(producer.whatsapp)}" style="color:#075e54; text-decoration:none; font-weight:600;">📱 ${producer.whatsapp}</a>
+        ${producer.email ? `<br><a href="mailto:${producer.email}" style="color:#0043aa; text-decoration:none;">✉ ${producer.email}</a>` : ''}
       </div>` : '';
     /* Tabla de hitos */
     const step = Y <= 10 ? 2 : (Y <= 25 ? 5 : 5);
@@ -1083,8 +1084,8 @@ async function generatePDF() {
     const wealthMultiplier = last.contrib > 0 ? (last.p / last.contrib) : 0;
     const wealthMultStr = wealthMultiplier.toFixed(1).replace('.', T.decimal);
     const compareWithSub = tplFill(T.pdfCompareWithSubTpl, { gift: fmt(interesGenerado), mult: wealthMultStr });
-    const logoBlock = logoDataUrl ? `<img src="${logoDataUrl}" width="80" height="43" style="height:43px; width:80px; display:block;">` : '';
-    const logoMini = logoDataUrl ? `<img src="${logoDataUrl}" width="34" height="18" style="height:18px; width:34px; display:block;">` : '';
+    const logoBlock = logoDataUrl ? `<img src="${logoDataUrl}" width="134" height="72" style="height:72px; width:134px; display:block;">` : '';
+    const logoMini = logoDataUrl ? `<img src="${logoDataUrl}" width="48" height="26" style="height:26px; width:48px; display:block;">` : '';
     const pdfHTML = `
       <div class="pdf-doc" style="font-family:'Helvetica Neue', Arial, sans-serif; color:#1e293b; background:#fff; width:210mm; box-sizing:border-box;">
         <style>
