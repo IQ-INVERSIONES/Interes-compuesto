@@ -1235,28 +1235,31 @@ async function generatePDF() {
     const pageEls = Array.from(container.querySelectorAll('.pdf-page'));
     if (pageEls.length === 0) throw new Error('No se encontraron páginas para el PDF.');
 
-    /* Render de la primera página: de paso obtenemos una instancia jsPDF
-       (su constructor no está expuesto globalmente por el bundle de html2pdf). */
-    const firstWorker = html2pdf().set(renderOpts).from(pageEls[0]).toCanvas().toPdf();
-    const seedPdf = await firstWorker.get('pdf');
-    const JsPDFCtor = seedPdf.constructor;
-    const canvases = [await firstWorker.get('canvas')];
-
-    /* Render del resto de las páginas (cada una a su propio canvas). */
-    for (let i = 1; i < pageEls.length; i++) {
-      canvases.push(await html2pdf().set(renderOpts).from(pageEls[i]).toCanvas().get('canvas'));
+    /* Renderizamos cada página a su propio canvas. En la primera, además,
+       obtenemos una instancia jsPDF REAL creada por html2pdf (con addImage,
+       addPage, etc.). No usamos su slicing automático porque parte el
+       contenido en páginas que no coinciden con el A4 (origen del PDF roto):
+       sus páginas autogeneradas se descartan más abajo. */
+    const canvases = [];
+    let pdf = null;
+    let autoPages = 0;
+    for (let i = 0; i < pageEls.length; i++) {
+      const worker = html2pdf().set(renderOpts).from(pageEls[i]).toCanvas();
+      canvases.push(await worker.get('canvas'));
+      if (i === 0) {
+        pdf = await worker.toPdf().get('pdf');
+        autoPages = pdf.getNumberOfPages();
+      }
     }
 
-    /* Armamos el PDF final colocando cada canvas como UNA página A4. */
-    const pdf = new JsPDFCtor({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
     let PAGE_W = 210, PAGE_H = 297;
     try { PAGE_W = pdf.internal.pageSize.getWidth(); PAGE_H = pdf.internal.pageSize.getHeight(); } catch (e) {}
 
-    canvases.forEach((cv, idx) => {
-      if (idx > 0) pdf.addPage();
-      /* Por defecto la imagen ocupa todo el ancho A4. Si su alto superara
-         la página (contenido más largo de lo esperado), se reduce para
-         entrar entera y centrada: nunca se recorta ni se parte en dos. */
+    /* Agregamos NUESTRAS páginas: una A4 por cada .pdf-page. Cada imagen
+       ocupa el ancho A4; si su alto superara la página, se reduce para
+       entrar entera y centrada (nunca se recorta ni se parte en dos). */
+    canvases.forEach((cv) => {
+      pdf.addPage();
       let imgW = PAGE_W;
       let imgH = (cv.height / cv.width) * imgW;
       if (imgH > PAGE_H) {
@@ -1267,6 +1270,10 @@ async function generatePDF() {
       const imgData = cv.toDataURL('image/jpeg', 0.96);
       pdf.addImage(imgData, 'JPEG', x, 0, imgW, imgH, undefined, 'FAST');
     });
+
+    /* Eliminamos las páginas autogeneradas por el slicing de html2pdf,
+       que quedaron al principio del documento. */
+    for (let i = 0; i < autoPages; i++) pdf.deletePage(1);
 
     pdf.save(filename);
     container.innerHTML = '';
