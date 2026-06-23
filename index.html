@@ -1089,10 +1089,9 @@ async function generatePDF() {
     const pdfHTML = `
       <div class="pdf-doc" style="font-family:'Helvetica Neue', Arial, sans-serif; color:#1e293b; background:#fff; width:210mm; box-sizing:border-box;">
         <style>
-          .pdf-doc .pdf-page { padding:14mm 16mm; box-sizing:border-box; width:210mm; }
-          .pdf-doc .pdf-section { page-break-inside: avoid; break-inside: avoid; }
-          .pdf-doc .pdf-content .pill { display:inline-block; background:rgba(0,67,170,0.12); color:#0043aa; font-family:'JetBrains Mono', monospace; font-size:10px; padding:2px 8px; border-radius:4px; font-weight:600; }
-          .pdf-doc .pdf-content strong { color:#0043aa; font-weight:700; }
+          .pdf-page { padding:14mm 16mm; box-sizing:border-box; width:210mm; min-height:297mm; }
+          .pdf-content .pill { display:inline-block; background:rgba(0,67,170,0.12); color:#0043aa; font-family:'JetBrains Mono', monospace; font-size:10px; padding:2px 8px; border-radius:4px; font-weight:600; }
+          .pdf-content strong { color:#0043aa; font-weight:700; }
         </style>
         <!-- ============ PÁGINA 1 ============ -->
         <div class="pdf-page">
@@ -1165,8 +1164,6 @@ async function generatePDF() {
             </div>
           </div>
         </div>
-        <!-- ============ SALTO DE PÁGINA ============ -->
-        <div class="html2pdf__page-break" style="height:0; margin:0; padding:0; border:0; overflow:hidden;"></div>
         <!-- ============ PÁGINA 2 ============ -->
         <div class="pdf-page">
           <!-- MINI HEADER -->
@@ -1221,14 +1218,57 @@ async function generatePDF() {
     await new Promise(r => setTimeout(r, 250));
     const safeName = cliente !== '—' ? cliente.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]/g,'').replace(/\s+/g,'-').toLowerCase() : 'cliente';
     const filename = `proyeccion-${safeName}.pdf`;
-    await html2pdf().from(container.firstElementChild).set({
-      margin: 0,
-      filename: filename,
+
+    /* ===== Render determinista: UNA página A4 por cada .pdf-page =====
+       En vez de renderizar todo el documento como un único canvas alto y
+       dejar que html2pdf lo "corte" en páginas A4 (lo que provocaba que el
+       contenido de la página 1 se desbordara y se mezclara con la 2),
+       renderizamos cada .pdf-page por separado a su propio canvas y la
+       colocamos como una página A4 completa. Resultado: la paginación es
+       siempre exacta y el contenido nunca se parte, recorta ni se mezcla,
+       sin importar el largo del nombre, la cantidad de hitos o el idioma. */
+    const renderOpts = {
       image: { type: 'jpeg', quality: 0.96 },
       html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false, imageTimeout: 5000 },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
-      pagebreak: { mode: ['css', 'legacy'] }
-    }).save();
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true }
+    };
+    const pageEls = Array.from(container.querySelectorAll('.pdf-page'));
+    if (pageEls.length === 0) throw new Error('No se encontraron páginas para el PDF.');
+
+    /* Render de la primera página: de paso obtenemos una instancia jsPDF
+       (su constructor no está expuesto globalmente por el bundle de html2pdf). */
+    const firstWorker = html2pdf().set(renderOpts).from(pageEls[0]).toCanvas().toPdf();
+    const seedPdf = await firstWorker.get('pdf');
+    const JsPDFCtor = seedPdf.constructor;
+    const canvases = [await firstWorker.get('canvas')];
+
+    /* Render del resto de las páginas (cada una a su propio canvas). */
+    for (let i = 1; i < pageEls.length; i++) {
+      canvases.push(await html2pdf().set(renderOpts).from(pageEls[i]).toCanvas().get('canvas'));
+    }
+
+    /* Armamos el PDF final colocando cada canvas como UNA página A4. */
+    const pdf = new JsPDFCtor({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
+    let PAGE_W = 210, PAGE_H = 297;
+    try { PAGE_W = pdf.internal.pageSize.getWidth(); PAGE_H = pdf.internal.pageSize.getHeight(); } catch (e) {}
+
+    canvases.forEach((cv, idx) => {
+      if (idx > 0) pdf.addPage();
+      /* Por defecto la imagen ocupa todo el ancho A4. Si su alto superara
+         la página (contenido más largo de lo esperado), se reduce para
+         entrar entera y centrada: nunca se recorta ni se parte en dos. */
+      let imgW = PAGE_W;
+      let imgH = (cv.height / cv.width) * imgW;
+      if (imgH > PAGE_H) {
+        imgH = PAGE_H;
+        imgW = (cv.width / cv.height) * imgH;
+      }
+      const x = (PAGE_W - imgW) / 2;
+      const imgData = cv.toDataURL('image/jpeg', 0.96);
+      pdf.addImage(imgData, 'JPEG', x, 0, imgW, imgH, undefined, 'FAST');
+    });
+
+    pdf.save(filename);
     container.innerHTML = '';
   } catch (e) {
     console.error(e);
